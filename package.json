@@ -1,0 +1,22 @@
+{
+  "name": "swc_project",
+  "version": "1.0.0",
+  "description": "streaming web for campus junta",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://satyendradhaka:Maz04415@github.com/satyendradhaka/happy-learning.git"
+  },
+  "author": "satyendra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/satyendradhaka/happy-learning/issues"
+  },
+  "homepage": "https://github.com/satyendradhaka/happy-learning#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
