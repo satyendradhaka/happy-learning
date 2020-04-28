@@ -1,22 +1,31 @@
 {
-  "name": "swc_project",
+  "name": "swc_media",
   "version": "1.0.0",
-  "description": "streaming web for campus junta",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.2",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "fs": "0.0.1-security",
+    "mongoose": "^5.9.10",
+    "passport": "^0.4.1",
+    "passport-outlook": "^2.2.1"
   },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "SWC",
+  "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://satyendradhaka:Maz04415@github.com/satyendradhaka/happy-learning.git"
+    "url": "git+https://github.com/pranjal5399/SWC_media.git"
   },
-  "author": "satyendra",
-  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/satyendradhaka/happy-learning/issues"
+    "url": "https://github.com/pranjal5399/SWC_media/issues"
   },
-  "homepage": "https://github.com/satyendradhaka/happy-learning#readme",
-  "dependencies": {
-    "express": "^4.17.1"
-  }
+  "homepage": "https://github.com/pranjal5399/SWC_media#readme",
+  "description": ""
 }
