@@ -198,6 +198,11 @@ app.get('/profile', isLoggedIn,function(req, res){
 
 //auth routes
 //login route
+app.get('/login', function(req, res){
+  res.render('login');
+});
+
+//login route for through outlook
 app.get('/auth/outlook',
   passport.authenticate('windowslive', {
     scope: [
