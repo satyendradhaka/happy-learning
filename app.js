@@ -94,7 +94,7 @@ passport.use(new OutlookStrategy({
         }
         //if no user was found then create one
         if(!user){
-          var str = profile._json.DisplayName;
+          var str = profile._json.EmailAddress;
           var n = str.search('@iitg.ac.in');
           if(n!=-1){
             user = new User({
