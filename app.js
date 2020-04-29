@@ -71,6 +71,8 @@ passport.use(new OutlookStrategy({
     callbackURL: 'http://localhost:3000/auth/outlook/callback'
   },
   function(accessToken, refreshToken, params,profile, done) {
+    // console.log(profile);
+    // console.log(params);
     // var user = {
     //   outlookId: profile.id,
     //   name: profile.DisplayName,
@@ -187,6 +189,13 @@ app.get('/video/watch/:id',async (req,res)=>{
 	})
 })
 
+//profile routes
+app.get('/profile', isLoggedIn,function(req, res){
+  res.render("profile", {user: req.user});
+});
+
+
+
 //auth routes
 //login route
 app.get('/auth/outlook',
@@ -215,6 +224,18 @@ app.get('/logout', function(req, res){
     });
   });
   
+
+
+//middleware
+function isLoggedIn(req, res, next){
+  if(req.isAuthenticated()){
+    return next();
+  }
+  res.redirect("/login");
+}
+
+
+
 app.listen(PORT, function(){
     console.log("SWC Media server has started");
 });

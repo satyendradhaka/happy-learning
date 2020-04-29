@@ -9,6 +9,10 @@
 
 	
 		<!-- <div><a href="/video/video._id">video.name</a></div> -->
+		<a href="/">Home</a>
+		<a href="/profile"><p><%=currentUser.name%></p></a>
+		<p><a href="#">Email</a>: <%=currentUser.email%></p>
+		<a href="/logout">Logout</a>
 	<h2><%=video.name%></h2>
 	<video id="video" width="640" controls>
         <source src="/video/watch/<%=video._id%>" type="video/mp4">
