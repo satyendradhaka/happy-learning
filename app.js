@@ -130,7 +130,7 @@ app.get('/', function(req, res){
 });
 
 //video player route
-app.get('/video/:id', function(req, res){
+app.get('/video/:id', isLoggedIn,function(req, res){
 	
 	Media.findById(req.params.id, function(err, foundVideo){
 		if(err){
@@ -142,7 +142,7 @@ app.get('/video/:id', function(req, res){
 	
 })
 
-app.get('/video/watch/:id',async (req,res)=>{
+app.get('/video/watch/:id',isLoggedIn,async (req,res)=>{
 
 	Media.findById(req.params.id, function(err, foundMedia){
 		if(err){
