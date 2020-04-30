@@ -1,12 +1,15 @@
-const express = require('express');
-const app = express();
-const passport = require('passport');
-const mongoose = require('mongoose');
-const OutlookStrategy = require('passport-outlook');
-const bodyParser = require("body-parser");
-const fs = require('fs');
-const PORT = process.env.PORT || 3000;
-const url= process.env.url || 'mongodb://localhost/SWC_Media'
+const express             = require('express'),
+      app                 = express(),
+      passport            = require('passport'),
+      mongoose            = require('mongoose'),
+      OutlookStrategy     = require('passport-outlook'),
+      bodyParser          = require("body-parser"),
+      fs                  = require('fs'),
+      User                = require("./models/user"),
+      Media               = require("./models/media"),
+      Bookmark            = require("./models/bookmark"),
+      PORT                = process.env.PORT || 3000,
+      url                 = process.env.url || 'mongodb://localhost/SWC_Media'
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine", "ejs");
 
@@ -14,25 +17,6 @@ app.set("view engine", "ejs");
 //mongoose setup
 //mongoose.connect("mongodb://localhost/SWC_Media" , {useUnifiedTopology: true ,useNewUrlParser: true,useFindAndModify: false});
 mongoose.connect("mongodb+srv://satyendra:1234@cluster0-afmf0.mongodb.net/test?retryWrites=true&w=majority" , {useUnifiedTopology: true ,useNewUrlParser: true,useFindAndModify: false});
-
-//Schema setup
-
-//media Schema
-var mediaSchema=mongoose.Schema({
-	name:String,
-	path:String
-});
-
-var Media=mongoose.model("Media", mediaSchema);
-
-//user schema setup
-var UserSchema = new mongoose.Schema({
-    outlookId: String,
-    name: String,
-    email: String,
-    accessToken:  String
-})
-var User = mongoose.model("User", UserSchema);
 
 //adding sample video
 // Media.create({name:"sample1", path:"assets/sample1.mp4"}, function(err, media){
@@ -136,7 +120,7 @@ app.get('/video/:id', isLoggedIn,function(req, res){
 		if(err){
 			console.log(err);
 		}else{
-			res.render("index", {video:foundVideo});
+			res.render("video", {video:foundVideo});
 		}
 	})
 	
@@ -187,6 +171,27 @@ app.get('/video/watch/:id',isLoggedIn,async (req,res)=>{
 			}
 		}
 	})
+})
+
+app.post("/video/:id", function(req, res){
+	Media.findById(req.params.id, function(err, video){
+		if(err){
+			console.log(err);
+			redirect("/video")
+		}else{
+			//console.log(req.body.bookmark);
+			Bookmark.create(req.body.bookmark, function(err, bookmark){
+				if(err){
+					console.log(err)
+				}else{
+					video.bookmarks.push(bookmark);
+					video.save();
+					res.json(bookmark);
+				}
+			})
+		}
+	})
+	
 })
 
 //profile routes
