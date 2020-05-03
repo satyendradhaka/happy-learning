@@ -23,9 +23,6 @@ A learning platform for the campus, access to courses scraped by SWC, Blogs, Kee
    - *Frameworks* : NodeJs, HTML , CSS , JavaScript, django
    - *email* : shital@iitg.ac.in   
    
-* [LOKNATH KUMAR](https://github.com/LOkn7630) <!--Working on : swc-courses(2)-->  
-   - *Frameworks* : Django, HTML, CSS, React
-   - *email* : loknath@iitg.ac.in
 
    
    
