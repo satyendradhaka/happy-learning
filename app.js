@@ -13,13 +13,15 @@ const express             = require('express'),
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine", "ejs");
 
+var streamRoutes    = require("./routes/streaming"),
+    indexRoutes     = require("./routes/index");
 
 //mongoose setup
-//mongoose.connect("mongodb://localhost/SWC_Media" , {useUnifiedTopology: true ,useNewUrlParser: true,useFindAndModify: false});
-mongoose.connect("mongodb+srv://satyendra:1234@cluster0-afmf0.mongodb.net/test?retryWrites=true&w=majority" , {useUnifiedTopology: true ,useNewUrlParser: true,useFindAndModify: false});
+mongoose.connect("mongodb://localhost/SWC_Media" , {useUnifiedTopology: true ,useNewUrlParser: true,useFindAndModify: false});
+// mongoose.connect("mongodb+srv://satyendra:1234@cluster0-afmf0.mongodb.net/test?retryWrites=true&w=majority" , {useUnifiedTopology: true ,useNewUrlParser: true,useFindAndModify: false});
 
 //adding sample video
-// Media.create({name:"sample1", path:"assets/sample1.mp4"}, function(err, media){
+// Media.create({name:"sample2", path:"assets/sample2.mp4"}, function(err, media){
 // 	if(err){
 // 		console.log(err);
 // 	}else{
@@ -55,23 +57,6 @@ passport.use(new OutlookStrategy({
     callbackURL: 'http://localhost:3000/auth/outlook/callback'
   },
   function(accessToken, refreshToken, params,profile, done) {
-    // console.log(profile);
-    // console.log(params);
-    // var user = {
-    //   outlookId: profile.id,
-    //   name: profile.DisplayName,
-    //   email: profile.EmailAddress,
-    //   accessToken:  accessToken
-    // };
-    // if (refreshToken)
-    //   user.refreshToken = refreshToken;
-    // if (profile.MailboxGuid)
-    //   user.mailboxGuid = profile.MailboxGuid;
-    // if (profile.Alias)
-    //   user.alias = profile.Alias;
-    // User.findOrCreate(user, function (err, user) {
-    //   return done(err, user);
-    // });
     User.findOne({
         outlookId: profile.id
     }, function(err, user){
@@ -102,137 +87,15 @@ passport.use(new OutlookStrategy({
 ));
 
 
-//home page route
-app.get('/', function(req, res){
-    Media.find({}, function(err, media){
-		if(err){
-			console.log(err);
-		}else{
-			res.render('home', {media:media})
-		}
-	})
-});
 
-//video player route
-app.get('/video/:id', isLoggedIn,function(req, res){
-	
-	Media.findById(req.params.id, function(err, foundVideo){
-		if(err){
-			console.log(err);
-		}else{
-			res.render("video", {video:foundVideo});
-		}
-	})
-	
-})
 
-app.get('/video/watch/:id',isLoggedIn,async (req,res)=>{
-
-	Media.findById(req.params.id, function(err, foundMedia){
-		if(err){
-			console.log(err)
-		}else{
-			const path=foundMedia.path;
-			
-			try{
-				fs.stat(path,(err,stat)=>{
-					if(err){throw err}
-					const fileSize=stat.size
-					const range=req.headers.range
-					console.log(range)
-					if(range){
-						const parts=range.replace(/bytes=/,"").split('-')
-						const start=parseInt(parts[0],10)
-						const end=parts[1]?
-							parseInt(parts[1],10)
-							:fileSize-1
-						const chunksize=(end-start)+1
-						const file=fs.createReadStream(path,{start,end})
-						res.writeHead(206,{
-							'Content-Range':`bytes ${start}-${end}/${fileSize}`,
-							'Accept-Ranges':'bytes',
-							'Content-Length':chunksize,
-							'Content-Type':'video/mp4'
-						})
-						file.pipe(res)
-					}
-					else{
-						res.writeHead(200,{
-							'Content-Length':fileSize,
-							'Content-Type':'video/mp4'
-						})
-						fs.createReadStream(path).pipe(res)
-					}
-		
-				})
-			}
-			catch(err){
-				console.log(err)
-			}
-		}
-	})
-})
-
-app.post("/video/:id", function(req, res){
-	Media.findById(req.params.id, function(err, video){
-		if(err){
-			console.log(err);
-			redirect("/video")
-		}else{
-			//console.log(req.body.bookmark);
-			Bookmark.create(req.body.bookmark, function(err, bookmark){
-				if(err){
-					console.log(err)
-				}else{
-					video.bookmarks.push(bookmark);
-					video.save();
-					res.json(bookmark);
-				}
-			})
-		}
-	})
-	
-})
-
-//profile routes
-app.get('/profile', isLoggedIn,function(req, res){
-  res.render("profile", {user: req.user});
-});
+app.use("/", indexRoutes);
+app.use("/", streamRoutes);
 
 
 
-//auth routes
-//login route
-app.get('/login', function(req, res){
-  res.render('login');
-});
 
-//login route for through outlook
-app.get('/auth/outlook',
-  passport.authenticate('windowslive', {
-    scope: [
-      'openid',
-      'profile',
-      'offline_access',
-      'https://outlook.office.com/Mail.Read'
-    ]
-  })
-);
-//login callback route
-app.get('/auth/outlook/callback', 
-  passport.authenticate('windowslive', { failureRedirect: '/' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    console.log(req.user);
-    res.redirect('/');
-  });
-//logout route
-app.get('/logout', function(req, res){
-    req.session.destroy(function(err) {
-      req.logOut();
-      res.redirect('/');
-    });
-  });
+
   
 
 
