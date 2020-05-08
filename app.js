@@ -7,14 +7,16 @@ const express             = require('express'),
       fs                  = require('fs'),
       User                = require("./models/user"),
       Media               = require("./models/media"),
-      Bookmark            = require("./models/bookmark"),
+      methodOverride		  = require("method-override"),
       PORT                = process.env.PORT || 3000,
       url                 = process.env.url || 'mongodb://localhost/SWC_Media'
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine", "ejs");
+app.use(methodOverride("_method"));
 
 var streamRoutes    = require("./routes/streaming"),
-    indexRoutes     = require("./routes/index");
+    indexRoutes     = require("./routes/index"),
+    adminRoutes     = require("./routes/adminRoutes");
 
 //mongoose setup
 mongoose.connect("mongodb://localhost/SWC_Media" , {useUnifiedTopology: true ,useNewUrlParser: true,useFindAndModify: false});
@@ -91,12 +93,19 @@ passport.use(new OutlookStrategy({
 
 app.use("/", indexRoutes);
 app.use("/", streamRoutes);
+app.use("/admin", adminRoutes);
 
 
 
 
-
-  
+//Error handler
+app.use((err,req,res,next)=>{
+  res.status(err.status||500)
+  res.  send(err.status?err:{"message":"Internal server error, check server log"})
+  if(!err.status){
+    console.log(err)
+  }
+})
 
 
 //middleware
@@ -106,7 +115,14 @@ function isLoggedIn(req, res, next){
   }
   res.redirect("/login");
 }
-
+function isAdmin(req, res, next){
+  if(req.isAuthenticated()){
+    if(req.user.isAdmin){
+      return next();
+    }
+  }
+  res.redirect("/");
+}
 
 
 app.listen(PORT, function(){

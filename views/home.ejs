@@ -11,6 +11,12 @@
 		<%media.forEach(function(video){%>
 			<div><a href="video/<%=video._id%>"><%=video.name%></a></div>
 		<%})%>
+		<%if(currentUser && currentUser.isAdmin){%>
+			<p>
+				<a href="/admin">Admin Page</a>				
+			</p>
+
+		<%}%>
 		<a href="/logout">Logout</a>
 	<%}%>
 </body> 

@@ -1,7 +1,7 @@
 var express  = require("express"),
     router   = express.Router(),
     Media    = require("../models/media"),
-    Bookmark =require("../models/bookmark"),
+    //Bookmark =require("../models/bookmark"),
     fs       = require('fs'),
     passport = require('passport');
 
