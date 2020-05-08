@@ -8,9 +8,8 @@
 	<%} else{%>
 		<p><a href="/profile">View profile</a></p>
 		<a href="/profile"><p><%=currentUser.name%></p></a>
-		<%media.forEach(function(video){%>
-			<div><a href="video/<%=video._id%>"><%=video.name%></a></div>
-		<%})%>
+		<a href="/courses/all">All Courses</a>
+		<br>
 		<a href="/logout">Logout</a>
 	<%}%>
 </body> 

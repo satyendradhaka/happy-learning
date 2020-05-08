@@ -1,8 +1,10 @@
-var mongoose = require("mongoose");
- 
-var bookmarkSchema = new mongoose.Schema({
-    text: String,
-    time: String
-});
- 
-module.exports = mongoose.model("Bookmark", bookmarkSchema);
+let mongoose=require("mongoose");
+let Schema= mongoose.Schema
+
+let bookmarkSchema=new Schema({
+	video:{type:mongoose.ObjectId, ref:'Media'},
+	timestamp:{type:Number},
+	text:{type:String},
+})
+
+module.exports=mongoose.model("Bookmark", bookmarkSchema);

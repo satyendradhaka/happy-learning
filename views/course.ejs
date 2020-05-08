@@ -1,0 +1,16 @@
+<html>
+<head> 
+	<title>Video streaming with Node.js</title> 
+</head> 
+<body> 
+<%if(!currentUser){%>
+	<a href="/auth/outlook">Login</a>
+	<%} else{%>
+
+		<%media.forEach(function(video){%>
+            <div><a href="/courses/<%=course_id%>/video/<%=video._id%>"><%=video.title%></a></div>
+        <%})%>
+		<br>
+	<%}%>
+</body> 
+</html>

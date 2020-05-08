@@ -1,29 +1,47 @@
 var express  = require("express"),
-    router   = express.Router(),
-    Media    = require("../models/media"),
-    Bookmark =require("../models/bookmark"),
+	mongoose = require("mongoose"),
+    router   = express.Router({mergeParams: true}),
+	Media    = require("../models/media"),
+	User     = require("../models/user"),
     fs       = require('fs');
 
-router.get("/video/:id", function(req, res){
-	//find the campground with given id
-	Media.findById(req.params.id).populate("bookmarks").exec(function(err, foundVideo){
-		if(err){
-			console.log(err)
-		}else{
-			res.render("video", {video:foundVideo});
+router.get("/video/:video_id", async(req, res, next)=>{
+
+	try{
+		let getvideo= Media.findOne({'_id':req.params.video_id,'course':req.params.id})
+		let getuser= User.findOne({'_id':req.user._id,'enrolled_courses.course':req.params.id})
+		let [user,video]=await Promise.all([getuser,getvideo])
+
+		if(user && video){
+			let courseIndex=user.enrolled_courses.findIndex(courseItem=>{
+				return courseItem.course==req.params.id
+			  })
+
+			  console.log(user.enrolled_courses[courseIndex])
+
+			  //let foundVideo=Media.findById(req.params.video_id)
+			  res.render("video", {video:video, course_id:req.params.id, bookmarks:user.enrolled_courses[courseIndex].Bookmarks})
 		}
-	});
+		else{
+			error={'status':400,'message':'Course-video mismatch'}
+			throw error;
+		  }
+
+
+	}catch(err){
+		next(err);
+	}
 	
 	
 });
 
-router.get('/video/watch/:id',async (req,res)=>{
+router.get('/video/watch/:video_id',async (req,res)=>{
 
-	Media.findById(req.params.id, function(err, foundMedia){
+	Media.findById(req.params.video_id, function(err, foundMedia){
 		if(err){
 			console.log(err)
 		}else{
-			const path=foundMedia.path;
+			const path=foundMedia.filePath;
 			
 			try{
 				fs.stat(path,(err,stat)=>{
@@ -64,25 +82,39 @@ router.get('/video/watch/:id',async (req,res)=>{
 	})
 })
 
-router.post("/video/:id", function(req, res){
-	Media.findById(req.params.id, function(err, video){
-		if(err){
-			console.log(err);
-			redirect("/video")
-		}else{
-			//console.log(req.body.bookmark);
-			Bookmark.create(req.body.bookmark, function(err, bookmark){
-				if(err){
-					console.log(err)
-				}else{
-					video.bookmarks.push(bookmark);
-					video.save();
-					res.json(bookmark);
-				}
-			})
-		}
-	})
-	
-})
+router.post('/video/:video_id/', async (req,res,next)=>{
+	//check authenticated
+	//check course enrolled
+	//check valid video
+	try{
+	  let getvideo= Media.findOne({'_id':req.params.video_id,'course':req.params.id})
+	  let getuser= User.findOne({'_id':req.user._id,'enrolled_courses.course':req.params.id})
+	  let [user,video]=await Promise.all([getuser,getvideo])
+	  //debugger;
+	  if(user && video){ 
+		let courseIndex=user.enrolled_courses.findIndex(courseItem=>{
+		  return courseItem.course==req.params.id
+		})
+		
+		let newBookmark={
+			'video':mongoose.Types.ObjectId(req.params.video_id),
+			'timestamp':req.body.time,
+			'text':req.body.text
+		  }
+
+		user.enrolled_courses[courseIndex].Bookmarks.push(newBookmark)
+  
+		let updated= await user.save()
+		res.json(newBookmark)
+	  }
+	  else{
+		error={'status':400,'message':'Course-video mismatch'}
+		throw error
+	  }
+	}
+	catch(err){
+	  next(err)
+	}
+  })
 
 module.exports = router;

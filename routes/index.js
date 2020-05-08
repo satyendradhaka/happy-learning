@@ -1,7 +1,6 @@
 var express  = require("express"),
     router   = express.Router(),
     Media    = require("../models/media"),
-    Bookmark =require("../models/bookmark"),
     fs       = require('fs'),
     passport = require('passport');
 
@@ -10,13 +9,9 @@ router.get('/profile', isLoggedIn,function(req, res){
   });
 
 router.get('/', function(req, res){
-    Media.find({}, function(err, media){
-		if(err){
-			console.log(err);
-		}else{
-			res.render('home', {media:media})
-		}
-	})
+			res.render('home')
+		
+	
 });
 
 //auth routes
@@ -41,7 +36,7 @@ router.get('/login', function(req, res){
     passport.authenticate('windowslive', { failureRedirect: '/' }),
     function(req, res) {
       // Successful authentication, redirect home.
-      console.log(req.user);
+      
       res.redirect('/');
     });
   //logout route
