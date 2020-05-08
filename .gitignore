@@ -1,4 +1,5 @@
  bookmarkcode.txt
+ assets/
  node_modules/jake/package.json
  node_modules/jake/test/concurrent.js
  node_modules/jake/test/file.js

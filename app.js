@@ -7,18 +7,18 @@ const express             = require('express'),
       fs                  = require('fs'),
       User                = require("./models/user"),
       Media               = require("./models/media"),
-      Bookmark            = require("./models/bookmark"),
+      Course              = require("./models/course"),
       PORT                = process.env.PORT || 3000,
       url                 = process.env.url || 'mongodb://localhost/SWC_Media'
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine", "ejs");
 
 var streamRoutes    = require("./routes/streaming"),
-    indexRoutes     = require("./routes/index");
+    indexRoutes     = require("./routes/index"),
+    testingRoutes   =require('./routes/testing');
 
 //mongoose setup
 mongoose.connect("mongodb://localhost/SWC_Media" , {useUnifiedTopology: true ,useNewUrlParser: true,useFindAndModify: false});
-// mongoose.connect("mongodb+srv://satyendra:1234@cluster0-afmf0.mongodb.net/test?retryWrites=true&w=majority" , {useUnifiedTopology: true ,useNewUrlParser: true,useFindAndModify: false});
 
 //adding sample video
 // Media.create({name:"sample2", path:"assets/sample2.mp4"}, function(err, media){
@@ -29,6 +29,32 @@ mongoose.connect("mongodb://localhost/SWC_Media" , {useUnifiedTopology: true ,us
 // 		console.log(media);
 // 	}
 // })
+
+// Media.create({title:"sample5", filePath:"assets/sample5.mp4"}, function(err, media){
+// 	if(err){
+// 		console.log(err);
+// 	}else{
+//     Course.findOne({title:"Python"}, function(err, foundCourse){
+//         if(err){
+//           console.log(err);
+//         }else{
+//           media.course=foundCourse
+//           media.save()
+//           console.log(media)
+//         }
+//       })
+//     }
+// })
+
+// Course.create({title:"WebD"}, function(err, course){
+//   if(err){
+//     console.log(err)
+//   }else{
+//     console.log("COURSE ADDED!")
+//     console.log(course);
+//   }
+// })
+
 
 
 //passport configuration
@@ -86,18 +112,19 @@ passport.use(new OutlookStrategy({
   }
 ));
 
-
-
-
+//Setup routes
 app.use("/", indexRoutes);
-app.use("/", streamRoutes);
+app.use("/courses/:id/", streamRoutes);
+app.use('/',testingRoutes);
 
-
-
-
-
-  
-
+//Error handler
+app.use((err,req,res,next)=>{
+  res.status(err.status||500)
+  res.  send(err.status?err:{"message":"Internal server error, check server log"})
+  if(!err.status){
+    console.log(err)
+  }
+})
 
 //middleware
 function isLoggedIn(req, res, next){
