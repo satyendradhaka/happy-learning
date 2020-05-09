@@ -8,8 +8,22 @@ const express             = require('express'),
       User                = require("./models/user"),
       Media               = require("./models/media"),
       methodOverride		  = require("method-override"),
+      multer              = require('multer'),
       PORT                = process.env.PORT || 3000,
       url                 = process.env.url || 'mongodb://localhost/SWC_Media'
+//multer setup
+var storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+      cb(null, './assets');
+   },
+  filename: function (req, file, cb) {
+      cb(null , file.originalname);
+  }
+});
+var upload = multer({ storage: storage })
+
+
+
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
@@ -19,8 +33,8 @@ var streamRoutes    = require("./routes/streaming"),
     adminRoutes     = require("./routes/adminRoutes");
 
 //mongoose setup
-mongoose.connect("mongodb://localhost/SWC_Media" , {useUnifiedTopology: true ,useNewUrlParser: true,useFindAndModify: false});
-// mongoose.connect("mongodb+srv://satyendra:1234@cluster0-afmf0.mongodb.net/test?retryWrites=true&w=majority" , {useUnifiedTopology: true ,useNewUrlParser: true,useFindAndModify: false});
+//mongoose.connect("mongodb://localhost/SWC_Media" , {useUnifiedTopology: true ,useNewUrlParser: true,useFindAndModify: false});
+mongoose.connect(url, {useUnifiedTopology: true ,useNewUrlParser: true,useFindAndModify: false});
 
 //adding sample video
 // Media.create({name:"sample2", path:"assets/sample2.mp4"}, function(err, media){
@@ -54,8 +68,8 @@ app.use(function(req, res, next){
 	next();
 });
 passport.use(new OutlookStrategy({
-    clientID: 'fa92e2c7-c19c-42ae-a994-990d670491ad',
-    clientSecret: 'G[z/HfAhhG77.38NjEsi-=XK8mYu7nlh',
+    clientID: process.env.clientID,
+    clientSecret: process.env.clientSecret,
     callbackURL: 'http://localhost:3000/auth/outlook/callback'
   },
   function(accessToken, refreshToken, params,profile, done) {

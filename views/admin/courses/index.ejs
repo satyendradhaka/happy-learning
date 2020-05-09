@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <title>View All Courses</title>
+</head>
+
+<body>
+    <h1>
+        All Courses Available
+    </h1>
+    <div>
+        <a href="/admin/courses/add">add a new course</a>
+    </div>
+    <div>
+        <%courses.forEach(function(course){%>
+        <p><strong>Course Title</strong>: <%=course.title%>
+            <br>
+            <strong>Total No. of videos</strong> : <%=course.videos.length%></p>
+        <br>
+        <a href="/admin/courses/<%=course._id%>/edit">Edit course</a>
+        <br>
+        <a href="/admin/courses/<%=course._id%>">View course</a>
+        <br>
+        ===============================================================
+        <%})%>
+    </div>
+    <a href="/admin">admin home page</a>
+    <br>
+    <a href="/">Home</a>
+</body>
+
+</html>
