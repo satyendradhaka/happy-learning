@@ -98,7 +98,7 @@ app.use(function(req, res, next){
 passport.use(new OutlookStrategy({
     clientID: process.env.clientID,
     clientSecret: process.env.clientSecret,
-    callbackURL: 'http://localhost:3000/auth/outlook/callback'
+    callbackURL: process.env.callbackURL
   },
   function(accessToken, refreshToken, params,profile, done) {
     User.findOne({
