@@ -3,7 +3,7 @@ let Schema= mongoose.Schema
 
 let bookmarkSchema=new Schema({
 	video:{type:mongoose.ObjectId, ref:'Media'},
-	timestamp:{type:Number},
+	timestamp:{type:String},
 	text:{type:String},
 })
 
@@ -12,7 +12,8 @@ let courseSchema=new Schema({
 	completed_videos:[{type:mongoose.ObjectId, ref:'Media'}],
 	last_view: new Schema({
 		video:{type:mongoose.ObjectId, ref:'Media'},
-		timestamp:{type:Number}
+		timestamp:{type:String}
+
 	}),
 	Bookmarks:[bookmarkSchema]
 })

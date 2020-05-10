@@ -3,26 +3,20 @@
 	<title>Video streaming with Node.js</title>
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head> 
-<body> 
-	<!-- <video id="videoPlayer" controls muted="muted" autoplay> 
-		<source src="http://localhost:3000/video/" type="video/mp4"> 
-	</video>  -->
-
-	
-		<!-- <div><a href="/video/video._id">video.name</a></div> -->
+<body>
 		<a href="/">Home</a>
 		<a href="/profile"><p><%=currentUser.name%></p></a>
 		<p><a href="#">Email</a>: <%=currentUser.email%></p>
 		<a href="/logout">Logout</a>
-		<h2><%=video.name%></h2>
+		<h2><%=video.title%></h2>
 		<video id="video" width="640" controls>
-			<source src="/video/watch/<%=video._id%>" type="video/mp4">
+			<source src="/courses/<%=course_id%>/video/watch/<%=video._id%>" type="video/mp4">
 		</video>
 		
 		<div>
 			<form id="add-bookmark-form" action="/video/<%=video._id%>/bookmarks/" method="POST" style="display: none;">
-				<input id="time" type="text" name="bookmark[time]" style="display: none;">
-				<input id="text" type="text" name="bookmark[text]" placeholder="text">
+				<input id="time" type="text" name="time" style="display: none;">
+				<input id="text" type="text" name="text" placeholder="text">
 				<button id="create">Create</button>
 			</form>
 	
@@ -44,24 +38,24 @@
 		</div>
 	
 		<div>Bookmarks</div>
-	
+
 		<ul class="list-group" id="bookmark-list">
-			<%(video.bookmarks).forEach(function(bookmark){%>
-				<li class="list-group-item"><strong><%=bookmark.time%></strong>  : <%=bookmark.text%></li>
+			<%bookmarks.forEach(function(bookmark){%>
+				<%if(bookmark.video._id.equals(video._id)){%>
+					<li class="list-group-item"><strong><%=bookmark.timestamp%></strong>  : <%=bookmark.text%></li>
+				<%}%>
+				
 			<%})%>
 		</ul>
+
 	 
 	
 		
-		<script
-		src="https://code.jquery.com/jquery-3.1.1.min.js"
-		integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-		crossorigin="anonymous"></script>
-	<!-- Bootstrap CDN -->
+	  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	
 	<script type="text/javascript">
-		var video         = document.getElementById('video'),
+		var video         =document.getElementById('video'),
 			goto          =document.getElementById("goto"),
 			forward       =document.getElementById("forward"),
 			backward      =document.getElementById("backward"),
@@ -74,35 +68,41 @@
 			create        =document.getElementById("create"),
 			bookmark      =document.getElementById("bookmark"),
 			time          =document.getElementById("time");
-		var timeStamp;
+		let timeStamp;
 	
 		$('#bookmark').click(function(){
 			$('#add-bookmark-form').toggle();
-			timestamp=Math.floor(Number(video.currentTime));
-			var min = Math.floor(timestamp / 60 );
-			var sec=timestamp%60;
+			console.log(video.currentTime)
+			//console.log(video.currentTime+20)
+			timeStamp=Math.floor(video.currentTime);
+			console.log(timeStamp)
+			var min = Math.floor(timeStamp / 60 );
+			var sec=timeStamp%60;
 			if(sec<10){
-				timestamp=min+":0"+sec;
+				timeStamp=min+":0"+sec;
 			}else{
-				timestamp=min+":"+sec;
+				timeStamp=min+":"+sec;
 			}
-			document.getElementById('time').value=timestamp;
+			// console.log(timeStamp)
+			document.getElementById('time').value=timeStamp;
+			//console.log(timeStamp)
 		})
 	
 		$('#add-bookmark-form').submit(function(e){
-		e.preventDefault();
-	
-		var bookmarkItem=$(this).serialize();
-	
-		console.log(bookmarkItem);
-	
-		$.post('/video/<%=video._id%>', bookmarkItem, function(data){
-			$('#bookmark-list').append(
-				`<li class="list-group-item"><strong>${data.time}</strong>  : ${data.text}</li>`
-			)
-		})
+			e.preventDefault();
+			$('#add-bookmark-form').toggle();
+			var bookmarkItem=$(this).serialize();
+			console.log(bookmarkItem);
 		
-		$(this).find('#text').val('');
+			$.post('/courses/<%=course_id%>/video/<%=video._id%>', bookmarkItem, function(data){
+
+				
+				$('#bookmark-list').append(
+					`<li class="list-group-item"><strong>${data.timestamp}</strong>  : ${data.text}</li>`
+				)
+			})
+			
+			$(this).find('#text').val('');
 		})
 	
 		

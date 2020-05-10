@@ -9,6 +9,7 @@ const express             = require('express'),
       Media               = require("./models/media"),
       methodOverride		  = require("method-override"),
       multer              = require('multer'),
+      Course              = require("./models/course"),
       PORT                = process.env.PORT || 3000,
       url                 = process.env.url || 'mongodb://localhost/SWC_Media'
 //multer setup
@@ -30,6 +31,7 @@ app.use(methodOverride("_method"));
 
 var streamRoutes    = require("./routes/streaming"),
     indexRoutes     = require("./routes/index"),
+    testingRoutes   =require('./routes/testing');
     adminRoutes     = require("./routes/adminRoutes");
 
 //mongoose setup
@@ -45,6 +47,32 @@ mongoose.connect(url, {useUnifiedTopology: true ,useNewUrlParser: true,useFindAn
 // 		console.log(media);
 // 	}
 // })
+
+// Media.create({title:"sample5", filePath:"assets/sample5.mp4"}, function(err, media){
+// 	if(err){
+// 		console.log(err);
+// 	}else{
+//     Course.findOne({title:"Python"}, function(err, foundCourse){
+//         if(err){
+//           console.log(err);
+//         }else{
+//           media.course=foundCourse
+//           media.save()
+//           console.log(media)
+//         }
+//       })
+//     }
+// })
+
+// Course.create({title:"WebD"}, function(err, course){
+//   if(err){
+//     console.log(err)
+//   }else{
+//     console.log("COURSE ADDED!")
+//     console.log(course);
+//   }
+// })
+
 
 
 //passport configuration
@@ -102,15 +130,11 @@ passport.use(new OutlookStrategy({
   }
 ));
 
-
-
-
+//Setup routes
 app.use("/", indexRoutes);
-app.use("/", streamRoutes);
+app.use("/courses/:id/", streamRoutes);
+app.use('/',testingRoutes);
 app.use("/admin", adminRoutes);
-
-
-
 
 //Error handler
 app.use((err,req,res,next)=>{
@@ -120,7 +144,6 @@ app.use((err,req,res,next)=>{
     console.log(err)
   }
 })
-
 
 //middleware
 function isLoggedIn(req, res, next){

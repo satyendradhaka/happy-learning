@@ -1,0 +1,13 @@
+<html>
+<head> 
+	<title>Video streaming with Node.js</title> 
+</head> 
+<body> 
+<%if(!currentUser){%>
+	<a href="/auth/outlook">Login</a>
+	<%} else{%>
+
+		<a href="/courses/<%=course._id%>/enrol">Enrol</a>
+	<%}%>
+</body> 
+</html>
