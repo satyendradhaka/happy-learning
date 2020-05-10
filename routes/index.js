@@ -27,7 +27,7 @@ router.get('/login', function(req, res){
         'openid',
         'profile',
         'offline_access',
-        'https://outlook.office.com/Mail.Read'
+        'https://outlook.office.com/User.Read'
       ]
     })
   );

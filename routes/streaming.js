@@ -3,6 +3,7 @@ var express  = require("express"),
     router   = express.Router({mergeParams: true}),
 	Media    = require("../models/media"),
 	User     = require("../models/user"),
+
     fs       = require('fs');
 
 router.get("/video/:video_id", async(req, res, next)=>{

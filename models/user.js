@@ -13,6 +13,7 @@ let courseSchema=new Schema({
 	last_view: new Schema({
 		video:{type:mongoose.ObjectId, ref:'Media'},
 		timestamp:{type:String}
+
 	}),
 	Bookmarks:[bookmarkSchema]
 })
@@ -21,7 +22,8 @@ let userSchema= new Schema({
 	outlookId: String,
     name: String,
     email: String,
-    accessToken:  String,
+	accessToken:  String,
+	isAdmin: {type: Boolean, default: false},
     enrolled_courses:[courseSchema]
 })
 

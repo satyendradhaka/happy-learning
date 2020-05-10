@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>Edit User Permission</title>
+    </head>
+    <body>
+        <h1>
+            Edit User Permission
+        </h1>
+        <form action="/admin/users/<%=user._id%>?_method=PUT" method="POST">
+            <input type="text" name="user[isAdmin]" value="<%=user.admin%>" required>
+            <button>Submit</button>
+        </form>
+    </body>
+</html>

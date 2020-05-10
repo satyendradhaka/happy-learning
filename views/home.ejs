@@ -10,6 +10,11 @@
 		<a href="/profile"><p><%=currentUser.name%></p></a>
 		<a href="/courses/all">All Courses</a>
 		<br>
+    <%if(currentUser && currentUser.isAdmin){%>
+			<p>
+				<a href="/admin">Admin Page</a>				
+			</p>
+		<%}%>
 		<a href="/logout">Logout</a>
 	<%}%>
 </body> 
