@@ -15,7 +15,7 @@
 		
 		<div>
 			<form id="add-bookmark-form" action="/video/<%=video._id%>/bookmarks/" method="POST" style="display: none;">
-				<input id="time" type="text" name="time" >
+				<input id="time" type="text" name="time" style="display: none;">
 				<input id="text" type="text" name="text" placeholder="text">
 				<button id="create">Create</button>
 			</form>
@@ -90,7 +90,7 @@
 	
 		$('#add-bookmark-form').submit(function(e){
 			e.preventDefault();
-		
+			$('#add-bookmark-form').toggle();
 			var bookmarkItem=$(this).serialize();
 			console.log(bookmarkItem);
 		
