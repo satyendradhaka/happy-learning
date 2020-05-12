@@ -24,7 +24,9 @@ let userSchema= new Schema({
     email: String,
 	accessToken:  String,
 	isAdmin: {type: Boolean, default: false},
-    enrolled_courses:[courseSchema]
+	enrolled_courses:[courseSchema],
+},{
+	versionKey: false // set to false then it wont create in mongodb
 })
 
 module.exports=mongoose.model("User", userSchema);

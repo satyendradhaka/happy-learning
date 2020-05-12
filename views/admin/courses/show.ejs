@@ -19,13 +19,11 @@
         <p>
             <strong>Videos of course :-</strong>
         </p>
-        <%course.videos.forEach(function(media){%>
+
         <p>
-            <strong>Title of Video</strong>: <%=media.title%>
-            <br>
-            <strong>Total Views</strong>: <%=media.viewcount%>
+            <strong>No. of Video</strong>: <%=course.videos.length%>
         </p>
-        <%})%>
+
         <br>
         <a href="/admin/courses/<%=course._id%>/video/add">add a new video to course</a>
     </div>

@@ -5,13 +5,15 @@ const express             = require('express'),
       OutlookStrategy     = require('passport-outlook'),
       bodyParser          = require("body-parser"),
       fs                  = require('fs'),
+      session             = require('express-session'),
+      MongoDBStore        = require('connect-mongodb-session')(session),
       User                = require("./models/user"),
       Media               = require("./models/media"),
       methodOverride		  = require("method-override"),
       multer              = require('multer'),
       Course              = require("./models/course"),
       PORT                = process.env.PORT || 3000,
-      url                 = process.env.url || 'mongodb://localhost/SWC_Media'
+      url                 = process.env.url || 'mongodb://localhost/SWC_Media';
 //multer setup
 var storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -22,7 +24,11 @@ var storage = multer.diskStorage({
   }
 });
 var upload = multer({ storage: storage })
-
+//setup for production enviroment
+var store = new MongoDBStore({
+  uri: url,
+  collection: 'mySessions'
+});
 
 
 app.use(bodyParser.urlencoded({extended:true}));
