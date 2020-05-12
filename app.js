@@ -5,8 +5,6 @@ const express             = require('express'),
       OutlookStrategy     = require('passport-outlook'),
       bodyParser          = require("body-parser"),
       fs                  = require('fs'),
-      session             = require('express-session'),
-      MongoDBStore        = require('connect-mongodb-session')(session),
       User                = require("./models/user"),
       Media               = require("./models/media"),
       methodOverride		  = require("method-override"),
@@ -24,12 +22,6 @@ var storage = multer.diskStorage({
   }
 });
 var upload = multer({ storage: storage })
-//setup for production enviroment
-var store = new MongoDBStore({
-  uri: url,
-  collection: 'mySessions'
-});
-
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine", "ejs");
