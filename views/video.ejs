@@ -42,7 +42,7 @@
 		<ul class="list-group" id="bookmark-list">
 			<%bookmarks.forEach(function(bookmark){%>
 				<%if(bookmark.video._id.equals(video._id)){%>
-					<li class="list-group-item"><strong><%=bookmark.timestamp%></strong>  : <%=bookmark.text%></li>
+					<li class="list-group-item"><span class="gotoBookmark" style="cursor: pointer;"><%=bookmark.timestamp%></span> : <%=bookmark.text%></li>
 				<%}%>
 				
 			<%})%>
@@ -56,7 +56,6 @@
 	
 	<script type="text/javascript">
 		var video         =document.getElementById('video'),
-			goto          =document.getElementById("goto"),
 			forward       =document.getElementById("forward"),
 			backward      =document.getElementById("backward"),
 			slow          =document.getElementById("slow"),
@@ -68,6 +67,7 @@
 			create        =document.getElementById("create"),
 			bookmark      =document.getElementById("bookmark"),
 			time          =document.getElementById("time");
+			//gotoBookmark  =document.getElementsByClassName("gotoBookmark");
 		let timeStamp;
 	
 		$('#bookmark').click(function(){
@@ -98,18 +98,30 @@
 
 				
 				$('#bookmark-list').append(
-					`<li class="list-group-item"><strong>${data.timestamp}</strong>  : ${data.text}</li>`
+					`<li class="list-group-item"><span class="gotoBookmark" style="cursor: pointer;">${data.timestamp}<span>  : ${data.text}</li>`
 				)
 			})
 			
 			$(this).find('#text').val('');
 		})
 	
-		
+		$(".gotoBookmark").click(function(){
+			time=$(this).text();
+			[min, sec]=time.split(":");
+			time=(60*min)+Number(sec);
+			video.currentTime=time;
+		})
 	
 		forward.onclick=function myFunction(){
 			video.currentTime=video.currentTime+10;
 		}
+
+		// function gotoBookmark(){
+		// 	var time=document.getElementsByClassName("gotoBookmark").textContent;
+		// 	console.log("Hola", time)
+		// 	//video.currentTime=video.currentTime+10;
+		// }
+
 	
 		backward.onclick=function myFunction(){
 			video.currentTime=video.currentTime-10;
