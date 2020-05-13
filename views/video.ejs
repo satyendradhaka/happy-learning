@@ -10,11 +10,11 @@
 		<a href="/logout">Logout</a>
 		<h2><%=video.title%></h2>
 		<video id="video" width="640" controls>
-			<source src="/courses/<%=course_id%>/video/watch/<%=video._id%>" type="video/mp4">
+			<source src="/courses/<%=course._id%>/video/watch/<%=video._id%>" type="video/mp4">
 		</video>
 		
 		<div>
-			<form id="add-bookmark-form" action="/video/<%=video._id%>/bookmarks/" method="POST" style="display: none;">
+			<form id="add-bookmark-form" action="/video/<%=video._id%>/" method="POST" style="display: none;">
 				<input id="time" type="text" name="time" style="display: none;">
 				<input id="text" type="text" name="text" placeholder="text">
 				<button id="create">Create</button>
@@ -42,7 +42,15 @@
 		<ul class="list-group" id="bookmark-list">
 			<%bookmarks.forEach(function(bookmark){%>
 				<%if(bookmark.video._id.equals(video._id)){%>
-					<li class="list-group-item"><span class="gotoBookmark" style="cursor: pointer;"><%=bookmark.timestamp%></span> : <%=bookmark.text%></li>
+					<li class="list-group-item">
+						<span class="gotoBookmark" style="cursor: pointer;"><%=bookmark.timestamp%></span> : <%=bookmark.text%>
+						<div class="pull-right">
+							<form style="display: inline" method="POST" action="/courses/<%=course._id%>/video/<%=video._id%>/bookmark/<%=bookmark._id%>" class="delete-item-form">
+								<button type="submit" class="btn btn-sm btn-danger">Delete</button>
+							</form>
+						</div>
+					</li>
+					
 				<%}%>
 				
 			<%})%>
@@ -94,15 +102,41 @@
 			var bookmarkItem=$(this).serialize();
 			console.log(bookmarkItem);
 		
-			$.post('/courses/<%=course_id%>/video/<%=video._id%>', bookmarkItem, function(data){
+			$.post('/courses/<%=course._id%>/video/<%=video._id%>', bookmarkItem, function(data){
 
 				
 				$('#bookmark-list').append(
-					`<li class="list-group-item"><span class="gotoBookmark" style="cursor: pointer;">${data.timestamp}<span>  : ${data.text}</li>`
+					`<li class="list-group-item">
+						<span class="gotoBookmark" style="cursor: pointer;">${data.bookmark.timestamp}<span>  : ${data.bookmark.text}
+						<div class="pull-right">
+						<form style="display: inline" method="POST" action="/courses/${data.course._id}/video/${data.video._id}/bookmark/${data.bookmark._id}" class="delete-item-form">
+							<button type="submit" class="btn btn-sm btn-danger">Delete</button>
+						</form>
+						</div>
+					</li>`
 				)
 			})
 			
 			$(this).find('#text').val('');
+		})
+
+		$('.delete-item-form').submit(function(e){
+			e.preventDefault();
+			var confirmResponse = confirm('Are you sure?');
+			if(confirmResponse) {
+				var actionUrl = $(this).attr('action');
+				var $itemToDelete = $(this).closest('.list-group-item');
+				$.ajax({
+					url: actionUrl,
+					type: 'DELETE',
+					itemToDelete: $itemToDelete,
+					success: function(data) {
+						this.itemToDelete.remove();
+					}
+				})
+			} else {
+				$(this).find('button').blur();
+			}
 		})
 	
 		$(".gotoBookmark").click(function(){
@@ -115,13 +149,6 @@
 		forward.onclick=function myFunction(){
 			video.currentTime=video.currentTime+10;
 		}
-
-		// function gotoBookmark(){
-		// 	var time=document.getElementsByClassName("gotoBookmark").textContent;
-		// 	console.log("Hola", time)
-		// 	//video.currentTime=video.currentTime+10;
-		// }
-
 	
 		backward.onclick=function myFunction(){
 			video.currentTime=video.currentTime-10;
