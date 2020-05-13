@@ -1,7 +1,20 @@
 <html>
 <head> 
 	<title>Video streaming with Node.js</title>
+	<link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css" />
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<style>
+		.container {
+			width:640px;
+			height:360px;
+			margin: 0 auto;
+		  }
+		  .plyr {
+			border-radius: 4px;
+			margin-bottom: 15px;
+			--plyr-color-main: #f5e342;
+		  }
+	</style>
 </head> 
 <body>
 		<a href="/">Home</a>
@@ -9,9 +22,19 @@
 		<p><a href="#">Email</a>: <%=currentUser.email%></p>
 		<a href="/logout">Logout</a>
 		<h2><%=video.title%></h2>
-		<video id="video" width="640" controls>
+
+		<!-- <video id="video" width="640" controls>
 			<source src="/courses/<%=course._id%>/video/watch/<%=video._id%>" type="video/mp4">
-		</video>
+		</video> -->
+
+		<div class="container">
+			<video controls crossorigin playsinline id="player">
+				<!-- Video files -->
+				<source src="/courses/<%=course._id%>/video/watch/<%=video._id%>" type="video/mp4" size="1080">
+				<!-- Fallback for browsers that don't support the <video> element -->
+							
+			</video>
+			</div>
 		
 		<div>
 			<form id="add-bookmark-form" action="/video/<%=video._id%>/" method="POST" style="display: none;">
@@ -21,20 +44,6 @@
 			</form>
 	
 				<button id="bookmark">Bookmark</button>
-		</div>
-	
-		<div>
-			<button type="button" id="backward">-10s</button>
-			<button type="button" id="forward">+10s</button>
-		</div>
-	
-		<div>
-			<button type="button" id="slow">0.5x</button>
-			<button type="button" id="littleSlow">0.75x</button>
-			<button type="button" id="normal">1x</button>
-			<button type="button" id="littleFast">1.25x</button>
-			<button type="button" id="fast">1.5x</button>
-			<button type="button" id="veryFast">2x</button>
 		</div>
 	
 		<div>Bookmarks</div>
@@ -58,26 +67,27 @@
 
 	 
 	
-		
+	  <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
 	  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	
 	<script type="text/javascript">
 		var video         =document.getElementById('video'),
-			forward       =document.getElementById("forward"),
-			backward      =document.getElementById("backward"),
-			slow          =document.getElementById("slow"),
-			littleSlow    =document.getElementById("littleSlow"),
-			normal        =document.getElementById("normal"),
-			littleFast    =document.getElementById("littleFast"),
-			fast          =document.getElementById("fast"),
-			veryFast      =document.getElementById("veryFast"),
 			create        =document.getElementById("create"),
 			bookmark      =document.getElementById("bookmark"),
 			time          =document.getElementById("time");
 			//gotoBookmark  =document.getElementsByClassName("gotoBookmark");
 		let timeStamp;
-	
+
+		document.addEventListener('DOMContentLoaded', () => { 
+			const player = new Plyr('#player');
+			window.player = player;
+			function on(selector, type, callback) {
+			  document.querySelector(selector).addEventListener(type, callback, false);
+			}
+		  });
+
+
 		$('#bookmark').click(function(){
 			$('#add-bookmark-form').toggle();
 			console.log(video.currentTime)
@@ -95,7 +105,27 @@
 			document.getElementById('time').value=timeStamp;
 			//console.log(timeStamp)
 		})
-	
+
+		$('.delete-item-form').submit(function(e){
+			e.preventDefault();
+			var confirmResponse = confirm('Are you sure?');
+			if(confirmResponse) {
+				var actionUrl = $(this).attr('action');
+				var $itemToDelete = $(this).closest('.list-group-item');
+				$.ajax({
+					url: actionUrl,
+					type: 'DELETE',
+					itemToDelete: $itemToDelete,
+					success: function(data) {
+						this.itemToDelete.remove();
+					}
+				})
+			} else {
+				$(this).find('button').blur();
+			}
+		})
+
+		
 		$('#add-bookmark-form').submit(function(e){
 			e.preventDefault();
 			$('#add-bookmark-form').toggle();
@@ -119,25 +149,6 @@
 			
 			$(this).find('#text').val('');
 		})
-
-		$('.delete-item-form').submit(function(e){
-			e.preventDefault();
-			var confirmResponse = confirm('Are you sure?');
-			if(confirmResponse) {
-				var actionUrl = $(this).attr('action');
-				var $itemToDelete = $(this).closest('.list-group-item');
-				$.ajax({
-					url: actionUrl,
-					type: 'DELETE',
-					itemToDelete: $itemToDelete,
-					success: function(data) {
-						this.itemToDelete.remove();
-					}
-				})
-			} else {
-				$(this).find('button').blur();
-			}
-		})
 	
 		$(".gotoBookmark").click(function(){
 			time=$(this).text();
@@ -145,38 +156,7 @@
 			time=(60*min)+Number(sec);
 			video.currentTime=time;
 		})
-	
-		forward.onclick=function myFunction(){
-			video.currentTime=video.currentTime+10;
-		}
-	
-		backward.onclick=function myFunction(){
-			video.currentTime=video.currentTime-10;
-		}
-	
-		slow.onclick=function setPlaySpeed() { 
-			video.playbackRate = 0.5;
-		}
-	
-		littleSlow.onclick=function setPlaySpeed() { 
-			video.playbackRate = 0.75;
-		}
-	
-		normal.onclick=function setPlaySpeed() { 
-			video.playbackRate = 1;
-		}
-	
-		littleFast.onclick=function setPlaySpeed() { 
-			video.playbackRate = 1.25;
-		}
-	
-		fast.onclick=function setPlaySpeed() { 
-			video.playbackRate = 1.5;
-		}
-	
-		veryFast.onclick=function setPlaySpeed() { 
-			video.playbackRate = 2;
-		}	
+		
 	</script>
 	
 	
