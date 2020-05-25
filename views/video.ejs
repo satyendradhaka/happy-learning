@@ -1,148 +1,169 @@
 <html>
-<head> 
+
+<head>
 	<title>Video streaming with Node.js</title>
 	<link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<style>
 		.video-player {
-			width:640px;
-			height:360px;
+			width: 640px;
+			height: 360px;
 			margin: 20px auto;
-		  }
-		  .plyr {
+		}
+
+		.plyr {
 			border-radius: 4px;
 			margin-bottom: 15px;
 			--plyr-color-main: #f5e342;
-		  }
-		  .btn-warning{
-			  background-color:#f5e342;
-			  border: none;
-		  }
-		  .btn-warning:hover{
-			background-color:#f5d742;
 		}
-		 .btn-warning:visited{
-			background-color:#f5e342;
-		 }
 
-		 .bookmark-section{
-			 width: 640px;
-		 }
-		 #text{
+		.btn-warning {
+			background-color: #f5e342;
+			border: none;
+		}
+
+		.btn-warning:hover {
+			background-color: #f5d742;
+		}
+
+		.btn-warning:visited {
+			background-color: #f5e342;
+		}
+
+		.bookmark-section {
+			width: 640px;
+		}
+
+		#text {
 			width: 40%;
-			display:inline;
-		 }
+			display: inline;
+		}
 	</style>
-</head> 
+</head>
+
 <body>
-		<a href="/">Home</a>
-		<a href="/profile"><p><%=currentUser.name%></p></a>
-		<p><a href="#">Email</a>: <%=currentUser.email%></p>
-		<a href="/logout">Logout</a>
-		<h2><%=video.title%></h2>
+	<a href="/">Home</a>
+	<a href="/profile">
+		<p><%=currentUser.name%></p>
+	</a>
+	<p><a href="#">Email</a>: <%=currentUser.email%></p>
+	<a href="/logout">Logout</a>
+	<h2><%=video.title%></h2>
 
-		<div class="container video-player">
-			<video controls crossorigin playsinline id="player">
-				<!-- Video files -->
-				<source src="/courses/<%=course._id%>/video/watch/<%=video._id%>" type="video/mp4" size="1080">
-				<!-- Fallback for browsers that don't support the <video> element -->
-							
-			</video>
-		</div>
-		
-		<br>
+	<div class="container video-player">
+		<video controls crossorigin playsinline id="player">
+			<!-- Video files -->
+			<source src="/courses/<%=course._id%>/video/watch/<%=video._id%>/720" type="video/mp4" size="720">
+			<source src="/courses/<%=course._id%>/video/watch/<%=video._id%>/480" type="video/mp4" size="480">
+			<source src="/courses/<%=course._id%>/video/watch/<%=video._id%>/360" type="video/mp4" size="360">
+			<!-- Fallback for browsers that don't support the <video> element -->
 
-		<div class="container bookmark-section">
-			<form id="add-bookmark-form" action="/video/<%=video._id%>/" method="POST" style="display: none;">
-				<input class="form-control" id="time" type="text" name="time" style="display: none;">
-				<div class="form-group ">
-					<input class="form-control" id="text" type="text" name="text" placeholder="Bookmark" required>
-					<button class="btn btn-warning pull-right" id="create">Add</button>
-				</div>
-				
-			</form>
+		</video>
+	</div>
 
-				<button type="button" id="bookmark" class="btn btn-warning"><i class="fa fa-bookmark-o" aria-hidden="true"></i></button>
-		
-	
+	<br>
+
+	<div class="container bookmark-section">
+		<form id="add-bookmark-form" action="/video/<%=video._id%>/" method="POST" style="display: none;">
+			<input class="form-control" id="time" type="text" name="time" style="display: none;">
+			<div class="form-group ">
+				<input class="form-control" id="text" type="text" name="text" placeholder="Bookmark" required>
+				<button class="btn btn-warning pull-right" id="create">Add</button>
+			</div>
+
+		</form>
+
+		<button type="button" id="bookmark" class="btn btn-warning"><i class="fa fa-bookmark-o"
+				aria-hidden="true"></i></button>
+
+
 		<br><br>
 
-		
-			<h4>Bookmarks:</h4>
-			<ul class="list-group" id="bookmark-list">
-				<%bookmarks.forEach(function(bookmark){%>
-					<%if(bookmark.video._id.equals(video._id)){%>
-						<li class="list-group-item" style="padding-bottom: 15px;">
-							<span class="gotoBookmark" style="cursor: pointer;"><strong><%=bookmark.timestamp%></strong></span> : <%=bookmark.text%>
-							<div class="pull-right">
-								<form style="display: inline" method="POST" action="/courses/<%=course._id%>/video/<%=video._id%>/bookmark/<%=bookmark._id%>" class="delete-item-form">
-									<button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button> 
-								</form>
-							</div>
-						</li>
-						
-					<%}%>
+
+		<h4>Bookmarks:</h4>
+		<ul class="list-group" id="bookmark-list">
+			<%bookmarks.forEach(function(bookmark){%>
+			<%if(bookmark.video._id.equals(video._id)){%>
+			<li class="list-group-item" style="padding-bottom: 15px;">
+				<span class="gotoBookmark" style="cursor: pointer;"><strong><%=bookmark.timestamp%></strong></span> :
+				<%=bookmark.text%>
+				<div class="pull-right">
+					<form style="display: inline" method="POST"
+						action="/courses/<%=course._id%>/video/<%=video._id%>/bookmark/<%=bookmark._id%>"
+						class="delete-item-form">
+						<button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"
+								aria-hidden="true"></i></button>
+					</form>
+				</div>
+			</li>
+
+			<%}%>
 					
 				<%})%>
-			</ul>
-		</div>
+		</ul>
+	</div>
 
 
-	 
-	
-	  <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
 
-	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	
+
+	<script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+
 	<script type="text/javascript">
-		var video         =document.getElementById('player'),
-			create        =document.getElementById("create"),
-			bookmark      =document.getElementById("bookmark"),
-			time          =document.getElementById("time");
-			//gotoBookmark  =document.getElementsByClassName("gotoBookmark");
+		var video = document.getElementById('player'),
+			create = document.getElementById("create"),
+			bookmark = document.getElementById("bookmark"),
+			time = document.getElementById("time");
+		//gotoBookmark  =document.getElementsByClassName("gotoBookmark");
 		let timeStamp;
 
-		document.addEventListener('DOMContentLoaded', () => { 
+		document.addEventListener('DOMContentLoaded', () => {
 			const player = new Plyr('#player');
 			window.player = player;
 			function on(selector, type, callback) {
-			  document.querySelector(selector).addEventListener(type, callback, false);
+				document.querySelector(selector).addEventListener(type, callback, false);
 			}
-		  });
+		});
 
 
-		$('#bookmark').click(function(){
+		$('#bookmark').click(function () {
 			$('#add-bookmark-form').toggle();
 			console.log(video.currentTime)
 			//console.log(video.currentTime+20)
-			timeStamp=Math.floor(video.currentTime);
+			timeStamp = Math.floor(video.currentTime);
 			console.log(timeStamp)
-			var min = Math.floor(timeStamp / 60 );
-			var sec=timeStamp%60;
-			if(sec<10){
-				timeStamp=min+":0"+sec;
-			}else{
-				timeStamp=min+":"+sec;
+			var min = Math.floor(timeStamp / 60);
+			var sec = timeStamp % 60;
+			if (sec < 10) {
+				timeStamp = min + ":0" + sec;
+			} else {
+				timeStamp = min + ":" + sec;
 			}
 			// console.log(timeStamp)
-			document.getElementById('time').value=timeStamp;
+			document.getElementById('time').value = timeStamp;
 			//console.log(timeStamp)
 		})
 
-		$('.delete-item-form').submit(function(e){
+		$('.delete-item-form').submit(function (e) {
 			e.preventDefault();
 			var confirmResponse = confirm('Are you sure?');
-			if(confirmResponse) {
+			if (confirmResponse) {
 				var actionUrl = $(this).attr('action');
 				var $itemToDelete = $(this).closest('.list-group-item');
 				$.ajax({
 					url: actionUrl,
 					type: 'DELETE',
 					itemToDelete: $itemToDelete,
-					success: function(data) {
+					success: function (data) {
 						this.itemToDelete.remove();
 					}
 				})
@@ -151,16 +172,16 @@
 			}
 		})
 
-		
-		$('#add-bookmark-form').submit(function(e){
+
+		$('#add-bookmark-form').submit(function (e) {
 			e.preventDefault();
 			$('#add-bookmark-form').toggle();
-			var bookmarkItem=$(this).serialize();
+			var bookmarkItem = $(this).serialize();
 			console.log(bookmarkItem);
-		
-			$.post('/courses/<%=course._id%>/video/<%=video._id%>', bookmarkItem, function(data){
 
-				
+			$.post('/courses/<%=course._id%>/video/<%=video._id%>', bookmarkItem, function (data) {
+
+
 				$('#bookmark-list').append(
 					`<li class="list-group-item">
 						<span class="gotoBookmark" style="cursor: pointer;"><strong>${data.bookmark.timestamp}</strong><span>  : ${data.bookmark.text}
@@ -172,17 +193,17 @@
 					</li>`
 				)
 
-				$(".delete-item-form").submit(function(e){
+				$(".delete-item-form").submit(function (e) {
 					e.preventDefault();
 					var confirmResponse = confirm('Are you sure?');
-					if(confirmResponse) {
+					if (confirmResponse) {
 						var actionUrl = $(this).attr('action');
 						var $itemToDelete = $(this).closest('.list-group-item');
 						$.ajax({
 							url: actionUrl,
 							type: 'DELETE',
 							itemToDelete: $itemToDelete,
-							success: function(data) {
+							success: function (data) {
 								this.itemToDelete.remove();
 							}
 						})
@@ -193,21 +214,22 @@
 			})
 
 
-			
+
 			$(this).find('#text').val('');
 		})
-	
-		$(".gotoBookmark").click(function(){
-			time=$(this).text();
-			[min, sec]=time.split(":");
-			time=(60*min)+Number(sec);
-			video.currentTime=time;
+
+		$(".gotoBookmark").click(function () {
+			time = $(this).text();
+			[min, sec] = time.split(":");
+			time = (60 * min) + Number(sec);
+			video.currentTime = time;
 		})
-		
+
 	</script>
-	
-	
 
 
-</body> 
+
+
+</body>
+
 </html>
