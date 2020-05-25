@@ -37,13 +37,21 @@ router.get("/video/:video_id", async(req, res, next)=>{
 	
 });
 
-router.get('/video/watch/:video_id',async (req,res)=>{
+router.get('/video/watch/:video_id/:resolution',async (req,res)=>{
 
 	Media.findById(req.params.video_id, function(err, foundMedia){
 		if(err){
 			console.log(err)
 		}else{
-			const path=foundMedia.filePath;
+			let path;
+			if(req.params.resolution==='360'){
+				path=foundMedia.filePath3;
+			}else if(req.params.resolution==='480'){
+				path=foundMedia.filePath2;
+			}else{
+				path=foundMedia.filePath1;
+			}
+			
 			
 			try{
 				fs.stat(path,(err,stat)=>{
