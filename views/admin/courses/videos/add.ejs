@@ -1,22 +1,32 @@
 <html>
 
 <head>
-    <title>Add new video to <%=course.title%></title>
+  <title>Add new video to <%=course.title%></title>
 </head>
 
 <body>
-    <h1>
-        Add new video to <%=course.title%>
-    </h1>
-    <form action="/admin/courses/<%=course._id%>" method="POST" enctype="multipart/form-data">
-        <label for="title">video title:</label>
-        <input type="text" name="title" placeholder="video title" required>
-        <label for="video">select video for <%=course.title%>:</label>
-        <input type="file" name="video" accept=".mp4" required>
-        <button>Submit</button>
-    </form>
-    <br>
-    <a href="/admin/courses">Go back</a>
+  <h1>
+    Add new video to <%=course.title%>
+  </h1>
+  <form action="/admin/courses/<%=course._id%>" method="POST" enctype="multipart/form-data">
+    <label for="title">video title:</label>
+    <input type="text" name="title" placeholder="video title" required />
+    <br />
+    <label for="v720">720p: </label>
+    <input name="v720" class="form-control-file" type="file" />
+    <br />
+    <label for="v480">480p: </label>
+    <input name="v480" class="form-control-file" type="file" />
+    <br />
+    <label for="v360">360p: </label>
+    <input name="v360" class="form-control-file" type="file" />
+    <br />
+    <button type="submit">Submit</button>
+  </form>
+  <br />
+  <a href="/admin/courses">Go back</a>
+
+
 </body>
 
 </html>
