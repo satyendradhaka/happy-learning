@@ -1,0 +1,25 @@
+  .btn-warning {
+    background-color: #f5e342;
+    border: none;
+  }
+
+  .btn-warning:hover {
+    background-color: #f5d742;
+  }
+
+  .btn-warning:visited {
+    background-color: #f5e342;
+  }
+
+  .bookmark-section {
+    width: 640px;
+  }
+
+  /* #text {
+    width: 40%;
+    display: inline;
+  } */
+
+  .body{
+    color:rebeccapurple;
+  }

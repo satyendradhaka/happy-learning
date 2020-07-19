@@ -1,0 +1,36 @@
+<div class="container bookmark-section">
+  <form id="add-bookmark-form" action="/video/<%=video._id%>/" method="POST" style="display: none;">
+    <input class="form-control" id="time" type="text" name="time" style="display: none;">
+    <div class="form-group ">
+      <input class="form-control" id="text" type="text" name="text" placeholder="Bookmark" required>
+      <button class="btn btn-warning pull-right" id="create">Add</button>
+    </div>
+
+  </form>
+
+  <button type="button" id="bookmark" class="btn btn-warning"><i class="fa fa-bookmark-o"
+      aria-hidden="true"></i></button>
+
+
+  <br><br>
+
+
+  <h4>Bookmarks:</h4>
+  <ul class="list-group" id="bookmark-list">
+    <%bookmarks.forEach(function(bookmark){%>
+    <%if(bookmark.video._id.equals(video._id)){%>
+    <li class="list-group-item" style="padding-bottom: 15px;">
+      <span class="gotoBookmark" style="cursor: pointer;"><strong><%=bookmark.timestamp%></strong></span> :
+      <%=bookmark.text%>
+      <div class="pull-right">
+        <form style="display: inline" method="POST"
+          action="/courses/<%=course._id%>/video/<%=video._id%>/bookmark/<%=bookmark._id%>" class="delete-item-form">
+          <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        </form>
+      </div>
+    </li>
+    <%}%>
+        
+      <%})%>
+  </ul>
+</div>
