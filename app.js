@@ -21,7 +21,7 @@ var streamRoutes = require("./routes/streaming"),
   indexRoutes = require("./routes/index"),
   testingRoutes = require("./routes/testing"),
   adminRoutes = require("./routes/adminRoutes"),
-  uploadRoute = require("./uploadRoute");
+  uploadRoute = require("./routes/uploadRoute");
 
 mongoose.connect(url, {
   useUnifiedTopology: true,
