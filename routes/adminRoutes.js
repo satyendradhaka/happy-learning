@@ -1,49 +1,14 @@
 let express = require("express");
 let router = express.Router();
-let multer = require("multer");
 let Course = require("../models/course");
 let Media = require("../models/media");
 let User = require("../models/user");
 
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./assets");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-var upload = multer({ storage: storage }).fields([
-  { name: "v720" },
-  { name: "v480" },
-  { name: "v360" },
-]);
 
 //home page route for admin
 router.get("/", isAdmin, function (req, res) {
   res.render("./admin/home");
 });
-
-//view all courses
-// router.get('/courses', isAdmin,async(req,res,next)=>{
-//     try{
-//       let courses=await Course.find()
-//       if(courses.length){
-//         res.send(courses)
-//       }
-//       else{
-//         //no courses found
-//         error={
-//           status:404,
-//           message:'No courses found'
-//         }
-//         throw error
-//       }
-//     }
-//     catch(err){
-//       next(err)
-//     }
-//   })
 
 //view all courses
 router.get("/courses", isAdmin, function (req, res) {
@@ -99,40 +64,45 @@ router.get("/courses/:id/video/add", isAdmin, function (req, res) {
     }
   });
 });
-//logic for handeling adding of new video
-router.post("/courses/:id", isAdmin, function (req, res, next) {
-  upload(req, res, function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      Course.findById(req.params.id, function (err, foundCourse) {
-        if (err) throw err;
-
-        let media = {
-          title: req.body.title,
-          filePath1: req.files["v720"][0].destination + "/" + req.files["v720"][0].originalname,
-          filePath2: req.files["v480"][0].destination + "/" + req.files["v480"][0].originalname,
-          filePath3: req.files["v360"][0].destination + "/" + req.files["v360"][0].originalname,
-        };
 
 
-        Media.create(media, function (err, newlyCreated) {
-          if (err) {
-            console.log(err);
-          } else {
-            //add course id to media
-            newlyCreated.course = req.params.id;
-            //save media
-            newlyCreated.save();
-            foundCourse.videos.push(newlyCreated);
-            foundCourse.save();
-            res.redirect("/admin/courses/" + req.params.id);
-          }
-        });
-      });
-    }
-  });
-});
+
+
+
+// //logic for handeling adding of new video
+// router.post("/courses/:id", isAdmin, function (req, res, next) {
+//   upload(req, res, function (err) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       Course.findById(req.params.id, function (err, foundCourse) {
+//         if (err) throw err;
+
+//         let media = {
+//           title: req.body.title,
+//           filePath1: req.files["v720"][0].destination + "/" + req.files["v720"][0].originalname,
+//           filePath2: req.files["v480"][0].destination + "/" + req.files["v480"][0].originalname,
+//           filePath3: req.files["v360"][0].destination + "/" + req.files["v360"][0].originalname,
+//         };
+
+
+//         Media.create(media, function (err, newlyCreated) {
+//           if (err) {
+//             console.log(err);
+//           } else {
+//             //add course id to media
+//             newlyCreated.course = req.params.id;
+//             //save media
+//             newlyCreated.save();
+//             foundCourse.videos.push(newlyCreated);
+//             foundCourse.save();
+//             res.redirect("/admin/courses/" + req.params.id);
+//           }
+//         });
+//       });
+//     }
+//   });
+// });
 
 //edit course
 //route for edit course form

@@ -11,46 +11,23 @@ const express = require("express"),
   Course = require("./models/course"),
   PORT = process.env.PORT || 3000,
   url = "mongodb://localhost/SWC_Media";
-//url                 = keys.mongodb.url || 'mongodb://localhost/SWC_Media';
+//url = keys.mongodb.url || 'mongodb://localhost/SWC_Media';
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
-
+app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/assets"));
 var streamRoutes = require("./routes/streaming"),
   indexRoutes = require("./routes/index"),
-  testingRoutes = require("./routes/testing");
-adminRoutes = require("./routes/adminRoutes");
+  testingRoutes = require("./routes/testing"),
+  adminRoutes = require("./routes/adminRoutes"),
+  uploadRoute = require("./uploadRoute");
 
 mongoose.connect(url, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   useFindAndModify: false,
 });
-
-// Media.create({title:"2", filePath1:"assets/2_720.mp4", filePath2:"assets/2_480.mp4", filePath3:"assets/2_360.mp4"}, function(err, media){
-// 	if(err){
-// 		console.log(err);
-// 	}else{
-//     Course.findOne({title:"HTML"}, function(err, foundCourse){
-//         if(err){
-//           console.log(err);
-//         }else{
-//           media.course=foundCourse
-//           media.save()
-//           console.log(media)
-//         }
-//       })
-//     }
-// })
-
-// Course.create({title:"HTML"}, function(err, course){
-//   if(err){
-//     console.log(err)
-//   }else{
-//     console.log("COURSE ADDED!")
-//     console.log(course);
-//   }
-// })
 
 //passport configuration
 const session = require('express-session');
@@ -126,6 +103,7 @@ app.use("/", indexRoutes);
 app.use("/courses/:id/", streamRoutes);
 app.use("/", testingRoutes);
 app.use("/admin", adminRoutes);
+app.use("/admin", uploadRoute);
 
 //Error handler
 app.use((err, req, res, next) => {
@@ -137,22 +115,6 @@ app.use((err, req, res, next) => {
     console.log(err);
   }
 });
-
-//middleware
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect("/login");
-}
-function isAdmin(req, res, next) {
-  if (req.isAuthenticated()) {
-    if (req.user.isAdmin) {
-      return next();
-    }
-  }
-  res.redirect("/");
-}
 
 app.listen(PORT, function () {
   console.log("SWC Media server has started");
