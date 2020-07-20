@@ -24,7 +24,7 @@ ffmpeg.setFfprobePath(dirname.dirpath + "/ffmpeg/bin/ffprobe.exe");
 router.post("/courses/:id", isAdmin, (req, res) => {
   // console.log(course.title);
   req.files.video.mv(
-    __dirname + "/assets/videos/" + req.files.video.name,
+    dirname.dirpath + "/assets/videos/" + req.files.video.name,
     (err) => {
       if (err) return err;
 
@@ -42,10 +42,10 @@ router.post("/courses/:id", isAdmin, (req, res) => {
     req.files.video.name.split(".").slice(0, -1).join(".") + "-" + Date.now();
   const fn = req.files.video.name;
   const name = path.basename(fn, path.extname(fn));
-  const targetdir = path.join(__dirname, "/assets/mpd/", fileName);
+  const targetdir = path.join(dirname.dirpath, "/assets/mpd/", fileName);
 
   const sourcefn = path.join(
-    __dirname,
+    dirname.dirpath,
     "/assets/videos/",
     req.files.video.name
   );
