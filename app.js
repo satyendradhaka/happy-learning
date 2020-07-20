@@ -53,8 +53,13 @@ mongoose.connect(url, {
 // })
 
 //passport configuration
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
+
+
 app.use(
-  require("express-session")({
+  session({
     secret: "once again pkmb",
     resave: false,
     saveUninitialized: false,
