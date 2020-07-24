@@ -40,6 +40,8 @@ app.use(
     secret: "once again pkmb",
     resave: false,
     saveUninitialized: false,
+    store: new MongoStore({mongooseConnection:mongoose.connection}),
+    cookie:{ mageAge:180*60*1000}
   })
 );
 app.use(passport.initialize());
@@ -54,6 +56,7 @@ passport.deserializeUser(function (id, done) {
 });
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
+  res.locals.session=req.session;
   next();
 });
 passport.use(
