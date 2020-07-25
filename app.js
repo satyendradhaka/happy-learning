@@ -1,27 +1,24 @@
-const express = require("express"),
-  app = express(),
-  passport = require("passport"),
-  mongoose = require("mongoose"),
-  OutlookStrategy = require("passport-outlook"),
-  bodyParser = require("body-parser"),
-  keys = require("./keys"),
-  User = require("./models/user"),
-  Media = require("./models/media"),
-  methodOverride = require("method-override"),
-  Course = require("./models/course"),
-  PORT = process.env.PORT || 3000,
-  url = "mongodb://localhost/SWC_Media";
-//url = keys.mongodb.url || 'mongodb://localhost/SWC_Media';
-app.use(bodyParser.urlencoded({ extended: true }));
-app.set("view engine", "ejs");
-app.use(methodOverride("_method"));
-app.use(express.static(__dirname + "/public"));
-app.use(express.static(__dirname + "/assets"));
-var streamRoutes = require("./routes/streaming"),
-  indexRoutes = require("./routes/index"),
-  testingRoutes = require("./routes/testing"),
-  adminRoutes = require("./routes/adminRoutes"),
-  uploadRoute = require("./routes/uploadRoute");
+const express = require("express");
+const app = express();
+const passport = require("passport");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const keys = require("./config/keys");
+const methodOverride = require("method-override");
+const PORT = process.env.PORT || 3000;
+const url = keys.mongodb.url || 'mongodb://localhost/SWC_Media';
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
+//Requiring Routes
+const streamRoutes = require("./routes/streaming");
+const indexRoutes = require("./routes/index");
+const testingRoutes = require("./routes/testing");
+const adminRoutes = require("./routes/adminRoutes");
+const uploadRoute = require("./routes/uploadRoute");
+
+//Requiring passport-setup
+require("./config/passport-outlook-setup")(passport);
 
 mongoose.connect(url, {
   useUnifiedTopology: true,
@@ -29,77 +26,34 @@ mongoose.connect(url, {
   useFindAndModify: false,
 });
 
-//passport configuration
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
 
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
+app.use(methodOverride("_method"));
+app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/assets"));
 
 app.use(
   session({
-    secret: "once again pkmb",
+    secret: "once again pkmkb & ckmkb",
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore({mongooseConnection:mongoose.connection}),
-    cookie:{ mageAge:180*60*1000}
+    store: new MongoStore({ mongooseConnection: mongoose.connection },
+    ),
+    cookie: { maxAge: 180 * 60 * 1000 }
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
-passport.serializeUser(function (user, done) {
-  done(null, user.id);
-});
-passport.deserializeUser(function (id, done) {
-  User.findById(id, function (err, user) {
-    done(err, user);
-  });
-});
+
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
-  res.locals.session=req.session;
+  res.locals.session = req.session;
   next();
 });
-passport.use(
-  new OutlookStrategy(
-    {
-      clientID: keys.outlook.clientID,
-      clientSecret: keys.outlook.clientSecret,
-      //callbackURL: process.env.callbackURL
-      callbackURL: "/auth/outlook/callback",
-    },
-    function (accessToken, refreshToken, params, profile, done) {
-      User.findOne(
-        {
-          outlookId: profile.id,
-        },
-        function (err, user) {
-          if (err) {
-            done(err);
-          }
-          //if no user was found then create one
-          if (!user) {
-            var str = profile._json.EmailAddress;
-            var n = str.search("@iitg.ac.in");
-            if (n != -1) {
-              user = new User({
-                outlookId: profile._json.Id,
-                name: profile._json.DisplayName,
-                email: profile._json.EmailAddress,
-                accessToken: accessToken,
-              });
-              user.save(function (err) {
-                if (err) console.log(err);
-                return done(err, user);
-              });
-            }
-          } else {
-            return done(err, user);
-          }
-        }
-      );
-    }
-  )
-);
+
 
 //Setup routes
 app.use("/", indexRoutes);
