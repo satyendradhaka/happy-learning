@@ -38,8 +38,9 @@ router.post("/courses/:id", isAdmin, (req, res) => {
     [720, 2500],
   ];
   const fallback = [480, 400];
-  const fileName =
+  let fileName =
     req.files.video.name.split(".").slice(0, -1).join(".") + "-" + Date.now();
+  fileName = fileName.replace(/\s+/g, '')
   const fn = req.files.video.name;
   const name = path.basename(fn, path.extname(fn));
   const targetdir = path.join(dirname.dirpath, "/assets/mpd/", fileName);
