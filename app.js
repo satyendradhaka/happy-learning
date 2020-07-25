@@ -11,7 +11,7 @@ const MongoStore = require('connect-mongo')(session);
 const enforce = require('express-sslify');
 
 //enforce https
-app.use(enforce.HTTPS({ trustProtoHeader: true }))
+app.use(enforce.HTTPS({ trustAzureHeader: true  }))
 
 //Requiring Routes
 const streamRoutes = require("./routes/streaming");
