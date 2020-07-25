@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const keys = require("./config/keys");
 const methodOverride = require("method-override");
 const PORT = process.env.PORT || 3000;
-const url = keys.mongodb.url || 'mongodb://localhost/SWC_Media';
+const url = process.env.url || 'mongodb://localhost/SWC_Media';
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 

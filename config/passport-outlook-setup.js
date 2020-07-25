@@ -6,8 +6,8 @@ module.exports = (passport) => {
     passport.use(
         new OutlookStrategy(
             {
-                clientID: keys.outlook.clientID,
-                clientSecret: keys.outlook.clientSecret,
+                clientID: process.env.clientID,
+                clientSecret: process.env.clientSecret,
                 callbackURL: "/auth/outlook/callback",
             },
             function (accessToken, refreshToken, params, profile, done) {
