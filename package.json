@@ -9,6 +9,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.1.7-alpha.3",
     "express-session": "^1.17.1",
+    "express-sslify": "^1.2.0",
     "fluent-ffmpeg": "^2.1.2",
     "fs": "0.0.1-security",
     "method-override": "^3.0.0",
