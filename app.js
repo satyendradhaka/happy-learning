@@ -3,7 +3,6 @@ const app = express();
 const passport = require("passport");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const keys = require("./config/keys");
 const methodOverride = require("method-override");
 const PORT = process.env.PORT || 3000;
 const url = process.env.url || 'mongodb://localhost/SWC_Media';
