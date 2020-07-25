@@ -1,6 +1,5 @@
 const OutlookStrategy = require("passport-outlook")
 const User = require("../models/user");
-const keys = require("./keys");
 
 module.exports = (passport) => {
     passport.use(
