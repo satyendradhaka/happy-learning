@@ -8,6 +8,11 @@ const PORT = process.env.PORT || 3000;
 const url = process.env.url || 'mongodb://localhost/SWC_Media';
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const enforce = require('express-sslify');
+
+//enforce https
+app.use(enforce.HTTPS());
+
 
 //Requiring Routes
 const streamRoutes = require("./routes/streaming");
