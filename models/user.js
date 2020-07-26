@@ -1,6 +1,6 @@
 var mongoose=require("mongoose");
 let Schema= mongoose.Schema
-
+const passportLocalMongoose = require("passport-local-mongoose");
 let bookmarkSchema=new Schema({
 	video:{type:mongoose.ObjectId, ref:'Media'},
 	timestamp:{type:String},
@@ -20,13 +20,23 @@ let courseSchema=new Schema({
 
 let userSchema= new Schema({
 	outlookId: String,
-    name: String,
-    email: String,
-	accessToken:  String,
+    username: String,
+	password:  String,
 	isAdmin: {type: Boolean, default: false},
+	isverified:{type: Boolean, default: false},
 	enrolled_courses:[courseSchema],
 },{
 	versionKey: false // set to false then it wont create in mongodb
 })
 
+// userSchema.methods.validPassword = function (password) {
+// 	console.log(password)
+// 	console.log(this.password)
+// 	if (password === this.password) {
+// 	  return true; 
+// 	} else {
+// 	  return false;
+// 	}
+//   }
+  userSchema.plugin(passportLocalMongoose);
 module.exports=mongoose.model("User", userSchema);

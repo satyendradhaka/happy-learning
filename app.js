@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const User = require("./models/user")
+const OTP = require("./models/OTP")
 const passport = require("passport");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -8,10 +10,10 @@ const PORT = process.env.PORT || 3000;
 const url = process.env.url || 'mongodb://localhost/SWC_Media';
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-const enforce = require('express-sslify');
-
-//enforce https
-app.use(enforce.HTTPS({ trustProtoHeader: true }))
+const nodemailer = require('nodemailer');
+const otpGenerator = require('otp-generator');
+const LocalStrategy 		  = require("passport-local");
+const passportLocalMongoose = require("passport-local-mongoose");
 //Requiring Routes
 const streamRoutes = require("./routes/streaming");
 const indexRoutes = require("./routes/index");
@@ -19,9 +21,7 @@ const testingRoutes = require("./routes/testing");
 const adminRoutes = require("./routes/adminRoutes");
 const uploadRoute = require("./routes/uploadRoute");
 
-//Requiring passport-setup
-require("./config/passport-outlook-setup")(passport);
-
+//mongoose setup
 mongoose.connect(url, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
@@ -49,6 +49,32 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+passport.use(new LocalStrategy(
+  {usernameField: 'outlookId'},
+  function(username, password, done) {
+      console.log(username)
+      User.findOne({ outlookId: username }, function (err, user) {
+        console.log(user)
+          if (err) { return done(err); }
+          if (!user.isverified) {
+              console.log("verify email addd")
+          return done(null, false, { message: 'validate your email address' });
+          }
+          console.log("passed verification")
+          console.log(user.password)
+          // if (user.password != password) {
+          //   console.log("incorrect")
+          // return done(null, false, { message: 'Incorrect password or username' });
+          // }
+          user.authenticate()
+          console.log("success")
+          return done(null, user);
+      });
+  }
+));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
