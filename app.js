@@ -50,29 +50,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new LocalStrategy(
-  {usernameField: 'outlookId'},
-  function(username, password, done) {
-      console.log(username)
-      User.findOne({ outlookId: username }, function (err, user) {
-        console.log(user)
-          if (err) { return done(err); }
-          if (!user.isverified) {
-              console.log("verify email addd")
-          return done(null, false, { message: 'validate your email address' });
-          }
-          console.log("passed verification")
-          console.log(user.password)
-          // if (user.password != password) {
-          //   console.log("incorrect")
-          // return done(null, false, { message: 'Incorrect password or username' });
-          // }
-          user.authenticate()
-          console.log("success")
-          return done(null, user);
-      });
-  }
-));
+passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 

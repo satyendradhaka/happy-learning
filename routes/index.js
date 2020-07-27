@@ -26,11 +26,11 @@ router.get("/register", function (req, res){
 });
 
 router.post("/register", function (req, res){
-  if(!req.body.outlookId.includes("@iitg.ac.in")){
+  if(!req.body.username.includes("@iitg.ac.in")){
     console.log("enter your outlook id")
-    res.redirect("/register")
+    return res.redirect("/register")
   }
-  var newUser = new User({outlookId: req.body.outlookId, username: req.body.username})
+  var newUser = new User({username: req.body.username, name: req.body.name})
   User.register(newUser, req.body.password, function(err, user){
     if(err){
         console.log(err)
@@ -51,7 +51,7 @@ router.post("/register", function (req, res){
           pass:process.env.GmailPassword,
         }
       });
-     var mailOptions = { from: process.env.GmailUser, to: user.outlookId, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by entering the token: \n' + otp.OTP + '\n' };
+     var mailOptions = { from: process.env.GmailUser, to: user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by entering the token: \n' + otp.OTP + '\n' };
     transporter.sendMail(mailOptions, function (err) {
         if (err) { return res.status(500).send({ msg: err.message }); }
         res.redirect('/otp')
@@ -102,9 +102,15 @@ router.get('/login', function(req, res){
   //login route
   router.post("/login", passport.authenticate("local",
   {
-    successRedirect:"/",
     failureRedirect:'/login'
   }), function (req, res){
+    console.log(req.user)
+    if(req.user.isverified){
+      res.redirect('/')
+    }
+    else {
+            res.send("verify your outlook id")
+        }
 });
   //logout route
   router.get('/logout', function(req, res){

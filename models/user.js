@@ -19,8 +19,8 @@ let courseSchema=new Schema({
 })
 
 let userSchema= new Schema({
-	outlookId: String,
-    username: String,
+	username: String,
+    name: String,
 	password:  String,
 	isAdmin: {type: Boolean, default: false},
 	isverified:{type: Boolean, default: false},
