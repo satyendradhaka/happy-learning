@@ -4,7 +4,8 @@
 </head> 
 <body> 
 <%if(!currentUser){%>
-	<a href="/auth/outlook">Login</a>
+	<a href="/login">Login</a>
+	<a href="/register">register</a>
 	<%} else{%>
 		<p><a href="/profile">View profile</a></p>
 		<a href="/profile"><p><%=currentUser.name%></p></a>
