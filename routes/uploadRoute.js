@@ -5,6 +5,9 @@ const path = require("path");
 const ffmpeg = require("fluent-ffmpeg");
 const multer = require("multer");
 const fs = require("fs");
+var pathToFfmpeg = require('ffmpeg-static');
+
+console.log(pathToFfmpeg);
 
 let Course = require("../models/course");
 let Media = require("../models/media");
@@ -29,8 +32,8 @@ var upload = multer({ storage: storage }).fields([
 
 
 
-ffmpeg.setFfmpegPath(dirname.dirpath + "/ffmpeg/bin/ffmpeg.exe");
-ffmpeg.setFfprobePath(dirname.dirpath + "/ffmpeg/bin/ffprobe.exe");
+ffmpeg.setFfmpegPath(pathToFfmpeg);
+//ffmpeg.setFfprobePath(dirname.dirpath + "/ffmpeg/bin/ffprobe.exe");
 
 console.log(dirname.dirpath + "/ffmpeg/bin/ffmpeg.exe");
 
