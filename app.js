@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 app.use(express.static(__dirname + "/public"));
-app.use(express.static(__dirname + "/uploads"));
+app.use(express.static(__dirname + "/assets"));
 
 app.use(
   session({
