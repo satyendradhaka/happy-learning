@@ -32,6 +32,8 @@ var upload = multer({ storage: storage }).fields([
 ffmpeg.setFfmpegPath(dirname.dirpath + "/ffmpeg/bin/ffmpeg.exe");
 ffmpeg.setFfprobePath(dirname.dirpath + "/ffmpeg/bin/ffprobe.exe");
 
+console.log(dirname.dirpath + "/ffmpeg/bin/ffmpeg.exe");
+
 router.post("/courses/:id", isAdmin, (req, res) => {
   // console.log(course.title);
 
