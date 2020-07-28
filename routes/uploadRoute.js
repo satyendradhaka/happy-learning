@@ -13,7 +13,7 @@ let Media = require("../models/media");
 router.use(
   fileUpload({
     useTempFiles: true,
-    tempFileDir: "/assets/videos/",
+    tempFileDir: "/uploads/videos/",
   })
 );
 
@@ -24,7 +24,7 @@ ffmpeg.setFfprobePath(dirname.dirpath + "/ffmpeg/bin/ffprobe.exe");
 router.post("/courses/:id", isAdmin, (req, res) => {
   // console.log(course.title);
   req.files.video.mv(
-    dirname.dirpath + "/assets/videos/" + req.files.video.name,
+    dirname.dirpath + "/uploads/videos/" + req.files.video.name,
     (err) => {
       if (err) return err;
 
@@ -38,16 +38,15 @@ router.post("/courses/:id", isAdmin, (req, res) => {
     [720, 2500],
   ];
   const fallback = [480, 400];
-  let fileName =
+  const fileName =
     req.files.video.name.split(".").slice(0, -1).join(".") + "-" + Date.now();
-  fileName = fileName.replace(/\s+/g, '')
   const fn = req.files.video.name;
   const name = path.basename(fn, path.extname(fn));
-  const targetdir = path.join(dirname.dirpath, "/assets/mpd/", fileName);
+  const targetdir = path.join(dirname.dirpath, "/uploads/mpd/", fileName);
 
   const sourcefn = path.join(
     dirname.dirpath,
-    "/assets/videos/",
+    "/uploads/videos/",
     req.files.video.name
   );
 
