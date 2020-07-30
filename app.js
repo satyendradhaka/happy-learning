@@ -11,7 +11,6 @@ const url = process.env.url || 'mongodb://localhost/SWC_Media';
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const nodemailer = require('nodemailer');
-const otpGenerator = require('otp-generator');
 const LocalStrategy 		  = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 //Requiring Routes
