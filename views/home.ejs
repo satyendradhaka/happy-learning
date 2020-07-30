@@ -1,22 +1,63 @@
 <html>
 <head> 
 	<title>Video streaming with Node.js</title> 
+	<!-- CSS only -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<style>
+	#hp{
+		margin:20% 2% 5% 0px;
+		vertical-align: right;
+	}
+</style>
 </head> 
-<body> 
-<%if(!currentUser){%>
-	<a href="/login">Login</a>
-	<a href="/register">register</a>
-	<%} else{%>
-		<p><a href="/profile">View profile</a></p>
-		<a href="/profile"><p><%=currentUser.name%></p></a>
-		<a href="/courses/all">All Courses</a>
-		<br>
-    <%if(currentUser && currentUser.isAdmin){%>
-			<p>
-				<a href="/admin">Admin Page</a>				
-			</p>
-		<%}%>
-		<a href="/logout">Logout</a>
-	<%}%>
+<body style="background-color: rgba(255,224,49,1);"> 
+
+<nav class="navbar navbar-expand-lg navbar-light">
+<div class="container">
+
+<ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/" style="margin-left: 6%;"><strong>HOME</strong> <span class="sr-only">(current)</span></a>
+      </li>
+  </ul>
+    <a class="btn btn-outline-dark btn-md" href="/login" role="button" style="margin:9px;"><strong>Sign in</strong></a>
+    <a class="btn btn-outline-dark btn-md" href="/register" role="button" style="margin:9px;"><strong>Sign up</strong></a>
+    
+</div>
+</nav>
+
+<div class="container">
+	<!--<div class="jumbotron bg-transparent">-->
+
+
+
+	<div class="col-md-6">
+	<h1 style="margin-top:8%;"><strong>./SWC /COURSES</strong></h1>
+</div>
+<!--<div class="row m-0">-->
+	<div class="col-lg-6 p-0">
+  <p class="text" style="margin: 20% 8px 0px 20px;font-size:20px;">A simple and sweet learning platform, build for the campus. Access to various premium online courses and learning material covering skills from base to advanced. Collaborate with peers and experts.</p>
+<!--<form class="form-inline" >
+            <input class="form-control mr-sm-2 col-lg-6 rounded-pill " type="search" placeholder="find courses" aria-label="Search">
+            <i class="fa fa-search" role="button"></i>
+        </form>-->
+<!--</div>-->
+</div>
+  <hr class="my-4">
+<!--<img src ="/images/Group_629.png" width=500 height=600 alt="hey"  id="hp"/>-->
+  <!--<object data="Group_629.svg" type="image/svg+xml">-->
+<!--</object>-->
+  
+  
+
+<!--</div>-->
+
+<!--<img src ="/images/Group_629.svg" alt="hey" height=200 width=50/>-->
+
+
+
+	
+	
 </body> 
 </html>
