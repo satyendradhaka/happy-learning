@@ -19,9 +19,11 @@ let courseSchema=new Schema({
 })
 
 let userSchema= new Schema({
-	username: String,
+	username: {type: String, unique: true},
     name: String,
 	password:  String,
+	passwordResetToken: String,
+	passwordResetExpires: Date,
 	isAdmin: {type: Boolean, default: false},
 	isverified:{type: Boolean, default: false},
 	enrolled_courses:[courseSchema],

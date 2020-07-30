@@ -1,11 +1,13 @@
+const user = require("../models/user");
+
 var express  = require("express"),
     router   = express.Router(),
     Media    = require("../models/media"),
     User = require("../models/user"),
-    OTP = require("../models/OTP"),
+    Token = require("../models/token"),
     fs       = require('fs'),
     nodemailer = require('nodemailer'),
-    otpGenerator = require('otp-generator'),
+    crypto = require('crypto'),
     passport = require('passport');
 
 router.get('/profile', isLoggedIn,function(req, res){
@@ -36,8 +38,8 @@ router.post("/register", function (req, res){
         console.log(err)
         res.redirect('/register');
     }
-    var otp = new OTP({ _userId: user._id, OTP: otpGenerator.generate(6, { alphabets: false, specialChars: false }) });
-    otp.save(function(err){
+    var token = new Token({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') });
+    token.save(function(err){
         if(err){
             console.log(err)
             return res.send("token not saved")
@@ -47,29 +49,25 @@ router.post("/register", function (req, res){
         service: 'gmail',
         host: 'smtp.gmail.com',
         auth: {
-          user: process.env.GmailUser,
-          pass:process.env.GmailPassword,
+          user: process.env.GmailUser ,
+          pass:process.env.GmailPassword ,
         }
       });
-     var mailOptions = { from: process.env.GmailUser, to: user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by entering the token: \n' + otp.OTP + '\n' };
+     var mailOptions = { from: process.env.GmailUser , to: user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n'};
     transporter.sendMail(mailOptions, function (err) {
         if (err) { return res.status(500).send({ msg: err.message }); }
-        res.redirect('/otp')
+        res.send("an email has been sent to verify your email address")
     });
 })
 })
 
-router.get('/otp', function (req, res){
-  res.render('otp')
-})
-
-router.post('/confirmation', function (req, res){
-  OTP.findOne({OTP: req.body.otp}, function (err, otp){
-    if(!otp){
-        console.log("otp not found")
-        res.send("not verified otp expired or incorrect otp")
+router.get('/register/confirmation/:id', function (req, res){
+  Token.findOne({token: req.params.id}, function (err, token){
+    if(!token){
+        console.log("token not found")
+        res.send("not verified, token expired or incorrect token")
     }
-    User.findOne({_id: otp._userId}, function (err, user){
+    User.findOne({_id: token._userId}, function (err, user){
         if(!user){
             console.log("user not found for this token")
             res.redirect("/register")
@@ -80,6 +78,7 @@ router.post('/confirmation', function (req, res){
         }
 
         user.isverified = true
+        Token.deleteOne({token: req.body.token})
         user.save(function(err){
             if(err){
                 console.log(err)
@@ -104,12 +103,12 @@ router.get('/login', function(req, res){
   {
     failureRedirect:'/login'
   }), function (req, res){
-    console.log(req.user)
     if(req.user.isverified){
       res.redirect('/')
     }
     else {
-            res.send("verify your outlook id")
+            console.log("inside not verified")
+            res.redirect('/register/resetToken')
         }
 });
   //logout route
@@ -120,6 +119,34 @@ router.get('/login', function(req, res){
       });
     });
  
+
+router.get("/register/resetToken",function (req, res){
+  if(!req.isAuthenticated()){
+    res.redirect('/login')
+  }
+  var token = new Token({ _userId: req.user._id, token: crypto.randomBytes(16).toString('hex') });
+    token.save(function(err){
+        if(err){
+            console.log(err)
+            return res.send("token not saved")
+        }
+    });
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      host: 'smtp.gmail.com',
+      auth: {
+        user: process.env.GmailUser ,
+        pass:process.env.GmailPassword ,
+      }
+    });
+    var mailOptions = { from: process.env.GmailUser , to: req.user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n'};
+    transporter.sendMail(mailOptions, function (err) {
+        if (err) { return res.status(500).send({ msg: err.message }); }
+        res.send("an email has been sent to verify your email address")
+    });
+
+})
+
 //middleware
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
