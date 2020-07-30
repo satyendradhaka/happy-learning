@@ -176,7 +176,7 @@ router.post("/login/forgot", function (req, res){
     var mailOptions = { from: process.env.GmailUser , to: user.username, subject: 'Password reset request for your account on happylearning', text: 'Hello,\n\n' + 'Please reset your account password by clicking the link: \nhttp:\/\/' + req.headers.host + '\/login\/forgot\/confirmation\/' + user.passwordResetToken + '.\n'};
     transporter.sendMail(mailOptions, function (err) {
         if (err) { return res.status(500).send({ msg: err.message }); }
-        res.send("an email has been sent to your registered email address with further instructions")
+        res.send("an email has been sent to your registered email address with further instructions, please check your junk folder also")
     });
   })
 })
