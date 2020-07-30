@@ -24,6 +24,16 @@ async function init() {
   } catch (error) {
     onPlayerError(error);
   }
+
+  const config = {
+    'seekBarColors': {
+      base: 'rgba(255, 255, 255, 0.3)',
+      buffered: 'rgba(245, 215, 66, 0.54)',
+      played: 'rgb(245, 215, 66)',
+    }
+  }
+
+  ui.configure(config);
 }
 
 function onPlayerErrorEvent(errorEvent) {
@@ -45,6 +55,8 @@ function initFailed() {
   // Handle the failure to load
   console.error("Unable to load the UI library!");
 }
+
+
 
 // Listen to the custom shaka-ui-loaded event, to wait until the UI is loaded.
 document.addEventListener("shaka-ui-loaded", init);
