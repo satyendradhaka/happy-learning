@@ -19,10 +19,7 @@ A learning platform for the campus, access to courses scraped by SWC, Blogs, Kee
    - *Frameworks* : NodeJs, HTML , CSS , JavaScript
    - *email* : ritvika@iitg.ac.in
 
-* [Shital Nandan](https://github.com/Shital102)
-   - *Frameworks* : NodeJs, HTML , CSS , JavaScript, django
-   - *email* : shital@iitg.ac.in
-   
+
 - add a directory named assets
 - add two sub directories mpd and videos
 - make sure you have ffmpeg folder with ffmpeg files
