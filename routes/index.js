@@ -20,12 +20,6 @@ router.get('/', function(req, res){
 
 //auth routes
 //register routes
-router.get("/register", function (req, res){
-  if(req.isAuthenticated()){
-    res.redirect("/")
-  }
-  res.render("register")
-});
 
 router.post("/register", function (req, res){
   if(!req.body.username.includes("@iitg.ac.in")){

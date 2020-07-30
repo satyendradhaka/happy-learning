@@ -5,10 +5,16 @@
 <body> 
 <%if(!currentUser){%>
 	<a href="/login">Login</a>
-	<a href="/register">register</a>
+	<h3>register</h3>
+<form action="/register" method="post">
+    <input type="text" placeholder="name" 	name="name">
+    <input type="email" placeholder="official iitg email"   name="username">
+    <input type="password" placeholder="password" name="password" minlength="8">
+    <input type="submit" value="sign up">
+</form>
 	<%} else{%>
 		<p><a href="/profile">View profile</a></p>
-		<a href="/profile"><p><%=currentUser.name%></p></a>
+		<a href="#"><p><%=currentUser.name%></p></a>
 		<a href="/courses/all">All Courses</a>
 		<br>
     <%if(currentUser && currentUser.isAdmin){%>
