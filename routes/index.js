@@ -49,11 +49,11 @@ router.post("/register", function (req, res){
         service: 'gmail',
         host: 'smtp.gmail.com',
         auth: {
-          user: process.env.GmailUser || "happylearning151@gmail.com" ,
-          pass:process.env.GmailPassword || "swciitg123" ,
+          user: process.env.GmailUser ,
+          pass:process.env.GmailPassword  ,
         }
       });
-     var mailOptions = { from: process.env.GmailUser || "happylearning151@gmail.com" , to: user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n'};
+     var mailOptions = { from: process.env.GmailUser , to: user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n'};
     transporter.sendMail(mailOptions, function (err) {
         if (err) { return res.status(500).send({ msg: err.message }); }
         res.send("an email has been sent to verify your email address")
@@ -135,11 +135,11 @@ router.get("/register/resetToken",function (req, res){
       service: 'gmail',
       host: 'smtp.gmail.com',
       auth: {
-        user: process.env.GmailUser || "happylearning151@gmail.com" ,
-        pass:process.env.GmailPassword || "swciitg123" ,
+        user: process.env.GmailUser ,
+        pass:process.env.GmailPassword  ,
       }
     });
-    var mailOptions = { from: process.env.GmailUser || "happylearning151@gmail.com" , to: req.user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n'};
+    var mailOptions = { from: process.env.GmailUser , to: req.user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n'};
     transporter.sendMail(mailOptions, function (err) {
         if (err) { return res.status(500).send({ msg: err.message }); }
         res.send("an email has been sent to verify your email address")
@@ -169,11 +169,11 @@ router.post("/login/forgot", function (req, res){
       service: 'gmail',
       host: 'smtp.gmail.com',
       auth: {
-        user: process.env.GmailUser || "happylearning151@gmail.com" ,
-        pass:process.env.GmailPassword || "swciitg123" ,
+        user: process.env.GmailUser ,
+        pass:process.env.GmailPassword  ,
       }
     });
-    var mailOptions = { from: process.env.GmailUser || "happylearning151@gmail.com" , to: user.username, subject: 'Password reset request for your account on happylearning', text: 'Hello,\n\n' + 'Please reset your account password by clicking the link: \nhttp:\/\/' + req.headers.host + '\/login\/forgot\/confirmation\/' + user.passwordResetToken + '.\n'};
+    var mailOptions = { from: process.env.GmailUser , to: user.username, subject: 'Password reset request for your account on happylearning', text: 'Hello,\n\n' + 'Please reset your account password by clicking the link: \nhttp:\/\/' + req.headers.host + '\/login\/forgot\/confirmation\/' + user.passwordResetToken + '.\n'};
     transporter.sendMail(mailOptions, function (err) {
         if (err) { return res.status(500).send({ msg: err.message }); }
         res.send("an email has been sent to your registered email address with further instructions")
@@ -220,11 +220,11 @@ router.post("/login/forgot/reset/:id", function (req, res){
       service: 'gmail',
       host: 'smtp.gmail.com',
       auth: {
-        user: process.env.GmailUser || "happylearning151@gmail.com" ,
-        pass:process.env.GmailPassword || "swciitg123" ,
+        user: process.env.GmailUser ,
+        pass:process.env.GmailPassword  ,
       }
     });
-    var mailOptions = { from: process.env.GmailUser || "happylearning151@gmail.com" , to: user.username, subject: 'Password reset for your account on happylearning', text: 'Hello,\n\n' +'password for your account on happylearing has been changed on' + Date.now() +'\n If it was not you please contact swc IITG for recovery of your account as soon as possible \n'};
+    var mailOptions = { from: process.env.GmailUser , to: user.username, subject: 'Password reset for your account on happylearning', text: 'Hello,\n\n' +'password for your account on happylearing has been changed on' + Date.now() +'\n If it was not you please contact swc IITG for recovery of your account as soon as possible \n'};
     transporter.sendMail(mailOptions, function (err) {
         if (err) { return res.status(500).send({ msg: err.message }); }
             res.redirect('/')
