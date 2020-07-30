@@ -49,11 +49,11 @@ router.post("/register", function (req, res){
         service: 'gmail',
         host: 'smtp.gmail.com',
         auth: {
-          user: process.env.GmailUser ,
-          pass:process.env.GmailPassword ,
+          user: process.env.GmailUser || "happylearning151@gmail.com" ,
+          pass:process.env.GmailPassword || "swciitg123" ,
         }
       });
-     var mailOptions = { from: process.env.GmailUser , to: user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n'};
+     var mailOptions = { from: process.env.GmailUser || "happylearning151@gmail.com" , to: user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n'};
     transporter.sendMail(mailOptions, function (err) {
         if (err) { return res.status(500).send({ msg: err.message }); }
         res.send("an email has been sent to verify your email address")
@@ -135,16 +135,101 @@ router.get("/register/resetToken",function (req, res){
       service: 'gmail',
       host: 'smtp.gmail.com',
       auth: {
-        user: process.env.GmailUser ,
-        pass:process.env.GmailPassword ,
+        user: process.env.GmailUser || "happylearning151@gmail.com" ,
+        pass:process.env.GmailPassword || "swciitg123" ,
       }
     });
-    var mailOptions = { from: process.env.GmailUser , to: req.user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n'};
+    var mailOptions = { from: process.env.GmailUser || "happylearning151@gmail.com" , to: req.user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n'};
     transporter.sendMail(mailOptions, function (err) {
         if (err) { return res.status(500).send({ msg: err.message }); }
         res.send("an email has been sent to verify your email address")
     });
 
+})
+
+router.get("/login/forgot", function (req, res){
+  res.render("forgot")
+})
+
+router.post("/login/forgot", function (req, res){
+  User.findOne({username: req.body.username}, function (err, user){
+    if(!user){
+      console.log("user not found")
+      res.redirect('/login/forgot')
+    }
+    user.passwordResetToken= crypto.randomBytes(16).toString('hex')
+    user.passwordResetExpires= Date.now() + 3600000
+    user.save(function (err){
+      if (err){
+        console.log(err)
+      }
+    })
+    console.log(user)
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      host: 'smtp.gmail.com',
+      auth: {
+        user: process.env.GmailUser || "happylearning151@gmail.com" ,
+        pass:process.env.GmailPassword || "swciitg123" ,
+      }
+    });
+    var mailOptions = { from: process.env.GmailUser || "happylearning151@gmail.com" , to: user.username, subject: 'Password reset request for your account on happylearning', text: 'Hello,\n\n' + 'Please reset your account password by clicking the link: \nhttp:\/\/' + req.headers.host + '\/login\/forgot\/confirmation\/' + user.passwordResetToken + '.\n'};
+    transporter.sendMail(mailOptions, function (err) {
+        if (err) { return res.status(500).send({ msg: err.message }); }
+        res.send("an email has been sent to your registered email address with further instructions")
+    });
+  })
+})
+
+router.get("/login/forgot/confirmation/:id", function (req, res){
+  User.findOne({passwordResetToken: req.params.id, passwordResetExpires: {$gt: Date.now()}}, function (err, user){
+    if(!user){
+      console.log("user not found, reset password token expired on invalid")
+      return res.redirect("/login");
+    }
+    res.render("reset", {resetToken: req.params.id});
+  })
+})
+
+router.post("/login/forgot/reset/:id", function (req, res){
+  User.findOne({passwordResetToken: req.params.id, passwordResetExpires: {$gt: Date.now()}}, function (err, user){
+    if(!user){
+      console.log("no user found, please try again")
+      return res.redirect("/login/forgot");
+    }
+    if(req.body.newPassword==req.body.confirmPassword){
+        user.setPassword(req.body.newPassword, function (err){
+          if(err){
+            console.log(err)
+            return res.redirect('/login/forgot')
+          }
+          user.passwordResetToken = undefined
+          user.passwordResetExpires= undefined
+          user.save(function(err){
+            req.logIn(user, function(err){
+              console.log("password reset and logged in")
+            })
+          })
+        })
+    }
+    else{
+      console.log("password don't match")
+      return res.redirect("back")
+    }
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      host: 'smtp.gmail.com',
+      auth: {
+        user: process.env.GmailUser || "happylearning151@gmail.com" ,
+        pass:process.env.GmailPassword || "swciitg123" ,
+      }
+    });
+    var mailOptions = { from: process.env.GmailUser || "happylearning151@gmail.com" , to: user.username, subject: 'Password reset for your account on happylearning', text: 'Hello,\n\n' +'password for your account on happylearing has been changed on' + Date.now() +'\n If it was not you please contact swc IITG for recovery of your account as soon as possible \n'};
+    transporter.sendMail(mailOptions, function (err) {
+        if (err) { return res.status(500).send({ msg: err.message }); }
+            res.redirect('/')
+      });
+  })
 })
 
 //middleware
@@ -155,4 +240,4 @@ function isLoggedIn(req, res, next){
     res.redirect("/login");
 }
 
-    module.exports=router;
+module.exports=router;
