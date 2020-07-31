@@ -54,10 +54,33 @@
 <!--</div>-->
 
 <!--<img src ="/images/Group_629.svg" alt="hey" height=200 width=50/>-->
-
-
-
-	
-	
-</body> 
+</div>
+</body>
 </html>
+
+	
+<!-- Satyendra's commit -->
+<!-- <body> 
+<%if(!currentUser){%>
+	<a href="/login">Login</a>
+	<h3>register</h3>
+<form action="/register" method="post">
+    <input type="text" placeholder="name" 	name="name">
+    <input type="email" placeholder="official iitg email"   name="username">
+    <input type="password" placeholder="password" name="password" minlength="8">
+    <input type="submit" value="sign up">
+</form>
+	<%} else{%>
+		<p><a href="/profile">View profile</a></p>
+		<a href="#"><p><%=currentUser.name%></p></a>
+		<a href="/courses/all">All Courses</a>
+		<br>
+    <%if(currentUser && currentUser.isAdmin){%>
+			<p>
+				<a href="/admin">Admin Page</a>				
+			</p>
+		<%}%>
+		<a href="/logout">Logout</a>
+	<%}%>
+</body> 
+</html> -->
