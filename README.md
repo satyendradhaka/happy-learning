@@ -22,9 +22,8 @@ A learning platform for the campus, access to courses scraped by SWC, Blogs, Kee
 
 - add a directory named assets
 - add two sub directories mpd and videos
-- make sure you have ffmpeg folder with ffmpeg files
 
-(https://happy-learning-swc.herokuapp.com/)
+Website is hosted currently here: https://happy-learning-swc.herokuapp.com/
    
 
    
