@@ -13,7 +13,6 @@ let courseSchema=new Schema({
 	last_view: new Schema({
 		video:{type:mongoose.ObjectId, ref:'Media'},
 		timestamp:{type:String}
-
 	}),
 	Bookmarks:[bookmarkSchema]
 })
@@ -27,6 +26,7 @@ let userSchema= new Schema({
 	isAdmin: {type: Boolean, default: false},
 	isverified:{type: Boolean, default: false},
 	enrolled_courses:[courseSchema],
+	enrolled_courses_id:[ {type: mongoose.ObjectId, ref: 'Course'}]
 },{
 	versionKey: false // set to false then it wont create in mongodb
 })

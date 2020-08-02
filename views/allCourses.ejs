@@ -4,9 +4,8 @@
 </head> 
 <body> 
 <%if(!currentUser){%>
-	<a href="/auth/outlook">Login</a>
+	<a href="/">Login</a>
 	<%} else{%>
-		<p><a href="/profile">View profile</a></p>
 		<a href="/profile"><p><%=currentUser.name%></p></a>
 		<%courses.forEach(function(course){%>
             <div><a href="/courses/<%=course._id%>"><%=course.title%></a></div>
