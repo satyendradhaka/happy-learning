@@ -6,6 +6,10 @@
 <%if(!currentUser){%>
 	<a href="/">Login</a>
 	<%} else{%>
+		<form action="/courses/search" method="get">
+			<input type="text" name="dsearch" placeholder="search courses">
+			<button type="submit">search</button>
+			</form>
 		<a href="/profile"><p><%=currentUser.name%></p></a>
 		<%courses.forEach(function(course){%>
             <div><a href="/courses/<%=course._id%>"><%=course.title%></a></div>
