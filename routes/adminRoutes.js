@@ -31,7 +31,8 @@ router.get("/courses/add", isAdmin, function (req, res) {
 router.post("/courses", isAdmin, function (req, res) {
   //data from form
   var title = req.body.title;
-  var newCourse = { title: title };
+  var author = req.body.author;
+  var newCourse = { title: title, author: author };
   Course.create(newCourse, function (err, newlyCreated) {
     if (err) {
       console.log(err);
