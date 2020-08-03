@@ -1,0 +1,16 @@
+<form action="/courses/search" method="get">
+    <input type="text" name="dsearch" placeholder="search courses">
+    <button type="submit">search</button>
+    </form>
+
+<h1>search results</h1>
+<ul>
+    <%foundCourses.forEach(function(course){%>
+        <li>
+            <ol>
+                <li><a href="/courses/<%=course._id%>"><%=course.title%></a></li>
+                <li><%=course.author%></li>
+            </ol>
+        </li>
+    <%})%>
+</ul>

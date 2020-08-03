@@ -234,6 +234,10 @@ router.post("/login/forgot/reset/:id", function (req, res){
   })
 })
 
+router.get("/developers", function (req, res){
+  res.render('developers')
+})
+
 //middleware
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){

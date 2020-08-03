@@ -4,6 +4,7 @@ let router=express.Router()
 let Course=require("../models/course")
 let Media=require("../models/media")
 let User=require("../models/user")
+const { route } = require('./streaming')
 
 //create a new course
 // router.get('/course', async (req,res)=>{
@@ -107,6 +108,18 @@ router.get('/courses', async(req,res,next)=>{
     next(err)
   }
 })
+
+//search implementation
+router.get("/courses/search", function (req, res){
+  Course.find({$or: [{author:{'$regex':req.query.dsearch}}, {title: {'$regex':req.query.dsearch}}, {topics:{'$regex':req.query.dsearch}}]}, function(err, foundCourses){
+    if(err){
+      console.log(err);
+      return res.redirect('back')
+    }
+    res.render('search', {foundCourses: foundCourses})
+  })
+})
+
 
 //course page
 router.get('/courses/:id', async(req,res,next)=>{
