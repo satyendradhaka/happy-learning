@@ -4,63 +4,60 @@
 	<!-- CSS only -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-<style>
-	#hp{
-		margin:20% 2% 5% 0px;
-		vertical-align: right;
-	}
-</style>
+<link rel="stylesheet" href="/css/home.css" type="text/css">
 </head> 
-<body style="background-color: rgba(255,224,49,1);"> 
 
+<body>
 <nav class="navbar navbar-expand-lg navbar-light">
-<div class="container">
-
-<ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/" style="margin-left: 6%;"><strong>HOME</strong> <span class="sr-only">(current)</span></a>
-      </li>
-  </ul>
+  <div class="container">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/" style="margin-left: 6%;"><strong>HOME</strong> <span class="sr-only">(current)</span></a>
+        </li>
+    </ul>
     <a class="btn btn-outline-dark btn-md" href="/login" role="button" style="margin:9px;"><strong>Sign in</strong></a>
-    <a class="btn btn-outline-dark btn-md" href="/register" role="button" style="margin:9px;"><strong>Sign up</strong></a>
-    
-</div>
+    <div class="dropdown">
+      <button class="btn btn-outline-dark btn-md dropdown-toggle" type="button" data-toggle="dropdown"><strong>Sign Up</strong></button>
+      <div class="dropdown-menu" id="signUpDropdown">
+        <form class="px-4 py-3">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Name" name="name">
+          </div>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" id="email" placeholder="official iitg email" name="username">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Password" minlength="8">
+          </div>
+          <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+      </div>
+  </div>  
+  </div>
+  
 </nav>
-
 <div class="container">
 	<!--<div class="jumbotron bg-transparent">-->
-
-
-
 	<div class="col-md-6">
 	<h1 style="margin-top:8%;"><strong>./SWC /COURSES</strong></h1>
-</div>
+  </div>
 <!--<div class="row m-0">-->
 	<div class="col-lg-6 p-0">
-  <p class="text" style="margin: 20% 8px 0px 20px;font-size:20px;">A simple and sweet learning platform, build for the campus. Access to various premium online courses and learning material covering skills from base to advanced. Collaborate with peers and experts.</p>
-<!--<form class="form-inline" >
-            <input class="form-control mr-sm-2 col-lg-6 rounded-pill " type="search" placeholder="find courses" aria-label="Search">
-            <i class="fa fa-search" role="button"></i>
-        </form>-->
-<!--</div>-->
-</div>
+    <p class="text" style="margin: 20% 8px 0px 20px;font-size:20px;">A simple and sweet learning platform, build for the campus. Access to various premium online courses and learning material covering skills from base to advanced. Collaborate with peers and experts.
+    </p>
+  </div>
   <hr class="my-4">
-<!--<img src ="/images/Group_629.png" width=500 height=600 alt="hey"  id="hp"/>-->
-  <!--<object data="Group_629.svg" type="image/svg+xml">-->
-<!--</object>-->
-  
-  
-
-<!--</div>-->
-
-<!--<img src ="/images/Group_629.svg" alt="hey" height=200 width=50/>-->
 </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
 
-	
-<!-- Satyendra's commit -->
-<!-- <body> 
+ <!--<body> 
 <%if(!currentUser){%>
 	<a href="/login">Login</a>
 	<h3>register</h3>
@@ -83,4 +80,4 @@
 		<a href="/logout">Logout</a>
 	<%}%>
 </body> 
-</html> -->
+</html>-->

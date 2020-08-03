@@ -44,7 +44,7 @@ router.post("/register", function (req, res){
         host: 'smtp.gmail.com',
         auth: {
           user: process.env.GmailUser ,
-          pass:process.env.GmailPassword  ,
+          pass: process.env.GmailPassword  ,
         }
       });
      var mailOptions = { from: process.env.GmailUser , to: user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n'};
