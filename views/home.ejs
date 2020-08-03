@@ -1,60 +1,103 @@
 <html>
 <head> 
 	<title>Video streaming with Node.js</title> 
-	<!-- CSS only -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-<style>
-	#hp{
-		margin:20% 2% 5% 0px;
-		vertical-align: right;
-	}
-</style>
+	<!-- Bootstrap-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/home.css" type="text/css">
 </head> 
-<body style="background-color: rgba(255,224,49,1);"> 
+<body class="px-4"> 
 
-<nav class="navbar navbar-expand-lg navbar-light">
-<div class="container">
-
-<ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/" style="margin-left: 6%;"><strong>HOME</strong> <span class="sr-only">(current)</span></a>
-      </li>
-  </ul>
-    <a class="btn btn-outline-dark btn-md" href="/login" role="button" style="margin:9px;"><strong>Sign in</strong></a>
-    <a class="btn btn-outline-dark btn-md" href="/register" role="button" style="margin:9px;"><strong>Sign up</strong></a>
-    
-</div>
+<nav class="navbar navbar-expand-lg navbar-light d-flex pt-4 px-4">
+  <!-- Logo -->
+  <a href="#" class="navbar-brand mr-auto">
+    <img id="logo" src="/images/logo.png">
+  </a>
+  <!-- Login button -->
+  <button class="btn btn-outline-dark btn-lg px-5 home-nav-button" data-toggle="modal" data-target="#loginModal" role="button" style="margin:9px;">Login</button>
+  <!-- Login modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Login to Existing Account</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="/login" method="post" id="loginForm">
+              <div class="form-group">
+                <label for="loginEmailField">Email address</label>
+                <input type="email" name="username" class="form-control" id="loginEmailField" aria-describedby="emailHelp" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">Enter your registered IITG email with @iitg.ac.in</small>
+              </div>
+              <div class="form-group">
+                <label for="loginPasswordField">Password</label>
+                <input type="password" name="password" class="form-control" id="loginPasswordField" placeholder="Password">
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <a href="/login/forgot">Forgot password?</a>
+          <button id="loginButton" type="button" class="btn btn-primary">Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Sign Up button -->
+  <button class="btn btn-outline-dark btn-lg px-5 home-nav-button" data-toggle="modal" data-target="#signUpModal" role="button" style="margin:9px;">Sign Up</button><!-- Sign Up Modal -->
+  <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Create Account</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="/register" method="post" id="regForm">
+              <div class="form-group">
+                <label for="regNameField">Name</label>
+                <input type="text" name="name" class="form-control" id="regNameField" placeholder="Full name">
+                <small id="nameHelp" class="form-text text-muted">Enter your full name</small>
+              </div>
+              <div class="form-group">
+                <label for="regEmailField">Email address</label>
+                <input type="email" name="username" class="form-control" id="regEmailField" aria-describedby="emailHelp" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">Enter your registered IITG email with @iitg.ac.in</small>
+              </div>
+              <div class="form-group">
+                <label for="regPasswordField">Password</label>
+                <input type="password" name="password" class="form-control" id="regPasswordField" placeholder="Password" minlength="8">
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="regButton" type="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </nav>
 
-<div class="container">
-	<!--<div class="jumbotron bg-transparent">-->
-
-
-
-	<div class="col-md-6">
-	<h1 style="margin-top:8%;"><strong>./SWC /COURSES</strong></h1>
+<div class="container mt-5 d-flex align-items-center">
+  <div class="row">
+	<div class="col-sm-5">
+    <p id="introPara"class="text">A simple and sweet learning platform, build for the campus. Access to various premium online courses and learning material covering skills from base to advanced. Collaborate with peers and experts.</p>
+  </div>
 </div>
-<!--<div class="row m-0">-->
-	<div class="col-lg-6 p-0">
-  <p class="text" style="margin: 20% 8px 0px 20px;font-size:20px;">A simple and sweet learning platform, build for the campus. Access to various premium online courses and learning material covering skills from base to advanced. Collaborate with peers and experts.</p>
-<!--<form class="form-inline" >
-            <input class="form-control mr-sm-2 col-lg-6 rounded-pill " type="search" placeholder="find courses" aria-label="Search">
-            <i class="fa fa-search" role="button"></i>
-        </form>-->
-<!--</div>-->
 </div>
-  <hr class="my-4">
-<!--<img src ="/images/Group_629.png" width=500 height=600 alt="hey"  id="hp"/>-->
-  <!--<object data="Group_629.svg" type="image/svg+xml">-->
-<!--</object>-->
-  
-  
 
-<!--</div>-->
-
-<!--<img src ="/images/Group_629.svg" alt="hey" height=200 width=50/>-->
-</div>
+<!-- BootStrap Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<!-- Custom Scripts -->
+<script src="/js/home.js"></script>
 </body>
 </html>
 
@@ -81,7 +124,7 @@
 
 <a href="/developers">developers of this website</a>
 	<%} else{%>
-		<!-- <p><a href="/profile">View profile</a></p>
+	<p><a href="/profile">View profile</a></p>
 		<a href="#"><p><%=currentUser.name%></p></a>
 		<a href="/courses">All Courses</a>
 		<br>
@@ -90,7 +133,6 @@
 				<a href="/admin">Admin Page</a>				
 			</p>
 		<%}%>
-		<a href="/logout">Logout</a> -->
+		<a href="/logout">Logout</a>
 	<%}%>
-</body> 
-</html> -->
+</body> -->
