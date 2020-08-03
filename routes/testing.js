@@ -67,28 +67,28 @@ let User=require("../models/user")
 //   }
 // })
 
-//list all users
-router.get('/user/all', async(req,res,next)=>{
-  try{
-    let users=await User.find()
-    if(users.length){
-      res.send(users)
-    }
-    else{
-      error={
-        'status':400,
-        'message':"No users found"
-      }
-      throw error
-    }
-  }
-  catch(err){
-    next(err)
-  }
-})
+// //list all users
+// router.get('/user/all', async(req,res,next)=>{
+//   try{
+//     let users=await User.find()
+//     if(users.length){
+//       res.send(users)
+//     }
+//     else{
+//       error={
+//         'status':400,
+//         'message':"No users found"
+//       }
+//       throw error
+//     }
+//   }
+//   catch(err){
+//     next(err)
+//   }
+// })
 
 //list all courses
-router.get('/courses/all', async(req,res,next)=>{
+router.get('/courses', async(req,res,next)=>{
   try{
     let courses=await Course.find()
     if(courses.length){
@@ -204,6 +204,7 @@ router.get('/courses/:id/enrol', async (req,res,next)=>{
       user.enrolled_courses.push({
         'course': course._id
       })
+      user.enrolled_courses_id.push(course._id)
       updated= await user.save()
       res.redirect("/courses/"+course._id)
     }

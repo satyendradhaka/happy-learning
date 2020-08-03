@@ -7,7 +7,7 @@ var express = require("express"),
 
 router.get("/video/:video_id", async (req, res, next) => {
   try {
-    let getcourse = Course.findOne({ _id: req.params.id });
+    let getcourse = await Course.findOne({ _id: req.params.id }).populate("videos");
     let getvideo = Media.findOne({
       _id: req.params.video_id,
       course: req.params.id,
@@ -28,7 +28,7 @@ router.get("/video/:video_id", async (req, res, next) => {
       });
 
       //console.log(user.enrolled_courses[courseIndex])
-
+      console.log(getcourse.videos)
       //let foundVideo=Media.findById(req.params.video_id)
       res.render("video", {
         video: video,

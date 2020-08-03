@@ -70,17 +70,25 @@
     <input type="password" placeholder="password" name="password" minlength="8">
     <input type="submit" value="sign up">
 </form>
+<h3>login page</h3>
+
+<form action="/login" method="post">
+    <input type="email" name="username" placeholder="username">
+    <input type="password" name="password" placeholder="password">
+    <button type="submit">login</button>
+</form>
+<a href="/login/forgot">forgot password</a>
 	<%} else{%>
-		<p><a href="/profile">View profile</a></p>
+		<!-- <p><a href="/profile">View profile</a></p>
 		<a href="#"><p><%=currentUser.name%></p></a>
-		<a href="/courses/all">All Courses</a>
+		<a href="/courses">All Courses</a>
 		<br>
     <%if(currentUser && currentUser.isAdmin){%>
 			<p>
 				<a href="/admin">Admin Page</a>				
 			</p>
 		<%}%>
-		<a href="/logout">Logout</a>
+		<a href="/logout">Logout</a> -->
 	<%}%>
 </body> 
 </html> -->
