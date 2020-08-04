@@ -7,11 +7,11 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
 const PORT = process.env.PORT || 3000;
-const url = process.env.url || 'mongodb://localhost/SWC_Media';
+const url = 'mongodb://localhost/SWC_Media';
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const nodemailer = require('nodemailer');
-const LocalStrategy 		  = require("passport-local");
+const LocalStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 //Requiring Routes
 const streamRoutes = require("./routes/streaming");
