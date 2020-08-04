@@ -1,9 +1,8 @@
 body{
 	background-color: rgba(255,224,49,1);
-	background-image:url("/images/backman.png"),url("/images/backpatch.png");
-	background-position: top 6.3rem right 3.3rem,top -4rem right -7rem;
-	background-repeat:no-repeat,no-repeat;
-	background-size:40% 225%,56% 325%;
+	background-image:url("/images/home-bg.png");
+	background-size:cover;
+	background-repeat: no-repeat;
 }
 
 #hp{
