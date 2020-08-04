@@ -20,6 +20,7 @@ const indexRoutes = require("./routes/index");
 const testingRoutes = require("./routes/testing");
 const adminRoutes = require("./routes/adminRoutes");
 const uploadRoute = require("./routes/uploadRoute");
+const flash= require("connect-flash");
 
 //mongoose setup
 mongoose.connect(url, {
@@ -35,6 +36,7 @@ app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(__dirname + "/assets"));
+app.use(flash());
 
 app.use(
   session({

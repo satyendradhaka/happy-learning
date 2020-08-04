@@ -8,8 +8,8 @@ background-position: center;
 }
 
 #logo{
-	height:5rem;
-	width:26rem;
+	height:auto;
+   max-width:100%;
 }
 #main{
 	background-color:rgb(255,255,255);
@@ -25,12 +25,16 @@ background-position: center;
 #e1{
 	color:#212529;
 	font-family: "Roboto", sans-serif;
-	font-size: 2rem;
+	font-size: 2.4vw;
 	font-weight: 300;
-	margin:1.5rem 1.75rem 1.5rem 1.75rem;
+	margin:0.5rem 1.75rem 1.5rem 1.75rem;
 }
 #hp{
-   padding-bottom: 3%;
+   padding-bottom: 3.5%;
+   height:auto;
+   width:16%;
+   max-width:100%;
+   margin-right:5%;
 }
 #heading{
 	padding-top: 3%;

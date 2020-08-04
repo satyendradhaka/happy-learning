@@ -8,6 +8,19 @@
   <link rel="stylesheet" href="/css/allcourses.css" type="text/css">
 </head> 
 <body> 
+	 <div class="container">
+        
+        <% if(error && error.length > 0){ %>
+            <div class="alert alert-danger" role="alert">
+                <%= error %>
+            </div>
+        <% } %>
+        <% if(success && success.length > 0){ %>
+            <div class="alert alert-success" role="alert">
+                <%= success %>
+            </div>
+        <% } %>
+    </div>
 <%if(!currentUser){%>
 	<a href="/">Login</a>
 	<%} else{%>
@@ -16,16 +29,13 @@
 			<button type="submit">search</button>
 			</form>-->
 		<nav class="navbar navbar-expand-lg navbar-light bg-transparent d-flex pt-4 px-4">
-  		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    	<span class="navbar-toggler-icon"></span>
-  		</button>
-    <ul class="navbar-nav mr-auto">
-     <li class="nav-item">
-  <a href="#">
+  		
+  <a href="#" class="navbar-brand mr-auto">
     <img id="logo" src="/images/logo.png">
   </a>
-  </li>
-</ul>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    	<span class="navbar-toggler-icon"></span>
+  		</button>
 <div class="container">
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
   	<div class="container">
@@ -47,18 +57,19 @@
 			<div class="container" >
 				<h2 id="heading">All Courses</h2>
 				<br/>
-				<br/>
 			</div>
 		<%courses.forEach(function(course){%>
 		<a class="nav-link" id="each" href="/courses/<%=course._id%>">
             <div class="container shadow p-3 mb-5 bg-white rounded nav-link">
             	
-            	<p id="e1">Introduction to <%=course.title%>
-            		<img id="hp" src="/images/general.png" align="right">
-            		<p>
+            	
+            		<div class="col-lg-12 col-md-12 col-sm-12" id="e1">
+            		Introduction to <%=course.title%>
+
+            		<img  id="hp" src="/images/general.png" align="right">
+            		</div>
+            		
             	<br/>
-             <br/>
-             <br/>
             </div>
             </a>
             <%})%>
