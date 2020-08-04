@@ -27,7 +27,10 @@ background-position: center;
 	font-family: "Roboto", sans-serif;
 	font-size: 2rem;
 	font-weight: 300;
-	margin:1.5rem auto auto 1.75rem;
+	margin:1.5rem 1.75rem 1.5rem 1.75rem;
+}
+#hp{
+   padding-bottom: 3%;
 }
 #heading{
 	padding-top: 3%;
