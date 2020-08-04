@@ -3,6 +3,7 @@ body{
 	background-image:url("/images/home-bg.png");
 	background-size:cover;
 	background-repeat: no-repeat;
+	font-family:'Roboto',sans-serif;
 }
 
 #hp{
@@ -17,11 +18,45 @@ body{
 
 .home-nav-button{
 	border:3px solid black;
-	font-family: 'Roboto', sans-serif;
 	font-weight: 500;
 }
 
+#content{
+	padding-left:2rem;
+}
+
 #introPara{
-	font-family: 'Roboto',sans-serif;
 	font-weight: 300;
+	font-size:1.2rem;
+	margin-bottom:3rem;
+}
+
+#searchForm input{
+	padding:1.5rem;
+	padding-left:4rem;
+	margin-bottom:1rem;
+	border-radius: 20px;
+	font-size:1.2rem;
+	font-weight: 300;
+	background-color: #FFFFFF;
+	background-image:url("/images/search-glass.png");
+	background-repeat: no-repeat;
+	background-position: left 1rem center;
+	background-size:1.5rem 1.5rem;
+}
+
+h3{
+	font-family: 'Rubik',sans-serif;
+}
+
+#linkWrapper{
+	padding-top:1rem;
+	font-family:'Rubik',sans-serif;
+	font-weight: 300;
+	flex-wrap: wrap;
+}
+
+#linkWrapper>a{
+	text-decoration: underline;
+	color:#0A0A0A;
 }

@@ -4,7 +4,7 @@
   <!-- Bootstrap-->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <!-- Custom CSS -->
   <link rel="stylesheet" href="/css/home.css" type="text/css">
 </head> 
@@ -84,12 +84,27 @@
   </div>
 </nav>
 
-<div class="container mt-5 d-flex align-items-center">
+<div id="content" class="container-fluid mt-5 d-flex align-items-center">
   <div class="row">
-  <div class="col-sm-5">
-    <p id="introPara"class="text">A simple and sweet learning platform, build for the campus. Access to various premium online courses and learning material covering skills from base to advanced. Collaborate with peers and experts.</p>
+    <div class="col-sm-5">
+      <p id="introPara"class="text">A simple and sweet learning platform, build for the campus. Access to various premium online courses and learning material covering skills from base to advanced. Collaborate with peers and experts.</p>
+      <form id="searchForm" action="/courses/search" method="get">
+        <div class="input-group">
+          <input type="text" class="form-control" name="dsearch" placeholder="find courses">
+        </div>
+      </form>
+      <div class="container-fluid pl-5">
+        <h4>Top Grossing</h4>
+        <div id="linkWrapper" class="d-flex flex-column">
+          <a href="#">Javascript</a>
+          <a href="#">CSS</a>
+          <a href="#">Machine Learning</a>
+          <a href="#">Django</a>
+
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 </div>
 
 <!-- BootStrap Scripts -->
