@@ -1,0 +1,163 @@
+html{
+	height:100%;
+}
+body{
+	background-color: #FFE031;
+	height:100%;
+}
+
+#main-body{
+	background-color: #FFFFFF;
+	border-radius:3rem;
+	height:100%;
+}
+
+header{
+	background-color: #FFF4B5;
+	padding:1rem 5.6rem 2rem 0;
+	border-radius:2.25rem;
+	box-shadow:0 11px 20px rgba(0,0,0,0.16);
+}
+
+header>.navbar{
+	margin-bottom:3rem;
+	padding-left:1.5rem;
+	font-size:1rem;
+	font-family:'Rubik',sans-serif;
+	font-weight: 500;
+}
+
+#avatar{
+	height:2rem;
+	margin-left:0.5rem;
+}
+
+#avatar>img{
+	max-height:100%;
+}
+
+header>.container-fluid{
+	padding-left:5rem;
+}
+
+#backButton{
+	height:2.2rem;
+	padding:6px 1rem;
+	border-radius:20px;
+	border-style: none;
+	background-color: #FFFFFF;
+	box-shadow:4px 6px 15px rgba(0,0,0,0.16);
+}
+
+#backButton>img{
+	height:100%;
+}
+
+#backButton+span{
+	opacity: 0.5;
+	padding-left:0.5rem;
+}
+header h2{
+	font-size:1.75rem;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 500;
+	margin:0;
+}
+
+header .badge{
+	font-family:'Roboto',sans-serif;
+	font-weight: 300;
+	font-size:1rem;
+	margin-right:1rem;
+	background-color: #FFFFFF;
+}
+
+#enrol{
+	font-size:1rem;
+	font-family: 'Rubik',sans-serif;
+	font-weight:500;
+}
+
+#content{
+	flex:1 1;
+	min-height:0;
+	padding:1rem 5rem;
+}
+#content>div{
+	height:100%;
+	padding-top:1rem;
+	padding-bottom:1rem;
+}
+
+#vid-header{
+	font-family: 'Roboto',sans-serif;
+	font-weight: 300;
+	font-size:1.4rem;
+	padding-bottom:1rem;
+	padding-right:2.5rem;
+}
+
+#vid-header>span:nth-of-type(2){
+	margin-right:1rem;
+	opacity:0.65;
+}
+
+#vid-header>span:nth-of-type(3){
+	opacity: 0.65;
+}
+#vid-wrapper{
+	font-family: 'Rubik',sans-serif;
+	font-weight: 400;
+	font-size:1rem;
+	padding-right:2rem;
+	overflow-y: scroll;
+	height:0px;
+	flex:1;
+}
+
+#vid-wrapper::-webkit-scrollbar{
+	width:14px;
+}
+
+#vid-wrapper::-webkit-scrollbar-track {
+  background: #FFF4B5;
+  opacity:41%;
+}
+
+#vid-wrapper::-webkit-scrollbar-thumb {
+  background-color: #FFE031;
+  border-radius: 20px;
+}
+
+#vid-wrapper{
+  scrollbar-width: thin;
+  scrollbar-color: #FFE031 #FFF4B5;
+}
+
+#vid-wrapper>div{
+	display:flex;
+	padding:0.75rem 2rem;
+	margin-bottom:0.75rem;
+	box-shadow:-1px 3px 6px rgba(0,0,0,0.3);
+}
+
+#vid-wrapper>div>span:nth-of-type(2){
+	opacity: 0.5;
+	margin-right:3rem;
+}
+
+#course-desc{
+	font-weight:300;
+}
+
+#course-desc>span{
+	font-family: 'Roboto',sans-serif;
+	font-size:1.4rem;
+}
+
+#course-desc>p{
+	font-family: 'Rubik',sans-serif;
+	font-size:1rem;
+	opacity: 0.77;
+	margin-top:1rem;
+}
