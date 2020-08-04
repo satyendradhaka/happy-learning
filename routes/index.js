@@ -1,5 +1,5 @@
 const user = require("../models/user");
-
+const course = require("../models/course");
 var express  = require("express"),
     router   = express.Router(),
     Media    = require("../models/media"),
@@ -8,13 +8,27 @@ var express  = require("express"),
     fs       = require('fs'),
     nodemailer = require('nodemailer'),
     crypto = require('crypto'),
+    Course=require("../models/course"),
     passport = require('passport');
 
-router.get('/profile', isLoggedIn,function(req, res){
-    res.render("profile", {user: req.user});
+router.get('/profile', isLoggedIn,async(req, res)=>{
+    enrolled=req.user.enrolled_courses
+    courses=await Course.find()
+    User.findById(req.user._id).populate("enrolled_courses_id").exec(function(err, foundUser){
+      if(err){
+        console.log(err);
+      }else{
+        console.log(foundUser.enrolled_courses_id)
+        console.log(foundUser)
+        res.render("profile", {user: foundUser});
+      }
+    });
   });
 
 router.get('/', function(req, res){
+    if (req.isAuthenticated()){
+      return res.redirect("/courses")
+    }
 			res.render('home')
 });
 
@@ -45,6 +59,7 @@ router.post("/register", function (req, res){
         auth: {
           user: process.env.GmailUser ,
           pass: process.env.GmailPassword  ,
+          pass:process.env.GmailPassword ,
         }
       });
      var mailOptions = { from: process.env.GmailUser , to: user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n'};
@@ -54,6 +69,7 @@ router.post("/register", function (req, res){
     });
 })
 })
+
 
 router.get('/register/confirmation/:id', function (req, res){
   Token.findOne({token: req.params.id}, function (err, token){
@@ -84,21 +100,14 @@ router.get('/register/confirmation/:id', function (req, res){
     })
 })
 })
-
-
-
-//login route
-router.get('/login', function(req, res){
-    res.render('login');
-  });
   
   //login route
   router.post("/login", passport.authenticate("local",
   {
-    failureRedirect:'/login'
+    failureRedirect:'/'
   }), function (req, res){
     if(req.user.isverified){
-      res.redirect('/')
+      res.redirect('/courses')
     }
     else {
             console.log("inside not verified")
@@ -116,7 +125,7 @@ router.get('/login', function(req, res){
 
 router.get("/register/resetToken",function (req, res){
   if(!req.isAuthenticated()){
-    res.redirect('/login')
+    res.redirect('/')
   }
   var token = new Token({ _userId: req.user._id, token: crypto.randomBytes(16).toString('hex') });
     token.save(function(err){
@@ -130,7 +139,7 @@ router.get("/register/resetToken",function (req, res){
       host: 'smtp.gmail.com',
       auth: {
         user: process.env.GmailUser ,
-        pass:process.env.GmailPassword  ,
+        pass:process.env.GmailPassword ,
       }
     });
     var mailOptions = { from: process.env.GmailUser , to: req.user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n'};
@@ -164,7 +173,7 @@ router.post("/login/forgot", function (req, res){
       host: 'smtp.gmail.com',
       auth: {
         user: process.env.GmailUser ,
-        pass:process.env.GmailPassword  ,
+        pass:process.env.GmailPassword ,
       }
     });
     var mailOptions = { from: process.env.GmailUser , to: user.username, subject: 'Password reset request for your account on happylearning', text: 'Hello,\n\n' + 'Please reset your account password by clicking the link: \nhttp:\/\/' + req.headers.host + '\/login\/forgot\/confirmation\/' + user.passwordResetToken + '.\n'};
@@ -179,7 +188,7 @@ router.get("/login/forgot/confirmation/:id", function (req, res){
   User.findOne({passwordResetToken: req.params.id, passwordResetExpires: {$gt: Date.now()}}, function (err, user){
     if(!user){
       console.log("user not found, reset password token expired on invalid")
-      return res.redirect("/login");
+      return res.redirect("/");
     }
     res.render("reset", {resetToken: req.params.id});
   })
@@ -215,7 +224,7 @@ router.post("/login/forgot/reset/:id", function (req, res){
       host: 'smtp.gmail.com',
       auth: {
         user: process.env.GmailUser ,
-        pass:process.env.GmailPassword  ,
+        pass:process.env.GmailPassword ,
       }
     });
     var mailOptions = { from: process.env.GmailUser , to: user.username, subject: 'Password reset for your account on happylearning', text: 'Hello,\n\n' +'password for your account on happylearing has been changed on' + Date.now() +'\n If it was not you please contact swc IITG for recovery of your account as soon as possible \n'};
@@ -226,12 +235,16 @@ router.post("/login/forgot/reset/:id", function (req, res){
   })
 })
 
+router.get("/developers", function (req, res){
+  res.render('developers')
+})
+
 //middleware
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
       return next();
     }
-    res.redirect("/login");
+    res.redirect("/");
 }
 
 module.exports=router;

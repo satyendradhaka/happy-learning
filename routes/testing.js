@@ -4,6 +4,7 @@ let router=express.Router()
 let Course=require("../models/course")
 let Media=require("../models/media")
 let User=require("../models/user")
+const { route } = require('./streaming')
 
 //create a new course
 // router.get('/course', async (req,res)=>{
@@ -67,28 +68,28 @@ let User=require("../models/user")
 //   }
 // })
 
-//list all users
-router.get('/user/all', async(req,res,next)=>{
-  try{
-    let users=await User.find()
-    if(users.length){
-      res.send(users)
-    }
-    else{
-      error={
-        'status':400,
-        'message':"No users found"
-      }
-      throw error
-    }
-  }
-  catch(err){
-    next(err)
-  }
-})
+// //list all users
+// router.get('/user/all', async(req,res,next)=>{
+//   try{
+//     let users=await User.find()
+//     if(users.length){
+//       res.send(users)
+//     }
+//     else{
+//       error={
+//         'status':400,
+//         'message':"No users found"
+//       }
+//       throw error
+//     }
+//   }
+//   catch(err){
+//     next(err)
+//   }
+// })
 
 //list all courses
-router.get('/courses/all', async(req,res,next)=>{
+router.get('/courses', async(req,res,next)=>{
   try{
     let courses=await Course.find()
     if(courses.length){
@@ -107,6 +108,18 @@ router.get('/courses/all', async(req,res,next)=>{
     next(err)
   }
 })
+
+//search implementation
+router.get("/courses/search", function (req, res){
+  Course.find({$or: [{author:{'$regex':req.query.dsearch}}, {title: {'$regex':req.query.dsearch}}, {topics:{'$regex':req.query.dsearch}}]}, function(err, foundCourses){
+    if(err){
+      console.log(err);
+      return res.redirect('back')
+    }
+    res.render('search', {foundCourses: foundCourses})
+  })
+})
+
 
 //course page
 router.get('/courses/:id', async(req,res,next)=>{
@@ -204,6 +217,7 @@ router.get('/courses/:id/enrol', async (req,res,next)=>{
       user.enrolled_courses.push({
         'course': course._id
       })
+      user.enrolled_courses_id.push(course._id)
       updated= await user.save()
       res.redirect("/courses/"+course._id)
     }

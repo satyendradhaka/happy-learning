@@ -1,0 +1,35 @@
+body {
+	background-image: url("/images/coursesback.png");
+	height=100%
+background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+
+#logo{
+	height:5rem;
+	width:26rem;
+}
+#main{
+	background-color:rgb(255,255,255);
+	margin-top: : 10%;
+	border-radius: 30px;
+	margin-bottom: 5%;
+}
+
+#each{
+	color:#212529;
+}
+
+#e1{
+	color:#212529;
+	font-family: "Roboto", sans-serif;
+	font-size: 2rem;
+	font-weight: 300;
+	margin:1.5rem auto auto 1.75rem;
+}
+#heading{
+	padding-top: 3%;
+	font-family: "Roboto", sans-serif;
+}

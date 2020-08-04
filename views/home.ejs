@@ -1,59 +1,103 @@
 <html>
 <head> 
-	<title>Video streaming with Node.js</title> 
-	<!-- CSS only -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="/css/home.css" type="text/css">
+  <title>Video streaming with Node.js</title> 
+  <!-- Bootstrap-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/home.css" type="text/css">
 </head> 
+<body class="px-4"> 
 
-<body>
-<nav class="navbar navbar-expand-lg navbar-light">
-  <div class="container">
-    <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="/" style="margin-left: 6%;"><strong>HOME</strong> <span class="sr-only">(current)</span></a>
-        </li>
-    </ul>
-    <a class="btn btn-outline-dark btn-md" href="/login" role="button" style="margin:9px;"><strong>Sign in</strong></a>
-    <div class="dropdown">
-      <button class="btn btn-outline-dark btn-md dropdown-toggle" type="button" data-toggle="dropdown"><strong>Sign Up</strong></button>
-      <div class="dropdown-menu" id="signUpDropdown">
-        <form class="px-4 py-3">
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" placeholder="Name" name="name">
-          </div>
-          <div class="form-group">
-            <label for="email">Email address</label>
-            <input type="email" class="form-control" id="email" placeholder="official iitg email" name="username">
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password" minlength="8">
-          </div>
-          <button type="submit" class="btn btn-primary">Sign Up</button>
-        </form>
+<nav class="navbar navbar-expand-lg navbar-light d-flex pt-4 px-4">
+  <!-- Logo -->
+  <a href="#" class="navbar-brand mr-auto">
+    <img id="logo" src="/images/logo.png">
+  </a>
+  <!-- Login button -->
+  <button class="btn btn-outline-dark btn-lg px-5 home-nav-button" data-toggle="modal" data-target="#loginModal" role="button" style="margin:9px;">Login</button>
+  <!-- Login modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Login to Existing Account</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="/login" method="post" id="loginForm">
+              <div class="form-group">
+                <label for="loginEmailField">Email address</label>
+                <input type="email" name="username" class="form-control" id="loginEmailField" aria-describedby="emailHelp" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">Enter your registered IITG email with @iitg.ac.in</small>
+              </div>
+              <div class="form-group">
+                <label for="loginPasswordField">Password</label>
+                <input type="password" name="password" class="form-control" id="loginPasswordField" placeholder="Password">
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <a href="/login/forgot">Forgot password?</a>
+          <button id="loginButton" type="button" class="btn btn-primary">Login</button>
+        </div>
       </div>
-  </div>  
+    </div>
   </div>
-  
+  <!-- Sign Up button -->
+  <button class="btn btn-outline-dark btn-lg px-5 home-nav-button" data-toggle="modal" data-target="#signUpModal" role="button" style="margin:9px;">Sign Up</button><!-- Sign Up Modal -->
+  <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Create Account</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="/register" method="post" id="regForm">
+              <div class="form-group">
+                <label for="regNameField">Name</label>
+                <input type="text" name="name" class="form-control" id="regNameField" placeholder="Full name">
+                <small id="nameHelp" class="form-text text-muted">Enter your full name</small>
+              </div>
+              <div class="form-group">
+                <label for="regEmailField">Email address</label>
+                <input type="email" name="username" class="form-control" id="regEmailField" aria-describedby="emailHelp" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">Enter your registered IITG email with @iitg.ac.in</small>
+              </div>
+              <div class="form-group">
+                <label for="regPasswordField">Password</label>
+                <input type="password" name="password" class="form-control" id="regPasswordField" placeholder="Password" minlength="8">
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="regButton" type="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </nav>
-<div class="container">
-	<!--<div class="jumbotron bg-transparent">-->
-	<div class="col-md-6">
-	<h1 style="margin-top:8%;"><strong>./SWC /COURSES</strong></h1>
+
+<div class="container mt-5 d-flex align-items-center">
+  <div class="row">
+  <div class="col-sm-5">
+    <p id="introPara"class="text">A simple and sweet learning platform, build for the campus. Access to various premium online courses and learning material covering skills from base to advanced. Collaborate with peers and experts.</p>
   </div>
-<!--<div class="row m-0">-->
-	<div class="col-lg-6 p-0">
-    <p class="text" style="margin: 20% 8px 0px 20px;font-size:20px;">A simple and sweet learning platform, build for the campus. Access to various premium online courses and learning material covering skills from base to advanced. Collaborate with peers and experts.
-    </p>
-  </div>
-  <hr class="my-4">
 </div>
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</div>
+
+<!-- BootStrap Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<!-- Custom Scripts -->
+<script src="/js/home.js"></script>
 </body>
 </html>
 
@@ -67,10 +111,20 @@
     <input type="password" placeholder="password" name="password" minlength="8">
     <input type="submit" value="sign up">
 </form>
+<h3>login page</h3>
+
+<form action="/login" method="post">
+    <input type="email" name="username" placeholder="username">
+    <input type="password" name="password" placeholder="password">
+    <button type="submit">login</button>
+</form>
+<a href="/login/forgot">forgot password</a>
+
+<a href="/developers">developers of this website</a>
 	<%} else{%>
-		<p><a href="/profile">View profile</a></p>
+	<p><a href="/profile">View profile</a></p>
 		<a href="#"><p><%=currentUser.name%></p></a>
-		<a href="/courses/all">All Courses</a>
+		<a href="/courses">All Courses</a>
 		<br>
     <%if(currentUser && currentUser.isAdmin){%>
 			<p>
@@ -79,5 +133,7 @@
 		<%}%>
 		<a href="/logout">Logout</a>
 	<%}%>
+<<<<<<< HEAD
 </body> 
 </html>-->
+
