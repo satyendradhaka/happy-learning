@@ -1,6 +1,7 @@
 //'mongodb://localhost/SWC_Media'
 const express = require("express");
 const app = express();
+const dotenv = require('dotenv').config({ debug: process.env.DEBUG })
 const User = require("./models/user")
 const token = require("./models/token")
 const passport = require("passport");
@@ -8,11 +9,11 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
 const PORT = process.env.PORT || 3000;
-const url = process.env.url ||  "mongodb+srv://satyendra:1234@cluster0-afmf0.mongodb.net/test?retryWrites=true&w=majority";
+const url = process.env.url ||  "mongodb://localhost/SWC_Media";
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const nodemailer = require('nodemailer');
-const LocalStrategy 		  = require("passport-local");
+const LocalStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
 //Requiring Routes
 const streamRoutes = require("./routes/streaming");

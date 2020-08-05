@@ -6,8 +6,9 @@ const ffmpeg = require("fluent-ffmpeg");
 const multer = require("multer");
 const fs = require("fs");
 var pathToFfmpeg = require('ffmpeg-static');
+//var ffprobe = require('ffprobe-static');
 
-console.log(pathToFfmpeg);
+//console.log(ffprobe.path);
 
 let Course = require("../models/course");
 let Media = require("../models/media");
@@ -33,9 +34,7 @@ var upload = multer({ storage: storage }).fields([
 
 
 ffmpeg.setFfmpegPath(pathToFfmpeg);
-//ffmpeg.setFfprobePath(dirname.dirpath + "/ffmpeg/bin/ffprobe.exe");
-
-console.log(dirname.dirpath + "/ffmpeg/bin/ffmpeg.exe");
+//ffmpeg.setFfprobePath(ffprobeStatic.path);
 
 router.post("/courses/:id", isAdmin, (req, res) => {
   // console.log(course.title);
@@ -132,6 +131,7 @@ router.post("/courses/:id", isAdmin, (req, res) => {
           let media = {
             title: req.body.title,
             filePath: "/mpd/" + fileName + "/dash.mpd",
+            thumbnail: "/mpd/" + fileName + "/thumbnail.png"
           };
 
           Media.create(media, function (err, newlyCreated) {
@@ -155,6 +155,25 @@ router.post("/courses/:id", isAdmin, (req, res) => {
       });
 
     proc.run();
+
+    var imageProc = ffmpeg({
+      source: sourcefn,
+      cwd: targetdir,
+    });
+    imageProc.output('thumbnail.png')
+      .screenshots({
+        // Will take screenshots at 20%, 40%, 60% and 80% of the video
+        count: 1,
+        folder: targetdir
+      })
+      .on('end', function () {
+        console.log('Screenshots taken');
+      })
+      .on('error', function (err) {
+        console.error(err);
+      });
+
+    imageProc.run();
   })
 
 });

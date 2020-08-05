@@ -1,4 +1,5 @@
 const user = require("../models/user");
+const dotenv = require('dotenv').config()
 const course = require("../models/course");
 var express  = require("express"),
     router   = express.Router(),
