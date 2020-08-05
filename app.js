@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const dotenv = require('dotenv').config({ debug: process.env.DEBUG })
 const User = require("./models/user")
 const token = require("./models/token")
 const passport = require("passport");
