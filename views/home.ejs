@@ -10,6 +10,20 @@
 </head> 
 <body class="px-4"> 
 
+  <div class="container">
+        
+        <% if(error && error.length > 0){ %>
+            <div class="alert alert-danger" role="alert">
+                <%= error %>
+            </div>
+        <% } %>
+        <% if(success && success.length > 0){ %>
+            <div class="alert alert-success" role="alert">
+                <%= success %>
+            </div>
+        <% } %>
+    </div>
+
 <nav class="navbar navbar-expand-lg navbar-light d-flex pt-4 px-4">
   <!-- Logo -->
   <a href="#" class="navbar-brand mr-auto">
