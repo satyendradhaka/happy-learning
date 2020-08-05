@@ -15,15 +15,15 @@
 	<div id="main-body" class="container-fluid p-0 d-flex flex-column">
 		<header>
 			<nav class="navbar navbar-expand-lg d-flex">
-				<div class="mr-auto" href="#">
-				   <button id="backButton"><img src="/images/left-arrow.png"></button>
+				<div class="mr-auto">
+				   <a href="/courses"><button id="backButton"><img src="/images/left-arrow.png"></button></a>
 				   <span>Dashboard</span>
 				</div>
-				<span>mitzvah</span>
-				<a id="avatar" href="#"><img src="/images/avatar.png"></a>
+				<span>Welcome <%=currentUser.name%></span>
+				<a id="avatar" href="/profile"><img src="/images/avatar.png"></a>
 			</nav>
 			<div class="container-fluid">
-				<h2>Introduction to HTML and CSS</h2>
+				<h2><%=course.title%></h2>
 				<div class="navbar d-flex justify-content-start px-0">
 					<span class="badge badge-pill badge-light">CSS</span>
 					<span class="badge badge-pill badge-light">Udemy</span>
@@ -31,10 +31,10 @@
 					<span class="badge badge-pill badge-light">Javascript</span>
 					<span class="badge badge-pill badge-light">span5</span>
 					<%if(isEnrolled){%>
-						<button id="enrol" class="btn btn-lg btn-dark ml-auto px-5">Enrolled</button>
+						<button id="enrol" class="btn btn-lg btn-dark ml-auto pl-4 pr-3 py-2 enrolled">Enrolled<img src="/images/tick-mark.png"></button>
 					<%} else{%>
 						<a href="/courses/<%=course._id%>/enrol" class="ml-auto">
-							<button id="enrol" class="btn btn-lg btn-dark px-5" onClick=>Enrol</button>
+							<button id="enrol" class="btn btn-lg btn-dark px-4 py-2" onClick=>Enrol</button>
 						</a>
 					<%}%>
 				</div>
@@ -48,6 +48,13 @@
 					<span>20 hrs</span>
 				</div>
 				<div id="vid-wrapper" class="container-fluid p-0 pr-4">
+					<%media.forEach(function(video,index){%>
+					<div>
+						<span class="mr-auto"><%=index+1%>. <%=video.title%></span>
+						<span>45 mins</span>
+						<a href="/courses/<%=course._id%>/video/<%=video._id%>"><img src="/images/play-button.png" alt='play'></a>
+					</div>
+			        <%})%>
 					<div>
 						<span class="mr-auto">1. Introduction</span>
 						<span>45 mins</span>
@@ -88,7 +95,7 @@
 	</div>
 </body>
 </html>
-<!-- <body> 
+<%/*%><!-- <body> 
 <%if(!currentUser){%>
 	<a href="/">Login</a>
 	<%} else{%>
@@ -97,4 +104,4 @@
         <%})%>
 		<br>
 	<%}%>
-</body>  -->
+</body>  --><%*/%>
