@@ -147,36 +147,23 @@ router.get('/courses/:id', async(req,res,next)=>{
       //run the queries parallely and wait for their results
       let [user,course]=await Promise.all([getuser,getcourse])
       let isEnrolled=false
-
       if(course){
         //the course exists
-        if(user){
-          //the user is already enrolled
-          isEnrolled=true
-        }
+        if(user){isEnrolled=true}
+        let userData={} //stores user-specific course details(like % completed etc)
         if(isEnrolled){
-          var selected;
           await user.enrolled_courses.forEach(function(courseData){
             if(courseData.course.equals(course._id)){
-              selected=course;
+              userData=course;
             }
           })
-
-          //console.log(selected);
-
-          Media.find({course:selected}, function(err, media){
-            if(err){console.log(err)}
-            else{
-              res.render("course", {media:media, course_id:req.params.id})
-
-              //console.log(media)
-            }
-          })
-
-        }else{
-          res.render("enrol", {course:course})
         }
-        
+        Media.find({course:course._id}, function(err, media){
+          if(err){throw err}
+          else{
+            res.render("course", {isEnrolled:isEnrolled, media:media, course:course, userData:userData})
+          }
+        })
       }
       else{
         //the course does not exist
