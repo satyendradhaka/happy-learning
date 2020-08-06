@@ -3,10 +3,10 @@ let router = express.Router();
 let dirname = require('../dirname');
 const path = require("path");
 const ffmpeg = require("fluent-ffmpeg");
-const ffprobe = require('ffprobe-static');
+//const ffprobe = require('ffprobe-static');
 const multer = require("multer");
 const fs = require("fs");
-let pathToFfmpeg = require('ffmpeg-static-next');
+let pathToFfmpeg = require('ffmpeg-static');
 const { getVideoDurationInSeconds } = require('get-video-duration')
 let Course = require("../models/course");
 let Media = require("../models/media");
@@ -30,7 +30,7 @@ let upload = multer({ storage: storage }).fields([
 ]);
 
 ffmpeg.setFfmpegPath(pathToFfmpeg);
-ffmpeg.setFfprobePath(ffprobe.path);
+//ffmpeg.setFfprobePath(ffprobe.path);
 
 router.post("/courses/:id", isAdmin, (req, res) => {
 
