@@ -3,7 +3,6 @@ let router = express.Router();
 let dirname = require('../dirname');
 const path = require("path");
 const ffmpeg = require("fluent-ffmpeg");
-const ffprobe = require('ffprobe-static');
 const multer = require("multer");
 const fs = require("fs");
 let pathToFfmpeg = require('ffmpeg-static');
@@ -27,12 +26,17 @@ let storage = multer.diskStorage({
 
 let upload = multer({ storage: storage }).fields([
   { name: "video" },
-]);
+]);;
+
+
 
 ffmpeg.setFfmpegPath(pathToFfmpeg);
-ffmpeg.setFfprobePath(ffprobe.path);
+//ffmpeg.setFfprobePath(ffprobeStatic.path);
 
 router.post("/courses/:id", isAdmin, (req, res) => {
+  // console.log(course.title);
+
+
 
   upload(req, res, (err) => {
     const sizes = [
@@ -159,6 +163,7 @@ router.post("/courses/:id", isAdmin, (req, res) => {
     });
     imageProc.output('thumbnail.png')
       .screenshots({
+        // Will take screenshots at 20%, 40%, 60% and 80% of the video
         count: 1,
         folder: targetdir
       })
