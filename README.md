@@ -20,8 +20,15 @@ A learning platform for the campus, access to courses scraped by SWC, Blogs, Kee
    - *email* : ritvika@iitg.ac.in
 
 
-## Website is hosted currently here: 
+<<<<<<< HEAD
+- add a directory named assets
+- add two sub directories mpd and videos
+
+Website is hosted currently here: https://happy-learning-swc.herokuapp.com/
+=======
+# Website is hosted currently here: 
 https://happy-learning-swc.herokuapp.com/
+>>>>>>> parent of 8d0dab8... Update README.md
    
 
    
