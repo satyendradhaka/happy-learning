@@ -21,6 +21,7 @@ A learning platform for the campus, access to courses scraped by SWC, Blogs, Kee
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 - add a directory named assets
 - add two sub directories mpd and videos
 
@@ -29,6 +30,9 @@ Website is hosted currently here: https://happy-learning-swc.herokuapp.com/
 # Website is hosted currently here: 
 https://happy-learning-swc.herokuapp.com/
 >>>>>>> parent of 8d0dab8... Update README.md
+=======
+[Website is hosted currently here:] https://happy-learning-swc.herokuapp.com/
+>>>>>>> parent of 5224aa3... Update README.md
    
 
    
