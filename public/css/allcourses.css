@@ -1,6 +1,6 @@
 body {
-	background-image: url("/images/coursesback.png");
-	height=100%
+  background-image: url("/images/coursesback.png");
+  height=100%
 background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -8,26 +8,26 @@ background-position: center;
 }
 
 #logo{
-	height:auto;
+  height:auto;
    max-width:100%;
 }
 #main{
-	background-color:rgb(255,255,255);
-	margin-top: : 10%;
-	border-radius: 30px;
-	margin-bottom: 5%;
+  background-color:rgb(255,255,255);
+  margin-top: : 10%;
+  border-radius: 30px;
+  margin-bottom: 5%;
 }
 
 #each{
-	color:#212529;
+  color:#212529;
 }
 
 #e1{
-	color:#212529;
-	font-family: "Roboto", sans-serif;
-	font-size: 2.4vw;
-	font-weight: 300;
-	margin:0.5rem 1.75rem 1.5rem 1.75rem;
+  color:#212529;
+  font-family: "Roboto", sans-serif;
+  font-size: 2.4vw;
+  font-weight: 300;
+  margin:0.5rem 1.75rem 1.5rem 1.75rem;
 }
 #hp{
    padding-bottom: 3.5%;
@@ -37,6 +37,27 @@ background-position: center;
    margin-right:5%;
 }
 #heading{
-	padding-top: 3%;
-	font-family: "Roboto", sans-serif;
+  padding-top: 3%;
+  font-family: "Roboto", sans-serif;
+}
+
+#courseCard {
+  color:black;
+  position: relative;
+  box-shadow: 0 14px 26px rgba(0,0,0,0.10);
+  transition: all 0.2s ease-out;
+  text-decoration: none;
+  width: 16rem; 
+  padding:1rem; 
+  margin:1rem;
+}
+
+#courseCard:hover,#courseCard:focus {
+  transform: translateY(-5px) scale(1.01) translateZ(0);
+  box-shadow: 0 24px 36px rgba(0,0,0,0.20)
+}
+
+#courseCard:active {
+  transform: scale(1) translateZ(0);
+  box-shadow: 0 15px 24px rgba(0,0,0,0.15),
 }
