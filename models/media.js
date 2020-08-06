@@ -8,7 +8,8 @@ let mediaSchema = new Schema({
 	course: { type: mongoose.ObjectId, ref: 'Course' },
 	thumbnail: { type: String },
 	//subtopic: { type: String, required: true},
-	viewcount: { type: Number, default: 0 }
+	viewcount: { type: Number, default: 0 },
+	duration: { type: Number }
 })
 
 module.exports = mongoose.model("Media", mediaSchema);

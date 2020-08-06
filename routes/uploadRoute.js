@@ -5,17 +5,14 @@ const path = require("path");
 const ffmpeg = require("fluent-ffmpeg");
 const multer = require("multer");
 const fs = require("fs");
-var pathToFfmpeg = require('ffmpeg-static');
-//var ffprobe = require('ffprobe-static');
-
-//console.log(ffprobe.path);
-
+let pathToFfmpeg = require('ffmpeg-static');
+const { getVideoDurationInSeconds } = require('get-video-duration')
 let Course = require("../models/course");
 let Media = require("../models/media");
 
-var storage = multer.diskStorage({
+let storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    var dir = dirname.dirpath + "/assets/videos";
+    let dir = dirname.dirpath + "/assets/videos";
 
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
@@ -27,7 +24,7 @@ var storage = multer.diskStorage({
   }
 });
 
-var upload = multer({ storage: storage }).fields([
+let upload = multer({ storage: storage }).fields([
   { name: "video" },
 ]);;
 
@@ -125,28 +122,32 @@ router.post("/courses/:id", isAdmin, (req, res) => {
       .on("end", function () {
         //res.send('success');
 
-        Course.findById(req.params.id, function (err, foundCourse) {
-          if (err) throw err;
+        getVideoDurationInSeconds(dirname.dirpath + '/assets/videos/Machine Learning.mp4').then((duration) => {
+          Course.findById(req.params.id, function (err, foundCourse) {
+            if (err) throw err;
 
-          let media = {
-            title: req.body.title,
-            filePath: "/mpd/" + fileName + "/dash.mpd",
-            thumbnail: "/mpd/" + fileName + "/thumbnail.png"
-          };
+            let media = {
+              title: req.body.title,
+              filePath: "/mpd/" + fileName + "/dash.mpd",
+              thumbnail: "/mpd/" + fileName + "/thumbnail.png",
+              duration: duration
+            };
 
-          Media.create(media, function (err, newlyCreated) {
-            if (err) {
-              console.log(err);
-            } else {
-              //add course id to media
-              newlyCreated.course = req.params.id;
-              //save media
-              newlyCreated.save();
-              foundCourse.videos.push(newlyCreated);
-              foundCourse.save();
-              console.log(newlyCreated);
-              res.redirect("/admin/courses/" + req.params.id);
-            }
+            Media.create(media, function (err, newlyCreated) {
+              if (err) {
+                console.log(err);
+              } else {
+                //add course id to media
+                newlyCreated.course = req.params.id;
+                //save media
+                newlyCreated.save();
+                foundCourse.videos.push(newlyCreated);
+                foundCourse.save();
+                console.log(newlyCreated);
+                res.redirect("/admin/courses/" + req.params.id);
+              }
+            });
+
           });
         });
       })
