@@ -20,7 +20,7 @@ A learning platform for the campus, access to courses scraped by SWC, Blogs, Kee
    - *email* : ritvika@iitg.ac.in
 
 
-# Website is hosted currently here: 
+## Website is hosted currently here: 
 https://happy-learning-swc.herokuapp.com/
    
 
