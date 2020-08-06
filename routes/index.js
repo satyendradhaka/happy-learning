@@ -45,7 +45,7 @@ router.post("/register", function (req, res){
   User.register(newUser, req.body.password, function(err, user){
     if(err){
         console.log(err)
-        res.redirect('/register');
+        res.redirect('/');
     }
     var token = new Token({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') });
     token.save(function(err){
