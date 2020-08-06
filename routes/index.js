@@ -39,7 +39,7 @@ router.get('/', function(req, res){
 router.post("/register", function (req, res){
   if(!req.body.username.includes("@iitg.ac.in")){
     console.log("enter your outlook id")
-    return res.redirect("/register")
+    return res.redirect("/")
   }
   var newUser = new User({username: req.body.username, name: req.body.name})
   User.register(newUser, req.body.password, function(err, user){
@@ -81,11 +81,11 @@ router.get('/register/confirmation/:id', function (req, res){
     User.findOne({_id: token._userId}, function (err, user){
         if(!user){
             console.log("user not found for this token")
-            res.redirect("/register")
+            res.redirect("/")
         }
         if(user.isverfied){
             console.log("user already verified")
-            res.redirect("/login")
+            res.redirect("/")
         }
 
         user.isverified = true
@@ -93,10 +93,10 @@ router.get('/register/confirmation/:id', function (req, res){
         user.save(function(err){
             if(err){
                 console.log(err)
-                res.redirect("/register")
+                res.redirect("/")
             }
             console.log("user verified")
-            res.redirect('/login')
+            res.redirect('/')
         })
     })
 })
