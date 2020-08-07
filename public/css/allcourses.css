@@ -8,8 +8,8 @@ background-position: center;
 }
 
 #logo{
-  height:auto;
-   max-width:100%;
+  width:26rem;
+ max-width:100%;
 }
 #main{
   background-color:rgb(255,255,255);
@@ -36,6 +36,21 @@ background-position: center;
    max-width:100%;
    margin-right:5%;
 }
+
+#searchForm input{
+  padding:1.5rem;
+  padding-left:4rem;
+  margin-bottom:1rem;
+  border-radius: 20px;
+  font-size:1.2rem;
+  font-weight: 300;
+  background-color: #FFFFFF;
+  background-image:url("/images/search-glass.png");
+  background-repeat: no-repeat;
+  background-position: left 1rem center;
+  background-size:1.5rem 1.5rem;
+}
+
 #heading{
   padding-top: 3%;
   font-family: "Roboto", sans-serif;

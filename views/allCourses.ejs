@@ -1,5 +1,7 @@
 <html>
 <head> 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Video streaming with Node.js</title> 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <!-- Fonts -->
@@ -23,33 +25,22 @@
   <%if(!currentUser){%>
     <a href="/">Login</a>
   <%} else{%>
-      <!--<form action="/courses/search" method="get">
-        <input type="text" name="dsearch" placeholder="search courses">
-        <button type="submit">search</button>
-        </form>-->
     <nav class="navbar navbar-expand-lg navbar-light bg-transparent d-flex pt-4 px-4">
-      <a href="#" class="navbar-brand mr-auto">
+      <a href="#" class="ml-auto ml-md-0 mr-auto mb-4">
         <img id="logo" src="/images/logo.png">
       </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="container">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <div class="container">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="/profile"><p><img src="/images/user.png"><!--<%=currentUser.name%>--></p></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/logout">Logout</a>
-              </li>
-            </ul>
-          </div>
+        <div class="ml-auto mr-auto mr-md-5" id="navbarSupportedContent">
+            <a class="nav-link" href="/profile"><p><img src="/images/avatar.png" style="height:3rem"><!--<%=currentUser.name%>--></p></a>
         </div>
-      </div>
     </nav>
     <br/>
+    <div class="container">
+      <form id="searchForm" action="/courses/search" method="get">
+        <div class="input-group">
+          <input type="text" class="form-control" name="dsearch" placeholder="find courses">
+        </div>
+      </form>
+    </div>
 
     <div class="container py-5"  id="main">
       <div class="container d-flex" style="justify-content: center" >
