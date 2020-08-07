@@ -1,5 +1,7 @@
 <html>
 <head> 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Video streaming with Node.js</title> 
   <!-- Bootstrap-->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -8,8 +10,7 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="/css/home.css" type="text/css">
 </head> 
-<body class="px-4"> 
-
+<body> 
   <div class="container">
         
         <% if(error && error.length > 0){ %>
@@ -24,90 +25,93 @@
         <% } %>
     </div>
 
-<nav class="navbar navbar-expand-lg navbar-light d-flex pt-4 px-4">
+<nav class="navbar navbar-expand-md navbar-light d-flex p-4">
   <!-- Logo -->
-  <a href="#" class="navbar-brand mr-auto">
+  <a href="#" class="ml-auto ml-md-0 mr-auto">
     <img id="logo" src="/images/logo.png">
   </a>
-  <!-- Login button -->
-  <button class="btn btn-outline-dark btn-lg px-5 home-nav-button" data-toggle="modal" data-target="#loginModal" role="button" style="margin:9px;">Login</button>
-  <!-- Login modal -->
-  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Login to Existing Account</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <form action="/login" method="post" id="loginForm">
-              <div class="form-group">
-                <label for="loginEmailField">Email address</label>
-                <input type="email" name="username" class="form-control" id="loginEmailField" aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">Enter your registered IITG email with @iitg.ac.in</small>
-              </div>
-              <div class="form-group">
-                <label for="loginPasswordField">Password</label>
-                <input type="password" name="password" class="form-control" id="loginPasswordField" placeholder="Password">
-              </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <a href="/login/forgot">Forgot password?</a>
-          <button id="loginButton" type="button" class="btn btn-primary">Login</button>
+  <div id="menu">
+    <!-- Login button -->
+    <button class="btn btn-outline-dark btn-lg px-5 home-nav-button d-none d-md-inline ml-auto" data-toggle="modal" data-target="#loginModal" role="button" style="margin:9px;">Login</button>
+    <!-- Login modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Login to Existing Account</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <form action="/login" method="post" id="loginForm">
+                <div class="form-group">
+                  <label for="loginEmailField">Email address</label>
+                  <input type="email" name="username" class="form-control" id="loginEmailField" aria-describedby="emailHelp" placeholder="Enter email">
+                  <small id="emailHelp" class="form-text text-muted">Enter your registered IITG email with @iitg.ac.in</small>
+                </div>
+                <div class="form-group">
+                  <label for="loginPasswordField">Password</label>
+                  <input type="password" name="password" class="form-control" id="loginPasswordField" placeholder="Password">
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <a href="/login/forgot">Forgot password?</a>
+            <button id="loginButton" type="button" class="btn btn-primary">Login</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- Sign Up button -->
-  <button class="btn btn-outline-dark btn-lg px-5 home-nav-button" data-toggle="modal" data-target="#signUpModal" role="button" style="margin:9px;">Sign Up</button><!-- Sign Up Modal -->
-  <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Create Account</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <form action="/register" method="post" id="regForm">
-              <div class="form-group">
-                <label for="regNameField">Name</label>
-                <input type="text" name="name" class="form-control" id="regNameField" placeholder="Full name">
-                <small id="nameHelp" class="form-text text-muted">Enter your full name</small>
-              </div>
-              <div class="form-group">
-                <label for="regEmailField">Email address</label>
-                <input type="email" name="username" class="form-control" id="regEmailField" aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">Enter your registered IITG email with @iitg.ac.in</small>
-              </div>
-              <div class="form-group">
-                <label for="regPasswordField">Password</label>
-                <input type="password" name="password" class="form-control" id="regPasswordField" placeholder="Password" minlength="8">
-              </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button id="regButton" type="button" class="btn btn-primary">Submit</button>
+
+    <!-- Sign Up button -->
+    <button class="btn btn-outline-dark btn-lg px-5 home-nav-button d-none d-md-inline" data-toggle="modal" data-target="#signUpModal" role="button" style="margin:9px;">Sign Up</button><!-- Sign Up Modal -->
+    <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Create Account</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <form action="/register" method="post" id="regForm">
+                <div class="form-group">
+                  <label for="regNameField">Name</label>
+                  <input type="text" name="name" class="form-control" id="regNameField" placeholder="Full name">
+                  <small id="nameHelp" class="form-text text-muted">Enter your full name</small>
+                </div>
+                <div class="form-group">
+                  <label for="regEmailField">Email address</label>
+                  <input type="email" name="username" class="form-control" id="regEmailField" aria-describedby="emailHelp" placeholder="Enter email">
+                  <small id="emailHelp" class="form-text text-muted">Enter your registered IITG email with @iitg.ac.in</small>
+                </div>
+                <div class="form-group">
+                  <label for="regPasswordField">Password</label>
+                  <input type="password" name="password" class="form-control" id="regPasswordField" placeholder="Password" minlength="8">
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="regButton" type="button" class="btn btn-primary">Submit</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </nav>
 
-<div id="content" class="container-fluid mt-5 d-flex align-items-center">
+<div id="content" class="container-fluid my-5 pb-4 d-flex align-items-center px-4 pl-md-5">
   <div class="row">
-    <div class="col-sm-5">
-      <p id="introPara"class="text">A simple and sweet learning platform, build for the campus. Access to various premium online courses and learning material covering skills from base to advanced. Collaborate with peers and experts.</p>
+    <div class="col-12 col-md-7 col-lg-5">
+      <p id="introPara"class="text-center text-sm-left">A simple and sweet learning platform, build for the campus. Access to various premium online courses and learning material covering skills from base to advanced. Collaborate with peers and experts.</p>
       <form id="searchForm" action="/courses/search" method="get">
         <div class="input-group">
-          <input type="text" class="form-control" name="dsearch" placeholder="find courses">
+          <input type="text" class="form-control mb-5" name="dsearch" placeholder="find courses">
         </div>
       </form>
-      <div class="container-fluid pl-5">
+      <div class="container-fluid pl-2 pl-md-5 text-center text-sm-left">
         <h4>Top Grossing</h4>
         <div id="linkWrapper" class="d-flex flex-column">
           <a href="#">Javascript</a>
@@ -120,6 +124,10 @@
     </div>
   </div>
 </div>
+<nav class="navbar navbar-expand-lg d-flex d-md-none p-0 justify-content-center" style="postion:absolute; bottom:0" ><button class="btn btn-outline-dark btn-lg px-5 home-nav-button rounded-0" style="flex:1" data-toggle="modal" data-target="#loginModal" role="button">Login</button>
+<button class="btn btn-outline-dark btn-lg px-5 home-nav-button rounded-0" style="flex:1;white-space: nowrap;" data-toggle="modal" data-target="#signUpModal" role="button">Sign Up</button>
+</nav>
+
 
 <!-- BootStrap Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

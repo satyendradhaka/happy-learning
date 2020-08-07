@@ -12,8 +12,8 @@ body{
 }
 
 #logo{
-	height:5rem;
 	width:26rem;
+	max-width:100%;
 }
 
 .home-nav-button{
@@ -22,7 +22,7 @@ body{
 }
 
 #content{
-	padding-left:2rem;
+	/*padding-left:2rem;*/
 }
 
 #introPara{
@@ -50,6 +50,7 @@ h3{
 }
 
 #linkWrapper{
+	font-size:1.1rem;
 	padding-top:1rem;
 	font-family:'Rubik',sans-serif;
 	font-weight: 300;
