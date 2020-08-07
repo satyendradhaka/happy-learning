@@ -2,71 +2,137 @@
 
 <head>
   <title>Video streaming with Node.js</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
+  <!-- Shaka player -->
   <script src="/dist/shaka-player.compiled.js"></script>
   <script src="/dist/shaka-player.ui.js"></script>
   <link rel="stylesheet" type="text/css" href="/dist/controls.css" />
   <script src="/dist/shaka-player.compiled.debug.js"></script>
-
-
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&family=Rubik:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" type="text/css" href="/css/video.css">
 </head>
 
-<body>
-  <a href="/">Home</a>
-  <a href="/profile">
-    <p><%=currentUser.name%></p>
-  </a>
-  <p><a href="#">Email</a>: <%=currentUser.email%></p>
-  <a href="/logout">Logout</a>
-  <h2><%=video.title%></h2>
-
-  <div class="container">
-    <div data-shaka-player-container style="max-width: 40em;">
-      <video autoplay data-shaka-player id="video" style="width: 100%; height: 100%;"></video>
-    </div>
-  </div>
-
-  <input type="text" id="filePath" style="display:none" value=<%= video.filePath %> />
-  <br>
-
-  <div class="container bookmark-section">
-    <form id="add-bookmark-form" action="/video/<%=video._id%>/" method="POST" style="display: none;">
-      <input class="form-control" id="time" type="text" name="time" style="display: none;">
-      <div class="form-group ">
-        <input class="form-control" id="text" type="text" name="text" placeholder="Bookmark" required>
-        <button class="btn btn-warning pull-right" id="create">Add</button>
+<body class="p-3 p-sm-4">
+  <div id="main-body" class="container-fluid p-0 pb-4 d-flex flex-column">
+    <nav class="navbar navbar-expand-lg d-flex  pt-4  pl-4 pr-5 mb-4">
+      <div class="mr-auto">
+         <a href="/courses/<%=course._id%>"><button id="backButton"><img src="/images/left-arrow.png"></button></a>
+         <span>Dashboard</span>
       </div>
-
-    </form>
-
-    <button type="button" id="bookmark" class="btn btn-warning"><i class="fa fa-bookmark-o"
-        aria-hidden="true"></i></button>
-
-
-    <br><br>
-
-
-    <h4>Bookmarks:</h4>
-    <ul class="list-group" id="bookmark-list">
-      <%bookmarks.forEach(function(bookmark){%>
-      <%if(bookmark.video._id.equals(video._id)){%>
-      <li class="list-group-item" style="padding-bottom: 15px;">
-        <span class="gotoBookmark" style="cursor: pointer;"><strong><%=bookmark.timestamp%></strong></span> :
-        <%=bookmark.text%>
-        <div class="pull-right">
-          <form style="display: inline" method="POST"
-            action="/courses/<%=course._id%>/video/<%=video._id%>/bookmark/<%=bookmark._id%>" class="delete-item-form">
-            <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
-          </form>
+      <span class="d-none d-sm-inline">Welcome <%=currentUser.name%></span>
+      <a id="avatar" href="/profile"><img src="/images/avatar.png"></a>
+    </nav>
+    <div class="row px-4 px-md-5">
+      <div class="col col-12 col-md-6 px-3 px-md-5 mb-4">
+        <h2 class="mb-4 mb-md-1"><%=video.title%></h2>
+        <div class="container-fluid p-0">
+          <div data-shaka-player-container style="max-width: 40em;">
+            <video autoplay data-shaka-player id="video" style="width: 100%; height: 100%;"></video>
+          </div>
         </div>
-      </li>
-      <%}%>
-					
-				<%})%>
-    </ul>
+
+        <input type="text" id="filePath" style="display:none" value=<%= video.filePath %> />
+        <br>
+
+        <div class="container p-0 pt-3 mb-4">
+          <form id="add-bookmark-form" action="/video/<%=video._id%>/" method="POST" style="display: none;">
+            <input class="form-control" id="time" type="text" name="time" style="display: none;">
+            <div class="form-group ">
+              <input class="form-control" id="text" type="text" name="text" placeholder="Bookmark" required>
+              <button class="btn btn-warning pull-right" id="create">Add</button>
+            </div>
+
+          </form>
+
+          <div id="linkHeader">
+            <span>Bookmarks:</span>
+            <button type="button" id="bookmark" class="btn btn-warning" style="margin-top:-5px;"><i class="fa fa-bookmark-o"
+              aria-hidden="true"></i></button>
+          </div>
+          <div id="linkWrapper" class='d-flex flex-wrap'>
+            <%bookmarks.forEach(function(bookmark){%>
+            <%if(bookmark.video._id.equals(video._id)){%>
+            <div class="p-2 bookmark">
+              <span class="gotoBookmark" style="cursor: pointer;"><%=bookmark.timestamp%></span>  
+              <span><%=bookmark.text%></span>
+              <form style="display: inline" method="POST"
+                  action="/courses/<%=course._id%>/video/<%=video._id%>/bookmark/<%=bookmark._id%>" class="delete-item-form">
+                  <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+              </form>
+            </div>
+            <%}%>  
+            <%})%>
+          </div>
+          <!-- <ul class="list-group" id="bookmark-list">
+            <%bookmarks.forEach(function(bookmark){%>
+            <%if(bookmark.video._id.equals(video._id)){%>
+            <li class="list-group-item" style="padding-bottom: 15px;">
+              <span class="gotoBookmark" style="cursor: pointer;"><strong><%=bookmark.timestamp%></strong></span> :
+              <%=bookmark.text%>
+              <div class="pull-right">
+                <form style="display: inline" method="POST"
+                  action="/courses/<%=course._id%>/video/<%=video._id%>/bookmark/<%=bookmark._id%>" class="delete-item-form">
+                  <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                </form>
+              </div>
+            </li>
+            <%}%>
+                
+              <%})%>
+          </ul> -->
+        </div>
+      </div>
+      <div class="col col-12 col-md-6 mr-auto d-flex flex-column">
+        <div id="vid-header" class="d-flex pl-2 pl-lg-0">
+          <span class="mr-auto">CONTENTS</span>
+          <span class="d-none d-sm-inline">30 Lessons</span>
+          <span>20 hrs</span>
+        </div>
+        <div id="vid-wrapper" class="container-fluid p-1 pr-3">
+          <div class=" px-2 py-3 px-sm-3 py-sm-3">
+            <span class="mr-auto">1. Introduction</span>
+            <span class="mr-auto mr-sm-5">45 mins</span>
+            <a><img src="/images/play-button.png" alt='play'></a>
+          </div>
+          <div class=" px-2 py-3 px-sm-3 py-sm-3">
+            <span class="mr-auto">1. Introduction</span>
+            <span class="mr-auto mr-sm-5">45 mins</span>
+            <a><img src="/images/play-button.png" alt='play'></a>
+          </div>
+          <div class=" px-2 py-3 px-sm-3 py-sm-3">
+            <span class="mr-auto">1. Introduction</span>
+            <span class="mr-auto mr-sm-5">45 mins</span>
+            <a><img src="/images/play-button.png" alt='play'></a>
+          </div>
+          <div class=" px-2 py-3 px-sm-3 py-sm-3">
+            <span class="mr-auto">1. Introduction</span>
+            <span class="mr-auto mr-sm-5">45 mins</span>
+            <a><img src="/images/play-button.png" alt='play'></a>
+          </div>
+          <div class=" px-2 py-3 px-sm-3 py-sm-3">
+            <span class="mr-auto">1. Introduction</span>
+            <span class="mr-auto mr-sm-5">45 mins</span>
+            <a><img src="/images/play-button.png" alt='play'></a>
+          </div>
+          <div class=" px-2 py-3 px-sm-3 py-sm-3">
+            <span class="mr-auto">1. Introduction</span>
+            <span class="mr-auto mr-sm-5">45 mins</span>
+            <a><img src="/images/play-button.png" alt='play'></a>
+          </div>
+          <div class=" px-2 py-3 px-sm-3 py-sm-3">
+            <span class="mr-auto">1. Introduction</span>
+            <span class="mr-auto mr-sm-5">45 mins</span>
+            <a><img src="/images/play-button.png" alt='play'></a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -92,7 +158,6 @@
       } else {
         timeStamp = min + ":" + sec;
       }
-      document.getElementById("time").value = timeStamp;
     });
 
     $(".delete-item-form").submit(function (e) {
@@ -100,7 +165,7 @@
       var confirmResponse = confirm("Are you sure?");
       if (confirmResponse) {
         var actionUrl = $(this).attr("action");
-        var $itemToDelete = $(this).closest(".list-group-item");
+        var $itemToDelete = $(this).closest(".bookmark");
         $.ajax({
           url: actionUrl,
           type: "DELETE",
@@ -124,15 +189,14 @@
         "/courses/<%=course._id%>/video/<%=video._id%>",
         bookmarkItem,
         function (data) {
-          $("#bookmark-list").append(
-            `<li class="list-group-item">
-                    <span class="gotoBookmark" style="cursor: pointer;"><strong>${data.bookmark.timestamp}</strong><span>  : ${data.bookmark.text}
-                    <div class="pull-right">
-                    <form style="display: inline" method="POST" action="/courses/${data.course._id}/video/${data.video._id}/bookmark/${data.bookmark._id}" class="delete-item-form">
-                        <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                    </form>
-                    </div>
-                </li>`
+          $("#linkWrapper").append(
+              `<div class="p-2">
+              <span class="gotoBookmark" style="cursor: pointer;">${data.bookmark.timestamp}  ${data.bookmark.text}</span>
+              <form style="display: inline" method="POST"
+                  action="/courses/${data.course._id}/video/${data.video._id}/bookmark/${data.bookmark._id}" class="delete-item-form">
+                  <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+              </form>
+            </div>`
           );
 
           $(".delete-item-form").submit(function (e) {
@@ -155,8 +219,6 @@
           });
         }
       );
-
-      $(this).find("#text").val("");
     });
 
     $(".gotoBookmark").click(function () {

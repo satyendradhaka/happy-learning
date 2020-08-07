@@ -141,7 +141,7 @@ header .badge{
 	height:0px;
 	flex:1;
 	max-height:45vh;
-	border-radius:2rem;
+	border-radius:0.5rem;
 }
 
 #vid-wrapper::-webkit-scrollbar{
