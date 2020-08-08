@@ -66,11 +66,11 @@ router.post("/video/:video_id/", async (req, res, next) => {
         return courseItem.course == req.params.id;
       });
 
-      let newBookmark = {
+      let newBookmark = user.enrolled_courses[courseIndex].Bookmarks.create({
         video: mongoose.Types.ObjectId(req.params.video_id),
         timestamp: req.body.time,
         text: req.body.text,
-      };
+      });
 
       user.enrolled_courses[courseIndex].Bookmarks.push(newBookmark);
 

@@ -1,16 +1,73 @@
-<form action="/courses/search" method="get">
-    <input type="text" name="dsearch" placeholder="search courses">
-    <button type="submit">search</button>
-    </form>
+<!DOCTYPE html>
+<html>
+<head> 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Video streaming with Node.js</title> 
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/allcourses.css" type="text/css">
+</head> 
+<body> 
+   <div class="container">
+      <% if(error && error.length > 0){ %>
+        <div class="alert alert-danger" role="alert">
+            <%= error %>
+        </div>
+      <% } %>
+      <% if(success && success.length > 0){ %>
+        <div class="alert alert-success" role="alert">
+            <%= success %>
+        </div>
+      <% } %>
+    </div>
+  <%if(!currentUser){%>
+    <a href="/">Login</a>
+  <%} else{%>
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent d-flex pt-4 px-4">
+      <a href="#" class="ml-auto ml-md-0 mr-auto mb-4">
+        <img id="logo" src="/images/logo.png">
+      </a>
+        <div class="ml-auto mr-auto mr-md-5" id="navbarSupportedContent">
+            <a class="nav-link" href="/profile"><p><img src="/images/avatar.png" style="height:3rem"><!--<%=currentUser.name%>--></p></a>
+        </div>
+    </nav>
+    <br/>
+    <div class="container">
+      <form id="searchForm" action="/courses/search" method="get">
+        <div class="input-group">
+          <input type="text" class="form-control" name="dsearch" placeholder="find courses">
+        </div>
+      </form>
+    </div>
 
-<h1>search results</h1>
-<ul>
-    <%foundCourses.forEach(function(course){%>
-        <li>
-            <ol>
-                <li><a href="/courses/<%=course._id%>"><%=course.title%></a></li>
-                <li><%=course.author%></li>
-            </ol>
-        </li>
-    <%})%>
-</ul>
+    <div class="container py-5"  id="main">
+      <div class="container d-flex" style="justify-content: center" >
+        <h2 id="heading">Search Results</h2>
+        <br/>
+      </div>
+      <div class="container d-flex" style="flex-wrap: wrap; justify-content: center;">
+        <%foundCourses.forEach(function(course){%>
+          <a href="/courses/<%=course._id%>" style="text-decoration: none;">
+            <div id="courseCard" class="card border-light">
+              <img class="card-img-top" src="/images/general.png" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title"><%=course.title%></h5>
+                <p class="card-text">An introduction to the interesting concepts of <%=course.title%></p>
+                <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+              </div>
+            </div>
+          </a>
+        <%})%>
+      </div>
+    </div>
+  <%}%>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<!-- Custom Scripts -->
+<script src="/js/home.js"></script>
+</body> 
+</html>
