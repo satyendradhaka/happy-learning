@@ -106,7 +106,7 @@ router.post("/login", passport.authenticate("local",
     failureRedirect: '/'
   }), function (req, res) {
     if (req.user.isverified) {
-      res.redirect('/courses')
+      res.redirect('/')
     }
     else {
       console.log("inside not verified")
@@ -240,7 +240,7 @@ router.get("/developers", function (req, res) {
 
 //middleware
 function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() & req.user.isverfied) {
     return next();
   }
   res.redirect("/");
