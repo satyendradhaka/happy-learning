@@ -32,10 +32,12 @@ router.post("/courses", isAdmin, function (req, res) {
   //data from form
   var title = req.body.title;
   var author = req.body.author;
-  var newCourse = { title: title, author: author };
+  var description = req.body.description;
+  var newCourse = { title: title, author: author, description: description };
   Course.create(newCourse, function (err, newlyCreated) {
     if (err) {
       console.log(err);
+      return res.redirect("/admin/courses")
     } else {
       res.redirect("/admin/courses");
     }
