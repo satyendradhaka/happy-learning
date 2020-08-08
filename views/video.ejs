@@ -95,6 +95,13 @@
           <span>20 hrs</span>
         </div>
         <div id="vid-wrapper" class="container-fluid p-1 pr-3">
+          <%course.videos.forEach(function(video,index){%>
+          <div class=" px-2 py-3 px-sm-3 py-sm-3">
+            <span class="mr-auto"><%=index+1%>. <%=video.title%></span>
+            <span class="mr-auto mr-sm-5">45 mins</span>
+            <a href="/courses/<%=course._id%>/video/<%=video._id%>"><img src="/images/play-button.png" alt='play'></a>
+          </div>
+          <%})%>
           <div class=" px-2 py-3 px-sm-3 py-sm-3">
             <span class="mr-auto">1. Introduction</span>
             <span class="mr-auto mr-sm-5">45 mins</span>
