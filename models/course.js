@@ -5,7 +5,7 @@ let courseSchema = new Schema({
 	title: { type: String, required: true },
 	author: {type: String, required: true},
 	topics: [String],
-	description: String,
+	description: {type: String, required: true},
 	videos: [{ type: mongoose.ObjectId, ref: 'Media' }]
 })
 
