@@ -19,6 +19,7 @@ A learning platform for the campus, access to courses scraped by SWC, Blogs, Kee
    - *Frameworks* : NodeJs, HTML , CSS , JavaScript
    - *email* : ritvika@iitg.ac.in
 
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -33,6 +34,11 @@ https://happy-learning-swc.herokuapp.com/
 =======
 [Website is hosted currently here:] https://happy-learning-swc.herokuapp.com/
 >>>>>>> parent of 5224aa3... Update README.md
+=======
+## Website is hosted currently here: 
+https://happy-learning-swc.herokuapp.com/
+
+>>>>>>> f43fdc3cb29b25e6c9fc98563919edcc9f38c1d9
    
 
    

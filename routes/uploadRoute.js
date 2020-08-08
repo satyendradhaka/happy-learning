@@ -118,7 +118,7 @@ router.post("/courses/:id", isAdmin, (req, res) => {
       .on("end", function () {
         //res.send('success');
 
-        getVideoDurationInSeconds(dirname.dirpath + '/assets/videos/Machine Learning.mp4').then((duration) => {
+        getVideoDurationInSeconds(sourcefn).then((duration) => {
           Course.findById(req.params.id, function (err, foundCourse) {
             if (err) throw err;
 
