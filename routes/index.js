@@ -25,9 +25,6 @@ router.get('/profile', isLoggedIn, async (req, res) => {
 });
 
 router.get('/', function (req, res) {
-  if (req.isAuthenticated()) {
-    return res.redirect("/courses")
-  }
   res.render('home')
 });
 
