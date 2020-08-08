@@ -17,7 +17,7 @@
             <br>
             <strong>Total No. of videos</strong> : <%=course.videos.length%></p>
         <br>
-        <form action="/admin/courses/<%=course._id%>?_method=DELETE">
+        <form action="/admin/courses/<%=course._id%>?_method=DELETE" method="POST">
         <button type="submit">DELETE</button>
         </form>
         <a href="/admin/courses/<%=course._id%>/edit">Edit course</a>
