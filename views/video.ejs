@@ -158,6 +158,7 @@
       } else {
         timeStamp = min + ":" + sec;
       }
+      document.getElementById("time").value = timeStamp;
     });
 
     $(".delete-item-form").submit(function (e) {
@@ -191,7 +192,8 @@
         function (data) {
           $("#linkWrapper").append(
               `<div class="p-2">
-              <span class="gotoBookmark" style="cursor: pointer;">${data.bookmark.timestamp}  ${data.bookmark.text}</span>
+              <span class="gotoBookmark" style="cursor: pointer;">${data.bookmark.timestamp}</span>
+              <span>${data.bookmark.text}</span>
               <form style="display: inline" method="POST"
                   action="/courses/${data.course._id}/video/${data.video._id}/bookmark/${data.bookmark._id}" class="delete-item-form">
                   <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
