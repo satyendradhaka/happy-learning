@@ -129,11 +129,17 @@ router.put("/courses/:id", isAdmin, function (req, res) {
 });
 //route for deleting course
 router.delete("/courses/:id/delete", isAdmin, function(req, res){
-  Media.find({course: req.params.id}, function(err, foundCourses){
+  Media.find({course: req.params.id}, function(err, foundVideos){
     if (err){
       console.log(err)
     }
-    console.log(foundCourses)
+    foundVideos.forEach(video){
+      fs.unlinkSync(video.filePath, function (err){
+        if(err){
+          console.log(err)
+        }
+      })
+    }
   })
   Media.deleteMany({course: req.params.id}, function (err){
     if (err){
