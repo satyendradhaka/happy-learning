@@ -3,7 +3,7 @@ let router = express.Router();
 let Course = require("../models/course");
 let Media = require("../models/media");
 let User = require("../models/user");
-
+var fs = require("fs");
 
 //home page route for admin
 router.get("/", isAdmin, function (req, res) {
@@ -127,6 +127,19 @@ router.put("/courses/:id", isAdmin, function (req, res) {
     }
   });
 });
+//route for deleting course
+router.delete("/courses/:id/delete", isAdmin, function(req, res){
+    Course.findByIdAndRemove(req.params.id, function (err){
+      if(err){
+        console.log(err)
+        return res.redirect("/admin/courses/"+req.params.id)
+      }
+      console.log("course deleted")
+      res.redirect("/admin/courses")
+    })
+})
+
+
 
 //view all users
 router.get("/users", isAdmin, async (req, res, next) => {
