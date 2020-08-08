@@ -11,6 +11,7 @@ const { getVideoDurationInSeconds } = require('get-video-duration')
 let Course = require("../models/course");
 let Media = require("../models/media");
 
+//multer config
 let storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let dir = dirname.dirpath + "/assets/videos";
@@ -140,6 +141,12 @@ router.post("/courses/:id", isAdmin, (req, res) => {
                 foundCourse.videos.push(newlyCreated);
                 foundCourse.save();
                 console.log(newlyCreated);
+                fs.unlinkSync("assets/videos/"+req.files.video[0].originalname, function (err){
+                  if(err){
+                    console.log(err)
+                  }
+                  console.log("raw file deleted and mpd file created")
+                })
                 res.redirect("/admin/courses/" + req.params.id);
               }
             });
