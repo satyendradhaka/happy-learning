@@ -133,7 +133,16 @@ router.delete("/courses/:id/delete", isAdmin, function(req, res){
     if (err){
       console.log(err)
     }
-    foundVideos.forEach(video){
+    // foundVideos.forEach(video){
+    //   fs.unlinkSync(video.filePath, function (err){
+    //     if(err){
+    //       console.log(err)
+    //     }
+    //   })
+    // }
+    l=foundVideos.length;
+    for (var i=0; i<l; i++){
+      video=foundVideos[i]
       fs.unlinkSync(video.filePath, function (err){
         if(err){
           console.log(err)
