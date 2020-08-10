@@ -175,6 +175,11 @@ header .badge{
 	margin-right:3rem;
 }
 
+#enrolForm{
+	font-family:'Roboto',sans-serif;
+	font-weight:400;
+}
+
 #course-desc{
 	font-weight:300;
 }

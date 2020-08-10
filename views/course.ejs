@@ -2,13 +2,13 @@
 <html>
 <head>
 	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&family=Rubik:wght@300;400;500&display=swap" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="/css/course.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+		<!-- Fonts -->
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Rubik:wght@300;400;500&display=swap" rel="stylesheet">
+		<!-- Custom CSS -->
+		<link rel="stylesheet" type="text/css" href="/css/course.css">
 	<title>Course Page</title>
 </head>
 <body class="p-3 p-sm-4">
@@ -16,8 +16,8 @@
 		<header class="px-3 pl-lg-3 pr-lg-5">
 			<nav class="navbar navbar-expand-lg d-flex">
 				<div class="mr-auto">
-				   <a href="/courses"><button id="backButton"><img src="/images/left-arrow.png"></button></a>
-				   <span>Dashboard</span>
+					 <a href="/courses"><button id="backButton"><img src="/images/left-arrow.png"></button></a>
+					 <span>Dashboard</span>
 				</div>
 				<span class="d-none d-sm-inline">Welcome <%=currentUser.name%></span>
 				<a id="avatar" href="/profile"><img src="/images/avatar.png"></a>
@@ -36,7 +36,7 @@
 						<button id="enrol" class="btn btn-lg btn-dark ml-auto pl-4 pr-3 py-2 enrolled">Enrolled<img src="/images/tick-mark.png"></button>
 					<%} else{%>
 						<a href="/courses/<%=course._id%>/enrol" class="ml-auto">
-							<button id="enrol" class="btn btn-lg btn-dark px-4 py-2" onClick=>Enrol</button>
+							<button id="enrol" class="btn btn-lg btn-dark px-4 py-2">Enrol</button>
 						</a>
 					<%}%>
 				</div>
@@ -54,9 +54,37 @@
 					<div class=" px-2 py-3 px-sm-3 py-sm-3">
 						<span class="mr-auto"><%=index+1%>. <%=video.title%></span>
 						<span class="mr-auto mr-sm-5"><%=video.duration%></span>
-						<a href="/courses/<%=course._id%>/video/<%=video._id%>"><img src="/images/play-button.png" alt='play'></a>
+						<%if(!isEnrolled){%>
+							<a role="button" data-toggle="modal" data-target="#enrolModal">
+								<img src="/images/play-button.png" alt='play'>
+							</a>
+							<div class="modal fade" id="enrolModal" tabindex="-1" role="dialog">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<!-- <h5 class="modal-title" id="exampleModalLongTitle">Login to Existing Account</h5> -->
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<p>To start the course and watch the lesson, please enrol in the course</p>
+										</div>
+										<div class="modal-footer">
+											<a href="/courses/<%=course._id%>/enrol" class="ml-auto">
+												<button id="enrol" class="btn btn-lg btn-dark px-4 py-2">Enrol</button>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						<%}else{%>
+							<a href="/courses/<%=course._id%>/video/<%=video._id%>">
+								<img src="/images/play-button.png" alt='play'>
+							</a>
+							<%}%>
 					</div>
-			        <%})%>
+							<%})%>
 				</div>
 			</div>
 			<div id="course-desc" class="col col-4 d-none d-md-block">
@@ -66,16 +94,7 @@
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script src="/js/course.js"></script>
 </body>
 </html>
-<%/*%><!-- <body> 
-<%if(!currentUser){%>
-	<a href="/">Login</a>
-	<%} else{%>
-		<%media.forEach(function(video){%>
-            <div><a href="/courses/<%=course_id%>/video/<%=video._id%>"><%=video.title%></a></div>
-        <%})%>
-		<br>
-	<%}%>
-</body>  --><%*/%>
