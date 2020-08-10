@@ -103,7 +103,7 @@ router.post("/login", passport.authenticate("local",
     failureRedirect: '/'
   }), function (req, res) {
     if (req.user.isverified) {
-      res.redirect('/')
+      res.redirect('/profile')
     }
     else {
       console.log("inside not verified")
