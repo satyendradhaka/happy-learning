@@ -6,7 +6,7 @@
   <title>Video streaming with Node.js</title> 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&family=Rubik:wght@500&display=swap" rel="stylesheet">
   <!-- Custom CSS -->
   <link rel="stylesheet" href="/css/allcourses.css" type="text/css">
 </head> 
@@ -30,8 +30,9 @@
       <a href="/" class="ml-auto ml-md-0 mr-auto mb-4">
         <img id="logo" src="/images/logo.png">
       </a>
-        <div class="ml-auto mr-auto mr-md-5" id="navbarSupportedContent">
-            <a class="nav-link" href="/profile"><p><img src="/images/avatar.png" style="height:3rem"><!--<%=currentUser.name%>--></p></a>
+        <div  id="links" class="ml-auto mr-auto mr-md-5 mb-4" id="navbarSupportedContent">
+          <a href="/courses" class="mx-3" style="color:black;font-family: 'Rubik',sans-serif; font-size:1.1rem; font-weight:500">Back</a>
+          <a href="/profile" class="mr-0"><img src="/images/avatar.png" style="height:3rem;"></a>
         </div>
     </nav>
     <br/>
