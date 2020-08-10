@@ -31,6 +31,10 @@
     <img id="logo" src="/images/logo.png">
   </a>
   <div id="menu">
+    <%if(currentUser){%>
+    <a href="/courses"><button class="btn btn-outline-dark btn-lg px-5 home-nav-button d-none d-md-inline ml-auto" role="button" style="margin:9px;">Courses</button></a>
+    <a href="/logout"><button class="btn btn-outline-dark btn-lg px-5 home-nav-button d-none d-md-inline ml-auto" role="button" style="margin:9px;">Logout</button></a>
+    <%}else{%>
     <!-- Login button -->
     <button class="btn btn-outline-dark btn-lg px-5 home-nav-button d-none d-md-inline ml-auto" data-toggle="modal" data-target="#loginModal" role="button" style="margin:9px;">Login</button>
     <!-- Login modal -->
@@ -99,6 +103,7 @@
         </div>
       </div>
     </div>
+    <%}%>
   </div>
 </nav>
 
@@ -124,8 +129,14 @@
     </div>
   </div>
 </div>
-<nav class="navbar navbar-expand-lg d-flex d-md-none p-0 justify-content-center" style="postion:absolute; bottom:0" ><button class="btn btn-outline-dark btn-lg px-5 home-nav-button rounded-0" style="flex:1" data-toggle="modal" data-target="#loginModal" role="button">Login</button>
-<button class="btn btn-outline-dark btn-lg px-5 home-nav-button rounded-0" style="flex:1;white-space: nowrap;" data-toggle="modal" data-target="#signUpModal" role="button">Sign Up</button>
+<nav class="navbar navbar-expand-lg d-flex d-md-none p-0 justify-content-center">
+  <%if(currentUser){%>
+    <a href="/courses" style="display:block;flex:1"><button class="btn btn-outline-dark btn-lg px-5 home-nav-button rounded-0" style="width: 100%;" data-toggle="modal" data-target="#loginModal" role="button">Courses</button></a>
+    <a href="/logout" style="display:block;flex:1"><button class="btn btn-outline-dark btn-lg px-5 home-nav-button rounded-0" style="width:100%" data-toggle="modal" data-target="#loginModal" role="button">Logout</button></a>
+  <%}else{%>
+  <button class="btn btn-outline-dark btn-lg px-5 home-nav-button rounded-0" style="flex:1" data-toggle="modal" data-target="#loginModal" role="button">Login</button>
+  <button class="btn btn-outline-dark btn-lg px-5 home-nav-button rounded-0" style="flex:1;white-space: nowrap;" data-toggle="modal" data-target="#signUpModal" role="button">Sign Up</button>
+  <%}%>
 </nav>
 
 

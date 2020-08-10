@@ -4,6 +4,8 @@ body{
 	background-size:cover;
 	background-repeat: no-repeat;
 	font-family:'Roboto',sans-serif;
+	min-height:100vh;
+	position:relative;
 }
 
 #hp{
