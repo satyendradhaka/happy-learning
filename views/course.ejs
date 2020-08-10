@@ -53,48 +53,20 @@
 					<%media.forEach(function(video,index){%>
 					<div class=" px-2 py-3 px-sm-3 py-sm-3">
 						<span class="mr-auto"><%=index+1%>. <%=video.title%></span>
-						<span class="mr-auto mr-sm-5">45 mins</span>
+						<span class="mr-auto mr-sm-5"><%=video.duration%></span>
 						<a href="/courses/<%=course._id%>/video/<%=video._id%>"><img src="/images/play-button.png" alt='play'></a>
 					</div>
 			        <%})%>
-					<div class=" px-2 py-3 px-sm-3 py-sm-3">
-						<span class="mr-auto">1. Introduction</span>
-						<span class="mr-auto mr-sm-5">45 mins</span>
-						<a><img src="/images/play-button.png" alt='play'></a>
-					</div>
-					<div class=" px-2 py-3 px-sm-3 py-sm-3">
-						<span class="mr-auto">1. Introduction</span>
-						<span class="mr-auto mr-sm-5">45 mins</span>
-						<a><img src="/images/play-button.png" alt='play'></a>
-					</div>
-					<div class=" px-2 py-3 px-sm-3 py-sm-3">
-						<span class="mr-auto">1. Introduction</span>
-						<span class="mr-auto mr-sm-5">45 mins</span>
-						<a><img src="/images/play-button.png" alt='play'></a>
-					</div>
-					<div class=" px-2 py-3 px-sm-3 py-sm-3">
-						<span class="mr-auto">1. Introduction</span>
-						<span class="mr-auto mr-sm-5">45 mins</span>
-						<a><img src="/images/play-button.png" alt='play'></a>
-					</div>
-					<div class=" px-2 py-3 px-sm-3 py-sm-3">
-						<span class="mr-auto">1. Introduction</span>
-						<span class="mr-auto mr-sm-5">45 mins</span>
-						<a><img src="/images/play-button.png" alt='play'></a>
-					</div>
-					<div class=" px-2 py-3 px-sm-3 py-sm-3">
-						<span class="mr-auto">1. Introduction</span>
-						<span class="mr-auto mr-sm-5">45 mins</span>
-						<a><img src="/images/play-button.png" alt='play'></a>
-					</div>
 				</div>
 			</div>
 			<div id="course-desc" class="col col-4 d-none d-md-block">
 				<span>About</span>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi error ipsam blanditiis nesciunt voluptatibus eum quasi, impedit labore unde culpa libero, repellat odit numquam saepe aperiam. Magni ad perspiciatis deleniti.</p>
+				<p><%=course.description%></p>
 			</div>
 		</div>
 	</div>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+	<script src="/js/course.js"></script>
 </body>
 </html>
 <%/*%><!-- <body> 
