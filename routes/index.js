@@ -237,7 +237,7 @@ router.get("/developers", function (req, res) {
 
 //middleware
 function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated() & req.user.isverfied) {
+  if (req.isAuthenticated() & req.user.isverified) {
     return next();
   }
   res.redirect("/");
