@@ -10,6 +10,34 @@ $(document).ready(function(){
 	})
 	$('#vid-header>span:last-child').text(getFormattedTime(total))
 	$('#vid-header>span:nth-of-type(2)').text(`${lessons} Lessons`)
+
+	let prev={
+		img:undefined,
+		vid:undefined
+	}
+	$("#vid-wrapper>div").click(async function(){
+		const {img:pimg,vid:pvid}=prev
+		if($(this).hasClass('selected')){
+			prev.img=undefined
+			prev.vid=undefined
+			$(this).removeClass('selected')
+			await pimg.slideUp().promise()
+			pimg.remove()
+			return;
+		}
+		let img=$(this).children(".thumbnail").clone()
+		prev.img=img
+		prev.vid=$(this)
+		$('#course-desc').prepend(img)
+		$(this).addClass('selected')
+		if(pimg && pvid){
+			pvid.removeClass('selected')
+			await Promise.all([pimg.slideUp().promise(),img.slideDown().promise()])
+			pimg.remove()
+			return;
+		}
+		img.slideDown()
+	})
 })
 
 function getFormattedTime(t){
