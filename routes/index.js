@@ -147,7 +147,7 @@ router.get("/register/resetToken", function (req, res) {
 })
 
 router.get("/login/forgot", function (req, res) {
-  res.render("forgot")
+  res.render("forgot",{sentLink:false})
 })
 
 router.post("/login/forgot", function (req, res) {
@@ -155,6 +155,7 @@ router.post("/login/forgot", function (req, res) {
     if (!user) {
       console.log("user not found")
       res.redirect('/login/forgot')
+      return;
     }
     user.passwordResetToken = crypto.randomBytes(16).toString('hex')
     user.passwordResetExpires = Date.now() + 3600000
@@ -175,7 +176,7 @@ router.post("/login/forgot", function (req, res) {
     var mailOptions = { from: process.env.GmailUser, to: user.username, subject: 'Password reset request for your account on happylearning', text: 'Hello,\n\n' + 'Please reset your account password by clicking the link: \nhttp:\/\/' + req.headers.host + '\/login\/forgot\/confirmation\/' + user.passwordResetToken + '.\n' };
     transporter.sendMail(mailOptions, function (err) {
       if (err) { return res.status(500).send({ msg: err.message }); }
-      res.send("an email has been sent to your registered email address with further instructions, please check your junk folder also")
+      res.render("forgot",{sentLink:true})
     });
   })
 })
