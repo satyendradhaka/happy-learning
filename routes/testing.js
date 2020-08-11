@@ -111,7 +111,7 @@ router.get('/courses', async(req,res,next)=>{
 
 //search implementation
 router.get("/courses/search", function (req, res){
-  Course.find({$or: [{author:{'$regex':req.query.dsearch}}, {title: {'$regex':req.query.dsearch}}, {topics:{'$regex':req.query.dsearch}}]}, function(err, foundCourses){
+  Course.find({$or: [{author:{'$regex':req.query.dsearch, '$options' : 'i'}}, {title: {'$regex':req.query.dsearch, '$options' : 'i'}}, {topics:{'$regex':req.query.dsearch, '$options' : 'i'}}]}, function(err, foundCourses){
     if(err){
       console.log(err);
       return res.redirect('back')
