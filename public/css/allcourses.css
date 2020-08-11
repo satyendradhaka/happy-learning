@@ -77,3 +77,14 @@ background-position: center;
   transform: scale(1) translateZ(0);
   box-shadow: 0 15px 24px rgba(0,0,0,0.15),
 }
+
+#courseCard p{
+  max-height:90%;
+  overflow:hidden;
+  text-align: justify-all;
+  display:block;
+  display:-webkit-box;
+  -webkit-line-clamp:6;
+  -webkit-box-orient:vertical;
+  text-overflow:ellipsis;
+}
