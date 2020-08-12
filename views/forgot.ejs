@@ -1,6 +1,32 @@
-<h1>forgot password page</h1>
-
-<form action="/login/forgot" method="post">
-<input type="email" name="username" placeholder="email">
-<input type="submit" value="enter">
-</form>
+<!DOCTYPE html>
+<html>
+<head> 
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Video streaming with Node.js</title> 
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="/css/forgot.css" type="text/css">
+</head>
+<body>
+	<div class="container d-flex m-auto align-items-center h-100">
+		<div class="col col-12 col-md-9 col-lg-6 mx-auto p-4 p-sm-5">
+			<%if(sentLink){%>
+				<p class='text-center'>A password reset link has been sent to your email account. Please check the junk folder as well.</p>
+			<%}else{%>
+				<p>We'll send you a link to reset your password</p>
+				<form action="/login/forgot" method="post">
+					<div class="form-group">
+						<label for="emailId">IITG email connected with the Account</label>
+						<input id="emailId" type="email" class="form-control" name="username" placeholder="Enter email">
+						<small class="form-text text-muted">Please include @iitg.ac.in</small>
+					</div>
+					<button type="submit" class="btn btn-dark">Send Link</button>
+				</form>
+			<%}%>
+		</div>
+	</div>
+</body>
+</html>
