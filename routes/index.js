@@ -145,6 +145,7 @@ router.get("/register/resetToken", function (req, res) {
   }
   if(req.user.isverified){
     req.flash("error", "user already verified")
+    res.redirect('/')
   }
   var token = new Token({ _userId: req.user._id, token: crypto.randomBytes(16).toString('hex') });
   token.save(function (err) {
@@ -172,10 +173,7 @@ router.get("/register/resetToken", function (req, res) {
       });
      }
      req.flash("success", "an email has been sent to verify email address, please check your inbox, if not in inbox then in junk box")
-     req.session.destroy(function (err) {
-      req.logOut();
-      res.redirect('/');
-    });
+     res.redirect("/")
   });
 
 })
