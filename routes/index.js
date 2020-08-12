@@ -34,18 +34,26 @@ router.get('/', function (req, res) {
 router.post("/register", function (req, res) {
   if (!req.body.username.includes("@iitg.ac.in")) {
     console.log("enter your outlook id")
+    req.flash("error", "use your iitg outlook id")
     return res.redirect("/")
+  }
+  if(req.body.password.length<8){
+    console.log("password must be of minimum 8 length")
+    req.flash("error", "Password must be of 8 lengths")
+    res.redirect("/")
   }
   var newUser = new User({ username: req.body.username, name: req.body.name })
   User.register(newUser, req.body.password, function (err, user) {
     if (err) {
       console.log(err)
-      res.redirect('/');
+			req.flash("error", err.message);
+			return res.redirect("/");
     }
     var token = new Token({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') });
     token.save(function (err) {
       if (err) {
         console.log(err)
+        req.flash("error", "otp generation failed, please login and try again")
         return res.send("token not saved")
       }
     })
@@ -60,8 +68,12 @@ router.post("/register", function (req, res) {
     });
     var mailOptions = { from: process.env.GmailUser, to: user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n' };
     transporter.sendMail(mailOptions, function (err) {
-      if (err) { return res.status(500).send({ msg: err.message }); }
-      res.send("an email has been sent to verify your email address")
+      if (err) { 
+        req.flash("error", "verification email not send, if the error is persistance please contact SWC")
+        res.redirect("/")
+       }
+      req.flash("success", "verification email sent, please check your inbox and junk mails too")
+      res.redirect("/")
     });
   })
 })
@@ -71,15 +83,18 @@ router.get('/register/confirmation/:id', function (req, res) {
   Token.findOne({ token: req.params.id }, function (err, token) {
     if (!token) {
       console.log("token not found")
-      res.send("not verified, token expired or incorrect token")
+      req.flash("error", "link expired, please try again")
+      res.redirect("/")
     }
     User.findOne({ _id: token._userId }, function (err, user) {
       if (!user) {
         console.log("user not found for this token")
+        req.flash("error", "invalid link, no user registered")
         res.redirect("/")
       }
       if (user.isverfied) {
         console.log("user already verified")
+        req.flash("success", "user verified succesfully, please login and enjoy the courses")
         res.redirect("/")
       }
 
@@ -100,13 +115,16 @@ router.get('/register/confirmation/:id', function (req, res) {
 //login route
 router.post("/login", passport.authenticate("local",
   {
-    failureRedirect: '/'
+    failureRedirect: '/',
+    failureFlash: true
   }), function (req, res) {
     if (req.user.isverified) {
+      req.flash("success", "welcome to happy learning")
       res.redirect('/profile')
     }
     else {
       console.log("inside not verified")
+      req.flash("error", "user not verified")
       res.redirect('/register/resetToken')
     }
   });
@@ -114,6 +132,7 @@ router.post("/login", passport.authenticate("local",
 router.get('/logout', function (req, res) {
   req.session.destroy(function (err) {
     req.logOut();
+    req.flash("success", "logged out successfully")
     res.redirect('/');
   });
 });
@@ -121,13 +140,18 @@ router.get('/logout', function (req, res) {
 
 router.get("/register/resetToken", function (req, res) {
   if (!req.isAuthenticated()) {
+    req.flash("error", "please login first")
     res.redirect('/')
+  }
+  if(req.user.isverified){
+    req.flash("error", "user already verified")
   }
   var token = new Token({ _userId: req.user._id, token: crypto.randomBytes(16).toString('hex') });
   token.save(function (err) {
     if (err) {
       console.log(err)
-      return res.send("token not saved")
+      req.flash("error", "verification link not generated")
+      return res.redirect("/")
     }
   });
   var transporter = nodemailer.createTransport({
@@ -140,8 +164,18 @@ router.get("/register/resetToken", function (req, res) {
   });
   var mailOptions = { from: process.env.GmailUser, to: req.user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n' };
   transporter.sendMail(mailOptions, function (err) {
-    if (err) { return res.status(500).send({ msg: err.message }); }
-    res.send("an email has been sent to verify your email address")
+    if (err) { 
+      req.flash("error", "verification email not sent please try again if error is perisistance contact SWC")
+      req.session.destroy(function (err) {
+        req.logOut();
+        res.redirect('/');
+      });
+     }
+     req.flash("success", "an email has been sent to verify email address, please check your inbox, if not in inbox then in junk box")
+     req.session.destroy(function (err) {
+      req.logOut();
+      res.redirect('/');
+    });
   });
 
 })

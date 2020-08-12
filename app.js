@@ -14,6 +14,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const nodemailer = require('nodemailer');
 const LocalStrategy = require("passport-local");
+const flash= require("connect-flash");
 const passportLocalMongoose = require("passport-local-mongoose");
 //Requiring Routes
 const streamRoutes = require("./routes/streaming");
@@ -21,7 +22,7 @@ const indexRoutes = require("./routes/index");
 const testingRoutes = require("./routes/testing");
 const adminRoutes = require("./routes/adminRoutes");
 const uploadRoute = require("./routes/uploadRoute");
-const flash= require("connect-flash");
+
 
 //mongoose setup
 mongoose.connect(url, {
