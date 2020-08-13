@@ -34,26 +34,26 @@ router.get('/', function (req, res) {
 router.post("/register", function (req, res) {
   if (!req.body.username.includes("@iitg.ac.in")) {
     console.log("enter your outlook id")
-    req.flash("error", "use your iitg outlook id")
+    req.flash("regError", "use your iitg outlook id")
     return res.redirect("/")
   }
   if(req.body.password.length<8){
     console.log("password must be of minimum 8 length")
-    req.flash("error", "Password must be of 8 lengths")
+    req.flash("regError", "Password must be of 8 lengths")
     res.redirect("/")
   }
   var newUser = new User({ username: req.body.username, name: req.body.name })
   User.register(newUser, req.body.password, function (err, user) {
     if (err) {
       console.log(err)
-			req.flash("error", err.message);
+			req.flash("regError", err.message);
 			return res.redirect("/");
     }
     var token = new Token({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') });
     token.save(function (err) {
       if (err) {
         console.log(err)
-        req.flash("error", "otp generation failed, please login and try again")
+        req.flash("verfError", "otp generation failed, please login and try again")
         return res.send("token not saved")
       }
     })
@@ -69,7 +69,7 @@ router.post("/register", function (req, res) {
     var mailOptions = { from: process.env.GmailUser, to: user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n' };
     transporter.sendMail(mailOptions, function (err) {
       if (err) { 
-        req.flash("error", "verification email not send, if the error is persistance please contact SWC")
+        req.flash("verfError", "verification email not send, if the error is persistance please contact SWC")
         res.redirect("/")
        }
       req.flash("success", "verification email sent, please check your inbox and junk mails too")
@@ -83,13 +83,13 @@ router.get('/register/confirmation/:id', function (req, res) {
   Token.findOne({ token: req.params.id }, function (err, token) {
     if (!token) {
       console.log("token not found")
-      req.flash("error", "link expired, please try again")
+      req.flash("verfError", "link expired, please try again")
       res.redirect("/")
     }
     User.findOne({ _id: token._userId }, function (err, user) {
       if (!user) {
         console.log("user not found for this token")
-        req.flash("error", "invalid link, no user registered")
+        req.flash("verfError", "invalid link, no user registered")
         res.redirect("/")
       }
       if (user.isverfied) {
@@ -132,7 +132,7 @@ router.post("/login", passport.authenticate("local",
 router.get('/logout', function (req, res) {
   req.session.destroy(function (err) {
     req.logOut();
-    req.flash("success", "logged out successfully")
+    // req.flash("success", "logged out successfully")
     res.redirect('/');
   });
 });
@@ -179,13 +179,14 @@ router.get("/register/resetToken", function (req, res) {
 })
 
 router.get("/login/forgot", function (req, res) {
-  res.render("forgot",{sentLink:false})
+  res.render("forgot")
 })
 
 router.post("/login/forgot", function (req, res) {
   User.findOne({ username: req.body.username }, function (err, user) {
     if (!user) {
       console.log("user not found")
+      req.flash('error',"Account not found")
       res.redirect('/login/forgot')
       return;
     }
@@ -208,7 +209,8 @@ router.post("/login/forgot", function (req, res) {
     var mailOptions = { from: process.env.GmailUser, to: user.username, subject: 'Password reset request for your account on happylearning', text: 'Hello,\n\n' + 'Please reset your account password by clicking the link: \nhttp:\/\/' + req.headers.host + '\/login\/forgot\/confirmation\/' + user.passwordResetToken + '.\n' };
     transporter.sendMail(mailOptions, function (err) {
       if (err) { return res.status(500).send({ msg: err.message }); }
-      res.render("forgot",{sentLink:true})
+      req.flash('success',"A password reset link has been sent to your email account. Please check the junk folder as well.")
+      return res.redirect("forgot")
     });
   })
 })
@@ -245,7 +247,7 @@ router.post("/login/forgot/reset/:id", function (req, res) {
       })
     }
     else {
-      console.log("password don't match")
+      req.flash('error',"The entered passwords did not match")
       return res.redirect("back")
     }
     var transporter = nodemailer.createTransport({

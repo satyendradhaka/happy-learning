@@ -11,20 +11,6 @@
   <link rel="stylesheet" href="/css/home.css" type="text/css">
 </head> 
 <body> 
-  <div class="container">
-        
-        <% if(error && error.length > 0){ %>
-            <div class="alert alert-danger" role="alert">
-                <%= error %>
-            </div>
-        <% } %>
-        <% if(success && success.length > 0){ %>
-            <div class="alert alert-success" role="alert">
-                <%= success %>
-            </div>
-        <% } %>
-    </div>
-
 <nav class="navbar navbar-expand-md navbar-light d-flex p-4">
   <!-- Logo -->
   <a href="#" class="ml-auto ml-md-0 mr-auto">
@@ -57,7 +43,13 @@
                 <div class="form-group">
                   <label for="loginPasswordField">Password</label>
                   <input type="password" name="password" class="form-control" id="loginPasswordField" placeholder="Password">
+                  <%if(error && error.length>0){%>
+                    <small class="form-text text-danger">
+                      <%=error%>
+                    </small>
+                  <%}%>
                 </div>
+                <button id="loginSubmitButton" type="submit" style="display:none"></button>
             </form>
           </div>
           <div class="modal-footer">
@@ -83,18 +75,23 @@
               <form action="/register" method="post" id="regForm">
                 <div class="form-group">
                   <label for="regNameField">Name</label>
-                  <input type="text" name="name" class="form-control" id="regNameField" placeholder="Full name">
+                  <input type="text" name="name" class="form-control" id="regNameField" placeholder="Full name" required>
                   <small id="nameHelp" class="form-text text-muted">Enter your full name</small>
                 </div>
                 <div class="form-group">
-                  <label for="regEmailField">Email address</label>
+                  <label for="regEmailField">Email address (Username)</label>
                   <input type="email" name="username" class="form-control" id="regEmailField" aria-describedby="emailHelp" placeholder="Enter email">
                   <small id="emailHelp" class="form-text text-muted">Enter your registered IITG email with @iitg.ac.in</small>
                 </div>
                 <div class="form-group">
                   <label for="regPasswordField">Password</label>
                   <input type="password" name="password" class="form-control" id="regPasswordField" placeholder="Password" minlength="8">
+                  <small class="form-text text-muted">Must be 8 characters or more</small>
                 </div>
+                <%if(regError && regError.length>0){%>
+                <small class="form-text text-danger"><%=regError%></small>
+                <%}%>
+                <button class="hide" type="submit" id="regSubmitButton" style="display:none;"></button>
             </form>
           </div>
           <div class="modal-footer">
@@ -138,6 +135,27 @@
   <button class="btn btn-outline-dark btn-lg px-5 home-nav-button rounded-0" style="flex:1;white-space: nowrap;" data-toggle="modal" data-target="#signUpModal" role="button">Sign Up</button>
   <%}%>
 </nav>
+<div class="modal fade" id="flashModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <%if(success && success.length>0){%>
+            <p><%=success%></p>
+          <%}else if(verfError && verfError.length>0){%>
+            <p><%=verfError%></p>
+          <%}%>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="close btn btn-dark" data-dismiss="modal">Okay</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 <!-- BootStrap Scripts -->
@@ -146,6 +164,17 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 <!-- Custom Scripts -->
 <script src="/js/home.js"></script>
+<script>
+<%if(error && error.length>0){%>
+    $('#loginModal').modal()
+<%}else if(regError && regError.length>0){%>
+    $('#signUpModal').modal()
+<%} else if(success && success.length>0){%>
+    $('#flashModal').modal()
+<%} else if(verfError && verfError.length>0){%>
+    $('#flashModal').modal()
+<%}%>
+</script>
 </body>
 </html>
 

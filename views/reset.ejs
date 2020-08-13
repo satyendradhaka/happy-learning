@@ -22,8 +22,15 @@
 					</div>
 					<div class="form-group">
 						<label for="conPass">Re-enter the new password</label>
-						<input id="conPass" type="password" class="form-control" name="confirmPassword">
-						<small class="form-text text-muted">Must match the password entered above</small>
+						<%if(error && error.length>0){%>
+							<input id="conPass" type="password" class="form-control is-invalid" name="confirmPassword">
+							<div class="invalid-feedback">
+								<%=error%>
+							</div>
+						<%}else{%>
+							<input id="conPass" type="password" class="form-control" name="confirmPassword">
+							<small class="form-text text-muted">Must match the password entered above</small>
+						<%}%>
 					</div>
 					<button type="submit" class="btn btn-dark">Reset Password</button>
 				</form>

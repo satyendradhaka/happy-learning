@@ -63,6 +63,8 @@ app.use(function (req, res, next) {
   res.locals.session = req.session;
   res.locals.error = req.flash("error");
   res.locals.success = req.flash("success");
+  res.locals.regError=req.flash("regError")
+  res.locals.verfError=req.flash("verfError")
   next();
 });
 

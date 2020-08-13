@@ -1,8 +1,8 @@
 $(document).ready(function(){
 	$("#loginButton").click(()=>{
-		$('#loginForm').submit()
+		$('#loginSubmitButton').trigger('click')
 	})
 	$("#regButton").click(()=>{
-		$('#regForm').submit()
+		$('#regSubmitButton').trigger('click')
 	})
 })
