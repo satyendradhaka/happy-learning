@@ -40,7 +40,7 @@ router.post("/register", function (req, res) {
   if(req.body.password.length<8){
     console.log("password must be of minimum 8 length")
     req.flash("regError", "Password must be of 8 lengths")
-    res.redirect("/")
+    return res.redirect("/")
   }
   var newUser = new User({ username: req.body.username, name: req.body.name })
   User.register(newUser, req.body.password, function (err, user) {
@@ -70,9 +70,9 @@ router.post("/register", function (req, res) {
     transporter.sendMail(mailOptions, function (err) {
       if (err) { 
         req.flash("verfError", "verification email not send, if the error is persistance please contact SWC")
-        res.redirect("/")
+        return res.redirect("/")
        }
-      req.flash("success", "verification email sent, please check your inbox and junk mails too")
+      req.flash("success", "Verification email sent, please check your inbox as well as junk mails")
       res.redirect("/")
     });
   })
@@ -83,18 +83,18 @@ router.get('/register/confirmation/:id', function (req, res) {
   Token.findOne({ token: req.params.id }, function (err, token) {
     if (!token) {
       console.log("token not found")
-      req.flash("verfError", "link expired, please try again")
+      req.flash("verfError", "Link expired, please try again")
       res.redirect("/")
     }
     User.findOne({ _id: token._userId }, function (err, user) {
       if (!user) {
         console.log("user not found for this token")
-        req.flash("verfError", "invalid link, no user registered")
+        req.flash("verfError", "Invalid link, no user registered")
         res.redirect("/")
       }
       if (user.isverfied) {
         console.log("user already verified")
-        req.flash("success", "user verified succesfully, please login and enjoy the courses")
+        req.flash("success", "User verified succesfully, please login and enjoy the courses")
         res.redirect("/")
       }
 
@@ -141,17 +141,17 @@ router.get('/logout', function (req, res) {
 router.get("/register/resetToken", function (req, res) {
   if (!req.isAuthenticated()) {
     req.flash("error", "please login first")
-    res.redirect('/')
+    return res.redirect('/')
   }
   if(req.user.isverified){
     req.flash("error", "user already verified")
-    res.redirect('/')
+    return res.redirect('/')
   }
   var token = new Token({ _userId: req.user._id, token: crypto.randomBytes(16).toString('hex') });
   token.save(function (err) {
     if (err) {
       console.log(err)
-      req.flash("error", "verification link not generated")
+      req.flash("verfError", "verification link not generated")
       return res.redirect("/")
     }
   });
@@ -166,13 +166,13 @@ router.get("/register/resetToken", function (req, res) {
   var mailOptions = { from: process.env.GmailUser, to: req.user.username, subject: 'Account Verification Token from testotp', text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/register\/confirmation\/' + token.token + '.\n' };
   transporter.sendMail(mailOptions, function (err) {
     if (err) { 
-      req.flash("error", "verification email not sent please try again if error is perisistance contact SWC")
+      req.flash("verfError", "Verification email not sent please try again. If the issue persists, please contact SWC")
       req.session.destroy(function (err) {
         req.logOut();
-        res.redirect('/');
+        return res.redirect('/');
       });
      }
-     req.flash("success", "an email has been sent to verify email address, please check your inbox, if not in inbox then in junk box")
+     req.flash("success", "An email has been sent to verify email address, please check your inbox and junk mails")
      res.redirect("/")
   });
 
